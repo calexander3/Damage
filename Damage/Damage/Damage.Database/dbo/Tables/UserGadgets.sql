@@ -6,8 +6,8 @@
     [GadgetSettings] NVARCHAR(MAX) NOT NULL, 
     [Column] INT NOT NULL DEFAULT 1, 
     [Ordinal] INT NOT NULL DEFAULT 0, 
-    CONSTRAINT [FK_UserGadgets_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId]), 
-    CONSTRAINT [FK_UserGadgets_Gadgets] FOREIGN KEY ([GadgetId]) REFERENCES [Gadgets]([GadgetId])
+    CONSTRAINT [FK_UserGadgets_Gadgets] FOREIGN KEY ([GadgetId]) REFERENCES [Gadgets]([GadgetId]), 
+    CONSTRAINT [FK_UserGadgets_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([UserId])
 )
 
 GO
