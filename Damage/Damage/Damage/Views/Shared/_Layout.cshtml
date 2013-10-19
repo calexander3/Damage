@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <title>Damage - Dashboard Manager For Google</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="~/Scripts/Search.js"></script>
     @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <header>
@@ -35,7 +36,13 @@
             </div>
         </div>
         <div class="site-title">
-            Damage
+            <span style="cursor:default">Damage</span>
+            <span>
+                <input type="text" id="txtSearch" />
+            </span>
+            <span>
+                <img src="~/Images/searchButton.png" alt="Search" style="cursor:pointer" onclick="Search($('#txtSearch').val())"/>
+            </span>
         </div>
     </header>
     <div id="body">

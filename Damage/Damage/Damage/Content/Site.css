@@ -129,12 +129,19 @@ footer {
     font-size: 2.3em;
     margin: 20px 0px 20px 50px;
 }
+.site-title input
+{
+    font-size: small;
+    margin-left:10px;
+    position:absolute;
+    top:40px;
+}
 
-.site-title a, .site-title a:hover, .site-title a:active {
-    background: none;
-    color: #c8c8c8;
-    outline: none;
-    text-decoration: none;
+.site-title img
+{
+    position:absolute;
+    top:44px;
+    left:505px;
 }
 
 
