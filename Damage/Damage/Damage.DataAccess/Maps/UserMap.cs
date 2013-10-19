@@ -15,9 +15,7 @@ namespace Damage.DataAccess.Maps {
         public UserMap() {
 			Table("Users");
 			Id(x => x.UserId, map => map.Generator(Generators.Identity));
-			Property(x => x.Username, map => map.NotNullable(true));
-			Property(x => x.Password, map => map.NotNullable(true));
-			Property(x => x.Salt, map => map.NotNullable(true));
+			Property(x => x.UserName, map => map.NotNullable(true));
 			Bag(x => x.UserGadgets, colmap =>  { colmap.Key(x => x.Column("UserId")); colmap.Inverse(true); }, map => { map.OneToMany(); });
         }
     }

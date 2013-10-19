@@ -13,11 +13,7 @@ namespace Damage.DataAccess.Models {
         }
         public virtual int UserId { get; set; }
         [Required()]
-        public virtual string Username { get; set; }
-        [Required()]
-        public virtual string Password { get; set; }
-        [Required()]
-        public virtual string Salt { get; set; }
+        public virtual string UserName { get; set; }
         public virtual IList<UserGadget> UserGadgets { get; set; }
     }
 }
