@@ -6,6 +6,7 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <script type="text/javascript" src="~/Scripts/Search.js"></script>
+    <link href="/Content/jquery-ui.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -39,58 +40,54 @@
             </div>
         </div>
         <div class="site-title">
-            <span style="cursor:default">Damage</span>
+            <span style="cursor: default">Damage</span>
             <span>
                 <input type="text" id="txtSearch" />
             </span>
             <span>
-                <img src="~/Images/searchButton.png" alt="Search" style="cursor:pointer" onclick="Search($('#txtSearch').val())"/>
+                <img src="~/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
             </span>
         </div>
     </header>
     <div id="body">
-        @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
     </div>
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                <p>&copy; @DateTime.Now.Year - Craig Alexander</p>
             </div>
         </div>
     </footer>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-$( document ).ready(function() {
-    $( "#txtSearch" ).autocomplete({
-        source: function( request, response ) {
-            $.ajax({
-                url: "http://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
-                dataType: "jsonp",
-                success: function( data ) {
-                    response( $.map( data[1], function( item ) {
-                        return {
-                            label: item,
-                            value: item
+        $(document).ready(function () {
+            $("#txtSearch").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "http://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
+                        dataType: "jsonp",
+                        success: function (data) {
+                            response($.map(data[1], function (item) {
+                                return {
+                                    label: item,
+                                    value: item
+                                }
+                            }));
                         }
-                    }));
+                    });
+                },
+                minLength: 2,
+                select: function (event, ui) {
+                    Search(ui.item.value)
                 }
             });
-        },
-        minLength: 2,
-        //open: function() {
-        //    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-        //},
-        //close: function() {
-        //    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-        //}
-    });
-});
+        });
 
-</script>
+    </script>
 </body>
 </html>

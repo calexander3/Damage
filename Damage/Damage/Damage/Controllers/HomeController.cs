@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Damage.DataAccess.Models;
 
 namespace Damage.Controllers
 {
@@ -10,9 +11,33 @@ namespace Damage.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            var t = new List<UserGadget>();
+            t.Add(
+                    new UserGadget()
+                    {
+                        Gadget = new Gadget() { GadgetName = "teest" },
+                        Ordinal = 0,
+                        Column = 1
+                    }
+                );
+            t.Add(
+        new UserGadget()
+        {
+            Gadget = new Gadget() { GadgetName = "teest2" },
+            Ordinal = 1,
+            Column = 1
+        }
+    );
+            t.Add(
+        new UserGadget()
+        {
+            Gadget = new Gadget() { GadgetName = "teest3" },
+            Ordinal = 0,
+            Column = 2
+        }
+    );
 
-            return View();
+            return View(t);
         }
     }
 }
