@@ -1,23 +1,22 @@
+using System; 
+using System.Collections.Generic; 
+using System.Text; 
+using FluentNHibernate.Mapping;
 using Damage.DataAccess.Models;
-using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
-
 
 namespace Damage.DataAccess.Maps {
-    
-    
-    public class UserGadgetMap : ClassMapping<UserGadget> {
-        
-        public UserGadgetMap() {
+	
+	
+	public class UserGadgetMap : ClassMap<UserGadget> {
+		
+		public UserGadgetMap() {
 			Table("UserGadgets");
-			Id(x => x.UserGadgetId, map => map.Generator(Generators.Identity));
-			Property(x => x.GadgetSettings, map => map.NotNullable(true));
-			Property(x => x.Column, map => map.NotNullable(true));
-			Property(x => x.Ordinal, map => map.NotNullable(true));
-			ManyToOne(x => x.User, map => { map.Column("UserId"); map.Cascade(Cascade.None); });
-
-			ManyToOne(x => x.Gadget, map => { map.Column("GadgetId"); map.Cascade(Cascade.None); });
-
-        }
-    }
+			Id(x => x.UserGadgetId).GeneratedBy.Identity().Column("UserGadgetId");
+			References(x => x.User).Column("UserId");
+			References(x => x.Gadget).Column("GadgetId");
+			Map(x => x.GadgetSettings).Column("GadgetSettings").Not.Nullable();
+			Map(x => x.Column).Column("Column").Not.Nullable();
+			Map(x => x.Ordinal).Column("Ordinal").Not.Nullable();
+		}
+	}
 }

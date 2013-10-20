@@ -1,20 +1,21 @@
+using System; 
+using System.Collections.Generic; 
+using System.Text; 
+using FluentNHibernate.Mapping;
 using Damage.DataAccess.Models;
-using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
-
 
 namespace Damage.DataAccess.Maps {
 	
 	
-	public class GadgetMap : ClassMapping<Gadget> {
+	public class GadgetMap : ClassMap<Gadget> {
 		
 		public GadgetMap() {
 			Table("Gadgets");
-			Id(x => x.GadgetId, map => map.Generator(Generators.Identity));
-			Property(x => x.GadgetName, map => map.NotNullable(true));
-			Property(x => x.GadgetVersion, map => map.NotNullable(true));
-			Property(x => x.AssemblyPresent, map => map.NotNullable(true));
-			Bag(x => x.UserGadgets, colmap =>  { colmap.Key(x => x.Column("GadgetId")); colmap.Inverse(true); }, map => { map.OneToMany(); });
+			Id(x => x.GadgetId).GeneratedBy.Identity().Column("GadgetId");
+			Map(x => x.GadgetName).Column("GadgetName").Not.Nullable();
+			Map(x => x.GadgetVersion).Column("GadgetVersion").Not.Nullable();
+			Map(x => x.AssemblyPresent).Column("AssemblyPresent").Not.Nullable();
+			HasMany(x => x.UserGadgets).KeyColumn("GadgetId");
 		}
 	}
 }
