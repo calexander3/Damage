@@ -8,6 +8,9 @@
     <script type="text/javascript" src="~/Scripts/Search.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <header>
@@ -59,7 +62,35 @@
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+    $( "#txtSearch" ).autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "http://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
+                dataType: "jsonp",
+                success: function( data ) {
+                    response( $.map( data[1], function( item ) {
+                        return {
+                            label: item,
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        minLength: 2,
+        //open: function() {
+        //    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        //},
+        //close: function() {
+        //    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        //}
+    });
+});
+
+</script>
 </body>
 </html>
