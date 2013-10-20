@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Damage.DataAccess.Repositories
 {
-	public abstract class BaseRepository<T>
+	public abstract class BaseRepository<T> where T : Damage.DataAccess.Models.BaseModel
 	{
 
 
@@ -47,7 +47,7 @@ namespace Damage.DataAccess.Repositories
 		/// </summary>
 		/// <param name="EntitySet">The entity set.</param>
 		/// <param name="OperationType">The type of save operation.</param>
-		public virtual void Save(List<T> EntitySet, SaveOperation OperationType = SaveOperation.Unknown)
+		public virtual void Save(IList<T> EntitySet, SaveOperation OperationType = SaveOperation.Unknown)
 		{
 			foreach (T Entity in EntitySet) {
 				switch (OperationType) {

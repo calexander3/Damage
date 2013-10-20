@@ -4,6 +4,10 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Damage
 {
@@ -29,13 +33,36 @@ namespace Damage
         {
             var gadgetInstances = ServiceLocator.Current.GetAllInstances<IGadget>();
 
-            using (var uow = new UnitOfWork(""))
+            using (var uow = new UnitOfWork(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
+                var currentGadgets = uow.GadgetRepository.GetAllGadgets();
+                var newGadgets = new List<Damage.DataAccess.Models.Gadget>();
+
+                Parallel.ForEach(currentGadgets, g => g.AssemblyPresent = false);
+
                 foreach (IGadget gadget in gadgetInstances)
                 {
-
-
+                    var currentGadget = currentGadgets.FirstOrDefault(g => g.GadgetName == gadget.GetType().Name);
+                    if (currentGadget != null)
+                    {
+                        currentGadget.AssemblyPresent = true;
+                        currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
+                    }
+                    else
+                    {
+                        newGadgets.Add(
+                            new DataAccess.Models.Gadget()
+                            {
+                                GadgetName = gadget.GetType().Name,
+                                AssemblyPresent = true,
+                                GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString()
+                            }
+                        );
+                    }
                 }
+
+                uow.GadgetRepository.Save(currentGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.Update);
+                uow.GadgetRepository.Save(newGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.SaveNew);
             }
 
         }

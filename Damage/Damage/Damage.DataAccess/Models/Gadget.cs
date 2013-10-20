@@ -16,6 +16,8 @@ namespace Damage.DataAccess.Models {
 		public virtual string GadgetName { get; set; }
 		[Required()]
 		public virtual string GadgetVersion { get; set; }
+		[Required()]
+		public virtual bool AssemblyPresent { get; set; }
 		public virtual IList<UserGadget> UserGadgets { get; set; }
 
 		public override string CompositeKey
