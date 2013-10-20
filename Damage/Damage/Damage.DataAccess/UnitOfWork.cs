@@ -42,6 +42,19 @@ namespace Damage.DataAccess
             }
         }
 
+        private UserRepository m_UserRepository = null;
+        public UserRepository UserRepository
+        {
+            get
+            {
+                if (m_UserRepository == null)
+                {
+                    m_UserRepository = new UserRepository(m_Session);
+                }
+                return m_UserRepository;
+            }
+        }
+
         #endregion
 
         public UnitOfWork(string ConnectionString)

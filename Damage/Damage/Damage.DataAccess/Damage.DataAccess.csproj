@@ -69,6 +69,7 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\GadgetRepository.cs" />
     <Compile Include="Repositories\UserGadgetRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

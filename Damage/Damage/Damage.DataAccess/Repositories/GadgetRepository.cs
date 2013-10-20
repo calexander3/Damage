@@ -9,7 +9,7 @@ using NHibernate.Criterion;
 
 namespace Damage.DataAccess.Repositories
 {
-    class GadgetRepository : BaseRepository<Gadget>
+    public class GadgetRepository : BaseRepository<Gadget>
     {
         public GadgetRepository(ISession Session): base(Session)
         {
