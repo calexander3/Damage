@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Microsoft.Practices.ServiceLocation;
+using Damage.DataAccess;
 
 namespace Damage
 {
@@ -19,6 +21,23 @@ namespace Damage
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            LoadGadgets();
+        }
+
+        private void LoadGadgets()
+        {
+            var gadgetInstances = ServiceLocator.Current.GetAllInstances<IGadget>();
+
+            using (var uow = new UnitOfWork(""))
+            {
+                foreach (IGadget gadget in gadgetInstances)
+                {
+
+
+                }
+            }
+
         }
     }
 }

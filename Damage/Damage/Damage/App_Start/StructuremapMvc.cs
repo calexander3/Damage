@@ -23,11 +23,11 @@ using Damage.DependencyResolution;
 [assembly: WebActivator.PreApplicationStartMethod(typeof(Damage.App_Start.StructuremapMvc), "Start")]
 
 namespace Damage.App_Start {
-    public static class StructuremapMvc {
-        public static void Start() {
+	public static class StructuremapMvc {
+		public static void Start() {
 			IContainer container = IoC.Initialize();
-            DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
-            GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
-        }
-    }
+			DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
+			GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
+		}
+	}
 }

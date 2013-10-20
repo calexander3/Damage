@@ -17,18 +17,35 @@
 
 
 using StructureMap;
-namespace Damage.DependencyResolution {
-    public static class IoC {
-        public static IContainer Initialize() {
+using Microsoft.Practices.ServiceLocation;
+
+namespace Damage.DependencyResolution
+{
+    public static class IoC
+    {
+        public static IContainer Initialize()
+        {
+            var binPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "bin");
+
             ObjectFactory.Initialize(x =>
                         {
-                            x.Scan(scan =>
-                                    {
-                                        scan.TheCallingAssembly();
-                                        scan.WithDefaultConventions();
-                                    });
-            //                x.For<IExample>().Use<Example>();
+                            x.Scan(with =>
+                                {
+                                    with.TheCallingAssembly();
+                                    with.WithDefaultConventions();
+                                });
+                            //                x.For<IExample>().Use<Example>();
+
+
+                            x.Scan(with => 
+                                {
+                                    with.AssembliesFromPath(System.IO.Path.Combine(binPath, "Gadgets"));
+                                    with.WithDefaultConventions();
+                                    with.RegisterConcreteTypesAgainstTheFirstInterface();
+                                });
+                            
                         });
+
             return ObjectFactory.Container;
         }
     }
