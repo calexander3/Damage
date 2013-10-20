@@ -3,6 +3,9 @@ namespace Damage
 {
     public interface IGadget
     {
-        void SaveSettings(object setting);
+        string RenderHTML();
+
+        Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
+
     }
 }

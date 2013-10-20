@@ -3,9 +3,23 @@ namespace RSSReader
 {
     public class RSSReader: Damage.IGadget
     {
-        public void SaveSettings(object setting)
+        public string RenderHTML()
         {
-            throw new System.NotImplementedException();
+            return "RSS";
+        }
+
+
+        private Damage.DataAccess.Models.UserGadget _userGadget = null;
+        public Damage.DataAccess.Models.UserGadget UserGadget
+        {
+            get
+            {
+                return _userGadget;
+            }
+            set
+            {
+                _userGadget = value;
+            }
         }
     }
 }

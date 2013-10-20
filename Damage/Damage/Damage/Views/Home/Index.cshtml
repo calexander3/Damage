@@ -1,12 +1,12 @@
-﻿@model List<Damage.DataAccess.Models.UserGadget>
+﻿@model List<Damage.IGadget>
 
 <div>
 @for (int column = 1; column <= 3; column ++)
 {
 <span>
-    @foreach (var gadget in Model.Where(m => m.Column == column).OrderBy(m => m.Ordinal))
+    @foreach (var gadget in Model.Where(m => m.UserGadget.Column == column).OrderBy(m => m.UserGadget.Ordinal))
     {
-        <div>@gadget.Gadget.GadgetName</div>
+        <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
     }
 </span>
 }
