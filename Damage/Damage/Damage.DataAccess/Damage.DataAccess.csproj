@@ -61,10 +61,15 @@
     <Compile Include="Maps\GadgetMap.cs" />
     <Compile Include="Maps\UserGadgetMap.cs" />
     <Compile Include="Maps\UserMap.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Gadget.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserGadget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\GadgetRepository.cs" />
+    <Compile Include="Repositories\UserGadgetRepository.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Damage.DataAccess.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Damage.DataAccess.Models;
 
 namespace Damage.Controllers
 {
@@ -15,7 +12,7 @@ namespace Damage.Controllers
             t.Add(
                     new UserGadget()
                     {
-                        Gadget = new Gadget() { GadgetName = "teest" },
+                        Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest" },
                         Ordinal = 0,
                         Column = 1
                     }
@@ -23,7 +20,7 @@ namespace Damage.Controllers
             t.Add(
         new UserGadget()
         {
-            Gadget = new Gadget() { GadgetName = "teest2" },
+            Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest2" },
             Ordinal = 1,
             Column = 1
         }
@@ -31,7 +28,7 @@ namespace Damage.Controllers
             t.Add(
         new UserGadget()
         {
-            Gadget = new Gadget() { GadgetName = "teest3" },
+            Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest3" },
             Ordinal = 0,
             Column = 2
         }
