@@ -23,7 +23,7 @@ namespace Damage
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                        "~/Content/jquery.ui.css",
+                        "~/Content/jquery-ui.css",
                          "~/Content/site.css"));
         }
     }
