@@ -3,10 +3,10 @@
 
 @for (int column = 1; column <= 3; column ++)
 {
-<div style="width:33%; float:left;">
+<div class="GadgetColumn">
     @foreach (var gadget in Model.Where(m => m.UserGadget.Column == column).OrderBy(m => m.UserGadget.Ordinal))
     {
-        <div style="width:100%">@Html.Partial("_GadgetFramePartial", gadget)</div>
+        <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
     }
 </div>
 }

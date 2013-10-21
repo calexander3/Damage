@@ -487,16 +487,14 @@ tr.pager td {
 
     /* Gadgets
     ----------------------------------------------------------*/
-    .GadgetHeader
-    {
+    .GadgetHeader{
         background: #c8c8c8;
         border: 1px solid #999;
         margin-right: 5px;
         margin-left: 5px;
         padding-left:2px;
     }
-    .GadgetFrame
-    {
+    .GadgetFrame{
         min-height:30px;
         border-right: 1px solid #999;
         border-left: 1px solid #999;
@@ -505,6 +503,11 @@ tr.pager td {
         margin-left: 5px;
         margin-bottom: 10px;
         padding: 2px;
+    }
+
+    .GadgetColumn{
+        width: 33%;
+        float: left;
     }
 
 
