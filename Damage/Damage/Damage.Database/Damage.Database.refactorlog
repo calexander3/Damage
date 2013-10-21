@@ -21,4 +21,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="UserGadgetId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="5c75f7e0-491a-40af-a130-ead210dfe5f5" ChangeDateTime="10/21/2013 02:01:11">
+    <Property Name="ElementName" Value="[dbo].[UserGadgets].[Column]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserGadgets]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DisplayColumn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f9412168-918e-4183-9e14-8869a9e9246a" ChangeDateTime="10/21/2013 02:01:22">
+    <Property Name="ElementName" Value="[dbo].[UserGadgets].[Ordinal]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserGadgets]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DisplayOrdinal" />
+  </Operation>
 </Operations>

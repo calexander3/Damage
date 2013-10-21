@@ -11,9 +11,9 @@ namespace Damage.DataAccess.Models {
         [Required()]
         public virtual string GadgetSettings { get; set; }
         [Required()]
-        public virtual int Column { get; set; }
+        public virtual int DisplayColumn { get; set; }
         [Required()]
-        public virtual int Ordinal { get; set; }
+        public virtual int DisplayOrdinal { get; set; }
 
         public override string CompositeKey
         {

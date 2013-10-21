@@ -4,7 +4,7 @@
 @for (int column = 1; column <= 3; column ++)
 {
 <div class="GadgetColumn">
-    @foreach (var gadget in Model.Where(m => m.UserGadget.Column == column).OrderBy(m => m.UserGadget.Ordinal))
+    @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == column).OrderBy(m => m.UserGadget.DisplayOrdinal))
     {
         <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
     }

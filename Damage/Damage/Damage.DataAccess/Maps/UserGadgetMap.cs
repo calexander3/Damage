@@ -15,8 +15,8 @@ namespace Damage.DataAccess.Maps {
 			References(x => x.User).Column("UserId");
 			References(x => x.Gadget).Column("GadgetId");
 			Map(x => x.GadgetSettings).Column("GadgetSettings").Not.Nullable();
-			Map(x => x.Column).Column("Column").Not.Nullable();
-			Map(x => x.Ordinal).Column("Ordinal").Not.Nullable();
+			Map(x => x.DisplayColumn).Column("DisplayColumn").Not.Nullable();
+			Map(x => x.DisplayOrdinal).Column("DisplayOrdinal").Not.Nullable();
 		}
 	}
 }

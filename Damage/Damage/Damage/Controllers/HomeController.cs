@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Microsoft.Practices.ServiceLocation;
+using Damage.DataAccess;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Damage.Controllers
 {
@@ -9,48 +12,30 @@ namespace Damage.Controllers
     {
         public ActionResult Index()
         {
-            var t = new List<IGadget>();
+            var activeGadgets = new List<IGadget>();
 
-
-            t.Add(new NotAvailableGadget()
+            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
-
-                UserGadget = new UserGadget()
-                {
-                    Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest" },
-                    Ordinal = 0,
-                    Column = 1
-                }
+                var gadgetsForUser = uow.UserGadgetRepository.GetAllUserGadgetsForUser(1);
+                Parallel.ForEach(gadgetsForUser, g =>
+                                {
+                                    if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
+                                    {
+                                        var newGadget = ServiceLocator.Current.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
+                                        newGadget.UserGadget = g;
+                                        activeGadgets.Add(newGadget);
+                                    }
+                                    else
+                                    {
+                                        activeGadgets.Add(new NotAvailableGadget() {
+                                            UserGadget = g
+                                        });
+                                    }
+                                });
             }
 
-                );
 
-
-
-            t.Add(new NotAvailableGadget()
-            {
-
-                UserGadget = new UserGadget()
-                {
-                    Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest2" },
-                    Ordinal = 1,
-                    Column = 1
-                }
-            }
-
-                ); t.Add(new NotAvailableGadget()
-                {
-
-                    UserGadget = new UserGadget()
-                    {
-                        Gadget = new Damage.DataAccess.Models.Gadget() { GadgetName = "teest3" },
-                        Ordinal = 0,
-                        Column = 2
-                    }
-                }
-);
-
-            return View(t);
+            return View(activeGadgets);
         }
     }
 }

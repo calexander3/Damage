@@ -26,6 +26,9 @@ namespace Damage
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
 
+            GlobalConfig.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Type>();
+
             LoadGadgets();
         }
 
@@ -33,7 +36,7 @@ namespace Damage
         {
             var gadgetInstances = ServiceLocator.Current.GetAllInstances<IGadget>();
 
-            using (var uow = new UnitOfWork(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
                 var currentGadgets = uow.GadgetRepository.GetAllGadgets();
                 var newGadgets = new List<Damage.DataAccess.Models.Gadget>();
@@ -59,6 +62,8 @@ namespace Damage
                             }
                         );
                     }
+
+                    GlobalConfig.GadgetTypes.TryAdd(gadget.GetType().Name, gadget.GetType());
                 }
 
                 uow.GadgetRepository.Save(currentGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.Update);
