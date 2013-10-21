@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Damage.DataAccess.Repositories
 {
+	/// <summary>
+	/// Contains basic repository functionality
+	/// </summary>
+	/// <typeparam name="T">Model Type. Must inherit from <see cref="BaseModel"/></typeparam>
 	public abstract class BaseRepository<T> where T : Damage.DataAccess.Models.BaseModel
 	{
 

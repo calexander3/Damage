@@ -29,6 +29,7 @@ namespace Damage.DependencyResolution
 
             ObjectFactory.Initialize(x =>
                         {
+                            //Scan current assembly
                             x.Scan(with =>
                                 {
                                     with.TheCallingAssembly();
@@ -37,12 +38,16 @@ namespace Damage.DependencyResolution
                             //                x.For<IExample>().Use<Example>();
 
 
-                            x.Scan(with => 
-                                {
-                                    with.AssembliesFromPath(System.IO.Path.Combine(binPath, "Gadgets"));
-                                    with.WithDefaultConventions();
-                                    with.RegisterConcreteTypesAgainstTheFirstInterface();
-                                });
+                            //Scan gadgets folder
+                            if (new System.IO.DirectoryInfo(System.IO.Path.Combine(binPath, "Gadgets")).Exists)
+                            {
+                                x.Scan(with =>
+                                    {
+                                        with.AssembliesFromPath(System.IO.Path.Combine(binPath, "Gadgets"));
+                                        with.WithDefaultConventions();
+                                        with.RegisterConcreteTypesAgainstTheFirstInterface();
+                                    });
+                            }
                             
                         });
 

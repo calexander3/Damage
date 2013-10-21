@@ -56,6 +56,8 @@ namespace Damage.DependencyResolution
             }
 
             this.Container = container;
+
+            //Set ServiceLocator.Current
             ServiceLocator.SetLocatorProvider(() => this);
         }
 

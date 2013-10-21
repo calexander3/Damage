@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Damage.DataAccess.Models
 {
+    /// <summary>
+    /// Contains basic model functionality
+    /// </summary>
     public abstract class BaseModel
     {
 
