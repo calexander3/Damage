@@ -5,7 +5,9 @@ namespace Damage
     {
         string RenderHTML();
 
-        Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
+        string title { get; set; }
+
+        Damage.DataAccess.Models.UserGadget UserGadget { get; }
 
     }
 }

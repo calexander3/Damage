@@ -1,13 +1,12 @@
 ﻿@model List<Damage.IGadget>
 
-<div>
+
 @for (int column = 1; column <= 3; column ++)
 {
-<span>
+<div style="width:33%; float:left;">
     @foreach (var gadget in Model.Where(m => m.UserGadget.Column == column).OrderBy(m => m.UserGadget.Ordinal))
     {
-        <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
+        <div style="width:100%">@Html.Partial("_GadgetFramePartial", gadget)</div>
     }
-</span>
-}
 </div>
+}

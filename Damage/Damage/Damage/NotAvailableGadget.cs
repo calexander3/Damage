@@ -13,5 +13,16 @@ namespace Damage
         }
 
         public DataAccess.Models.UserGadget UserGadget{ get; set; }
+
+
+        public string title
+        {
+            get
+            {
+                return "Sorry!";
+            }
+            set{
+            }
+        }
     }
 }

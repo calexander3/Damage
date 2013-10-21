@@ -8,18 +8,15 @@ namespace RSSReader
             return "RSS";
         }
 
+        public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
 
-        private Damage.DataAccess.Models.UserGadget _userGadget = null;
-        public Damage.DataAccess.Models.UserGadget UserGadget
+        public string title
         {
             get
             {
-                return _userGadget;
+                return "Feed Title";
             }
-            set
-            {
-                _userGadget = value;
-            }
+            set{}
         }
     }
 }
