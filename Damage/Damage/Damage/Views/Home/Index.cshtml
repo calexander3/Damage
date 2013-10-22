@@ -9,13 +9,17 @@
 }
 else
 {
-    <div class="add-gadget-button"><a href="#" onclick="OpenAddGadgetDialog()">Add Gadget</a></div>
+    <div class="add-gadget-button"><span><a href="#" onclick="OpenAddGadgetDialog()">Add Gadget</a></span><span><a href="#" onclick="OpenSettingsDialog()">Settings</a></span></div>
 }
 
 @for (int column = 1; column <= 3; column ++)
 {
 <div class="GadgetColumn">
-    @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == column).OrderBy(m => m.UserGadget.DisplayOrdinal))
+    
+    @{
+        int columnClosure = column;
+    }
+    @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == columnClosure).OrderBy(m => m.UserGadget.DisplayOrdinal))
     {
         <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
     }
@@ -23,19 +27,15 @@ else
 }
 
 <div id="settingsDialog" title="Settings" style="display:none;">
+    <div>Choose Layout</div>
+    <div><img src="~/Content/Images/Layouts/ThreeColumnLayout.png"/></div>
+    <div><input type="radio" id ="optThreeColumnLayout" checked="checked"/></div>
+</div>
+
+<div id="gadgetSettingsDialog" title="Settings" style="display:none;">
   <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
 </div>
 
 <div id="addGadgetDialog" title="Add New Gadget" style="display:none;">
-  <table>
-    <tr>
-        <td>Gadget:</td><td><select></select></td>
-    </tr>
-    <tr>
-    <td>Column:</td><td><input type="number" /></td>
-    </tr>
-    <tr>
-    <td>Ordinal:</td><td><input type="number" /></td>
-    </tr>
-  </table>
+Gadget:<select></select>
 </div>
