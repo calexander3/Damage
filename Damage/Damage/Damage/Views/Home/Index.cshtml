@@ -7,6 +7,10 @@
 @if (!Request.IsAuthenticated) {
     <div class="sign-in-request">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "subLoginLink" })to customize your gadgets.</div>
 }
+else
+{
+    <div class="add-gadget-button"><a href="#" onclick="OpenAddGadgetDialog()">Add Gadget</a></div>
+}
 
 @for (int column = 1; column <= 3; column ++)
 {
@@ -20,4 +24,18 @@
 
 <div id="settingsDialog" title="Settings" style="display:none;">
   <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+<div id="addGadgetDialog" title="Add New Gadget" style="display:none;">
+  <table>
+    <tr>
+        <td>Gadget:</td><td><select></select></td>
+    </tr>
+    <tr>
+    <td>Column:</td><td><input type="number" /></td>
+    </tr>
+    <tr>
+    <td>Ordinal:</td><td><input type="number" /></td>
+    </tr>
+  </table>
 </div>

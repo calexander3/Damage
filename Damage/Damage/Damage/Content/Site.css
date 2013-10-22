@@ -113,6 +113,16 @@ h5, h6 {
     color: #787878;
 }
 
+.add-gadget-button
+{
+    float:right;
+    height:0px;
+    position:relative;
+    top: -30px;
+    left: -15px;
+
+}
+
 .main-content {
     padding: 10px;
 }
