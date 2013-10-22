@@ -7,6 +7,7 @@ namespace RSSReader
 {
     public class RSSReader : Damage.IGadget
     {
+        string _title = "RSS Reader";
         public string RenderHTML()
         {
             if (UserGadget.GadgetSettings != null && UserGadget.GadgetSettings.Length > 0)
@@ -19,6 +20,8 @@ namespace RSSReader
                     XmlReader reader = XmlReader.Create(settings.FeedURL);
                     SyndicationFeed feed = SyndicationFeed.Load(reader);
                     reader.Close();
+
+                    _title = feed.Title.Text;
 
                     var counter = 0;
                     foreach (SyndicationItem item in feed.Items)
@@ -44,7 +47,7 @@ namespace RSSReader
         {
             get
             {
-                return "Feed Title";
+                return _title;
             }
         }
 
