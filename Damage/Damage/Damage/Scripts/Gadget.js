@@ -15,6 +15,7 @@
 function OpenSettingsDialog()
 {
     $('#settingsDialog').dialog({
+        width: 525,
         modal: true,
         buttons: {
             Save: function () {

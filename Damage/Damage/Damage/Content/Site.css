@@ -113,15 +113,25 @@ h5, h6 {
     color: #787878;
 }
 
-.add-gadget-button
-{
-    float:right;
-    height:0px;
-    position:relative;
+.add-gadget-button {
+    float: right;
+    height: 0px;
+    position: relative;
     top: -30px;
-    left: -15px;
-
+    left: -10px;
 }
+
+    .add-gadget-button span {
+        margin-right: 5px;
+    }
+
+.layout-choice {
+    float: left;
+}
+
+    .layout-choice input {
+        width: 100%;
+    }
 
 .main-content {
     padding: 10px;
@@ -510,10 +520,9 @@ tr.pager td {
     width: 16px;
     cursor: pointer;
     float: right;
-    position:relative;
+    position: relative;
     top: 3px;
     left: -7px;
-
 }
 
     .GadgetSettings:hover {
