@@ -138,13 +138,11 @@ footer {
     .site-title input {
         font-size: small;
         margin-left: 10px;
-        position: absolute;
-        top: 40px;
     }
 
     .site-title img {
         position: absolute;
-        top: 44px;
+        top: 56px;
         left: 505px;
     }
 
@@ -496,7 +494,7 @@ tr.pager td {
 }
 
 .GadgetSettings {
-    background-image: url(../Images/Settings.png);
+    background-image: url(../Content/Images/Settings.png);
     background-repeat: no-repeat;
     height: 16px;
     width: 16px;
@@ -509,7 +507,7 @@ tr.pager td {
 }
 
     .GadgetSettings:hover {
-        background-image: url(../Images/Settings-Hover.png);
+        background-image: url(../Content/Images/Settings-Hover.png);
     }
 
 .GadgetFrame {

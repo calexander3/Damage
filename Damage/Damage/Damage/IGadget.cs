@@ -15,7 +15,15 @@ namespace Damage
         /// <value>
         /// The title.
         /// </value>
-        string title { get; }
+        string Title { get; }
+
+        /// <summary>
+        /// Gets an empty settings object to be used during adding a gadget.
+        /// </summary>
+        /// <value>
+        /// The default settings.
+        /// </value>
+        string DefaultSettings { get; }
 
         /// <summary>
         /// Gets or sets the information about this instance of the gadget.

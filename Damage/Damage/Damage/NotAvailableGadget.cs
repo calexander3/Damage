@@ -15,12 +15,18 @@ namespace Damage
         public DataAccess.Models.UserGadget UserGadget { get; set; }
 
 
-        public string title
+        public string Title
         {
             get
             { 
                 return UserGadget.Gadget.GadgetName; 
             }
+        }
+
+
+        public string DefaultSettings
+        {
+            get { return ""; }
         }
     }
 }
