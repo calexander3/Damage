@@ -50,6 +50,7 @@ namespace Damage
                     {
                         currentGadget.AssemblyPresent = true;
                         currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
+                        currentGadget.DefaultSettings = gadget.DefaultSettings;
                     }
                     else
                     {
@@ -58,7 +59,8 @@ namespace Damage
                             {
                                 GadgetName = gadget.GetType().Name,
                                 AssemblyPresent = true,
-                                GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString()
+                                GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
+                                DefaultSettings = gadget.DefaultSettings
                             }
                         );
                     }

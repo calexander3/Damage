@@ -32,5 +32,20 @@ namespace Damage.DataAccess.Repositories
                 .Fetch(ug => ug.Gadget).Eager
                 .List<UserGadget>();
         }
+
+        /// <summary>
+        /// Gets the gadget by identifier.
+        /// </summary>
+        /// <param name="UserGadgetId">The user gadget identifier.</param>
+        /// <returns></returns>
+        public UserGadget GetUserGadgetById(int UserGadgetId)
+        {
+            return m_Session.QueryOver<UserGadget>()
+                .Where(ug => ug.UserGadgetId == UserGadgetId)
+                .Fetch(ug => ug.User).Eager
+                .Fetch(ug => ug.Gadget).Eager
+                .List<UserGadget>().Single();
+
+        }
     }
 }
