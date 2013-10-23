@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Damage.Gadget;
+using Newtonsoft.Json;
 using System;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
 namespace RSSReader
 {
-    public class RSSReader : Damage.IGadget
+    public class RSSReader : IGadget
     {
         string _title = "RSS Reader";
 
@@ -18,7 +20,7 @@ namespace RSSReader
 
         private string GenerateHTML()
         {
-            if (UserGadget.GadgetSettings != null && UserGadget.GadgetSettings.Length > 0)
+            if (!string.IsNullOrEmpty(UserGadget.GadgetSettings))
             {
                 var settings = JsonConvert.DeserializeObject<RSSOptions>(UserGadget.GadgetSettings);
                 if (Uri.IsWellFormedUriString(settings.FeedURL, UriKind.Absolute))
@@ -78,6 +80,20 @@ namespace RSSReader
         public string HTML
         {
             get { return _output; }
+        }
+
+
+        public List<GadgetSettingField> SettingsSchema
+        {
+            get 
+            {
+                return new List<GadgetSettingField>()
+                    {
+                        new GadgetSettingField(){FieldName="FeedURL", DataType= SettingDataTypes.Url },
+                        new GadgetSettingField(){FieldName="FeedURL", DataType= SettingDataTypes.Url },
+                        new GadgetSettingField(){FieldName="ExpandItemsByDefault", DataType= SettingDataTypes.Checkbox }
+                    };
+            }
         }
     }
 }

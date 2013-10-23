@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
-namespace Damage
+namespace Damage.Gadget
 {
     public class NotAvailableGadget : IGadget
     {
@@ -31,6 +28,12 @@ namespace Damage
 
         public void Initialize()
         {
+        }
+
+
+        public List<GadgetSettingField> SettingsSchema
+        {
+            get { return new List<GadgetSettingField>(); }
         }
     }
 }

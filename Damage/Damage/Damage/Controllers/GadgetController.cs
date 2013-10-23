@@ -1,4 +1,5 @@
-﻿using Damage.DataAccess;
+﻿using System.Threading.Tasks;
+using Damage.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Security;
+using Damage.Gadget;
 
 namespace Damage.Controllers
 {
@@ -18,7 +20,7 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
-        public string getGadgetSettings(int userGadgetId)
+        public string GetGadgetSettings(int userGadgetId)
         {
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
@@ -26,7 +28,7 @@ namespace Damage.Controllers
 
                 if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                 {
-                    if (userGadget.GadgetSettings != null && userGadget.GadgetSettings.Length > 0)
+                    if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
                     {
                         return userGadget.GadgetSettings;
                     }
@@ -44,7 +46,7 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <param name="newSettings">The new settings.</param>
-        public void updateGadgetSettings(int userGadgetId, string newSettings)
+        public void UpdateGadgetSettings(int userGadgetId, string newSettings)
         {
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
@@ -60,29 +62,20 @@ namespace Damage.Controllers
         /// <summary>
         /// Updates the gadget position.
         /// </summary>
-        /// <param name="userGadgetId">The user gadget identifier.</param>
-        /// <param name="displayColumn">The display column.</param>
-        /// <param name="displayOrdinal">The display ordinal.</param>
-        public void updateGadgetPosition(int userGadgetId, int displayColumn, int displayOrdinal)
+        public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
         {
+            var userId = (int) Membership.GetUser().ProviderUserKey;
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
-                var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userGadgetId);
-                var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == userGadgetId);
-                if (userGadgetToUpdate.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
+
+                Parallel.ForEach(gadgetPositions, gadgetPosition =>
                 {
-
-
-                    //TODO: Change all other gadgets ordinal in affected columns
-
-
-                    userGadgetToUpdate.DisplayColumn = displayColumn;
-                    userGadgetToUpdate.DisplayOrdinal = displayOrdinal;
-
-
-
-                    uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
-                }
+                    var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
+                        userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
+                        userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
+                });
+                uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
             }
         }
     }

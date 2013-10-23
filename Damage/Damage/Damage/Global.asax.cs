@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Damage.Gadget;
 using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
 using System.Collections.Generic;

@@ -211,13 +211,15 @@
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Gadget\GadgetPosition.cs" />
+    <Compile Include="Gadget\GadgetSettingField.cs" />
     <Compile Include="GlobalConfig.cs" />
-    <Compile Include="IGadget.cs" />
+    <Compile Include="Gadget\IGadget.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="NotAvailableGadget.cs" />
+    <Compile Include="Gadget\NotAvailableGadget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

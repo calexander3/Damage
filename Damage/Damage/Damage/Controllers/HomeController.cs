@@ -1,6 +1,7 @@
 ﻿using Damage.DataAccess.Models;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Damage.Gadget;
 using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
 using System.Threading;

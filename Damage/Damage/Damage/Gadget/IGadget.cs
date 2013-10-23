@@ -1,5 +1,7 @@
 ﻿
-namespace Damage
+using System.Collections.Generic;
+
+namespace Damage.Gadget
 {
     public interface IGadget
     {
@@ -30,6 +32,15 @@ namespace Damage
         /// The default settings.
         /// </value>
         string DefaultSettings { get; }
+
+        /// <summary>
+        /// Gets the settings schema. This is used to build the settings form.
+        /// </summary>
+        /// <value>
+        /// The settings schema.
+        /// </value>
+        List<GadgetSettingField> SettingsSchema { get; }
+
 
         /// <summary>
         /// Gets or sets the information about this instance of the gadget.
