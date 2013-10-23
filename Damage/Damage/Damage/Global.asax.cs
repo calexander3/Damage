@@ -69,7 +69,10 @@ namespace Damage
                 }
 
                 uow.GadgetRepository.Save(currentGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.Update);
-                uow.GadgetRepository.Save(newGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.SaveNew);
+                if (newGadgets.Count > 0)
+                {
+                    uow.GadgetRepository.Save(newGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.SaveNew);
+                }
             }
 
         }

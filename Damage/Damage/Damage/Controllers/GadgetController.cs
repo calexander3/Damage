@@ -38,5 +38,44 @@ namespace Damage.Controllers
             }
             return null;
         }
+
+        /// <summary>
+        /// Updates the gadget settings.
+        /// </summary>
+        /// <param name="userGadgetId">The user gadget identifier.</param>
+        /// <param name="newSettings">The new settings.</param>
+        public void updateGadgetSettings(int userGadgetId, string newSettings)
+        {
+            using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
+            {
+                var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
+                if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                {
+                    userGadget.GadgetSettings = newSettings;
+                    uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the gadget position.
+        /// </summary>
+        /// <param name="userGadgetId">The user gadget identifier.</param>
+        /// <param name="displayColumn">The display column.</param>
+        /// <param name="displayOrdinal">The display ordinal.</param>
+        public void updateGadgetPosition(int userGadgetId, int displayColumn, int displayOrdinal)
+        {
+            //TODO: Change all other gadgets ordinal in affected columns
+            using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
+            {
+                var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
+                if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                {
+                    userGadget.DisplayColumn=displayColumn;
+                    userGadget.DisplayOrdinal = displayOrdinal;
+                    uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                }
+            }
+        }
     }
 }

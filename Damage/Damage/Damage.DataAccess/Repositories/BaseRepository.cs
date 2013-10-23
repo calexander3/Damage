@@ -53,18 +53,24 @@ namespace Damage.DataAccess.Repositories
 		/// <param name="OperationType">The type of save operation.</param>
 		public virtual void Save(IList<T> EntitySet, SaveOperation OperationType = SaveOperation.Unknown)
 		{
-			foreach (T Entity in EntitySet) {
-				switch (OperationType) {
-					case SaveOperation.SaveNew:
-						m_Session.Save(Entity);
-						break;
-					case SaveOperation.Update:
-						m_Session.Update(Entity);
-						break;
-					case SaveOperation.Unknown:
-						m_Session.SaveOrUpdate(Entity);
-						break;
+			using (var tran = m_Session.BeginTransaction())
+			{
+				foreach (T Entity in EntitySet)
+				{
+					switch (OperationType)
+					{
+						case SaveOperation.SaveNew:
+							m_Session.Save(Entity);
+							break;
+						case SaveOperation.Update:
+							m_Session.Update(Entity);
+							break;
+						case SaveOperation.Unknown:
+							m_Session.SaveOrUpdate(Entity);
+							break;
+					}
 				}
+				tran.Commit();
 			}
 		}
 

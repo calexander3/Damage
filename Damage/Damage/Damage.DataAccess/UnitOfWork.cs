@@ -62,11 +62,12 @@ namespace Damage.DataAccess
             //Configure a new NHivebernate Session
             m_SessionFactory = this.ConfigureNHibernate(ConnectionString);
             m_Session = m_SessionFactory.OpenSession();
+            m_Session.FlushMode = FlushMode.Commit;
         }
 
         private ISessionFactory ConfigureNHibernate(string ConnectionString)
         {
-            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
             return Fluently.Configure().Database(new sqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).BuildSessionFactory();
         }
 
@@ -109,7 +110,7 @@ namespace Damage.DataAccess
             Driver<NHibernate.Driver.SqlClientDriver>();
             ConnectionString(ConString);
             Dialect<NHibernate.Dialect.MsSql2012Dialect>();
-            //ShowSql();
+            ShowSql();
             IsolationLevel(System.Data.IsolationLevel.ReadCommitted);
         }
     }
