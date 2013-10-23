@@ -8,7 +8,15 @@ namespace RSSReader
     public class RSSReader : Damage.IGadget
     {
         string _title = "RSS Reader";
-        public string RenderHTML()
+
+        string _output = "";
+
+        public void Initialize()
+        {
+            _output = GenerateHTML();
+        }
+
+        private string GenerateHTML()
         {
             if (UserGadget.GadgetSettings != null && UserGadget.GadgetSettings.Length > 0)
             {
@@ -64,6 +72,12 @@ namespace RSSReader
 
                 return JsonConvert.SerializeObject(defaults);
             }
+        }
+
+
+        public string HTML
+        {
+            get { return _output; }
         }
     }
 }

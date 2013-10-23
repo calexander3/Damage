@@ -65,15 +65,23 @@ namespace Damage.Controllers
         /// <param name="displayOrdinal">The display ordinal.</param>
         public void updateGadgetPosition(int userGadgetId, int displayColumn, int displayOrdinal)
         {
-            //TODO: Change all other gadgets ordinal in affected columns
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
-                var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-                if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userGadgetId);
+                var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == userGadgetId);
+                if (userGadgetToUpdate.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                 {
-                    userGadget.DisplayColumn=displayColumn;
-                    userGadget.DisplayOrdinal = displayOrdinal;
-                    uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+
+
+                    //TODO: Change all other gadgets ordinal in affected columns
+
+
+                    userGadgetToUpdate.DisplayColumn = displayColumn;
+                    userGadgetToUpdate.DisplayOrdinal = displayOrdinal;
+
+
+
+                    uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
                 }
             }
         }

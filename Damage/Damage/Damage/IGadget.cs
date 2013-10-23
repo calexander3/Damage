@@ -7,7 +7,13 @@ namespace Damage
         /// Creates the html/javascript for the gadget to send to the browser.
         /// </summary>
         /// <returns></returns>
-        string RenderHTML();
+        void Initialize();
+
+        /// <summary>
+        /// Send the html/javascript for the gadget to send to the browser.
+        /// </summary>
+        /// <returns></returns>
+        string HTML { get; }
 
         /// <summary>
         /// Gets the title that appears at the top of the gadget.
