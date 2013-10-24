@@ -14,16 +14,13 @@ else
 
 @for (int column = 1; column <= 3; column ++)
 {
-<div class="GadgetColumn">
-    
-    @{
-        int columnClosure = column;
-    }
-    @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == columnClosure).OrderBy(m => m.UserGadget.DisplayOrdinal))
-    {
-        <div>@Html.Partial("_GadgetFramePartial", gadget)</div>
-    }
-</div>
+    <div class="GadgetColumn" id="@column">
+        <div class="columnPerserver"></div>
+        @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == column).OrderBy(m => m.UserGadget.DisplayOrdinal))
+        {
+            <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+        }
+    </div>
 }
 
 <div id="settingsDialog" title="Settings" style="display:none;">
@@ -47,5 +44,12 @@ else
 </div>
 
 <div id="addGadgetDialog" title="Add New Gadget" style="display:none;">
-Gadget:<select></select>
+    Gadget:<select></select>
 </div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        setupDragAndDrop();
+    });
+</script>

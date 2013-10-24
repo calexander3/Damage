@@ -78,5 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Damage.Database.publish.xml" />
+    <None Include="Work.Damage.Database.publish.xml" />
   </ItemGroup>
 </Project>
