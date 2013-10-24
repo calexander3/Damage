@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Damage
 {
@@ -52,6 +53,7 @@ namespace Damage
                         currentGadget.AssemblyPresent = true;
                         currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
                         currentGadget.DefaultSettings = gadget.DefaultSettings;
+                        currentGadget.SettingsSchema = JsonConvert.SerializeObject(gadget.SettingsSchema);
                     }
                     else
                     {
@@ -61,7 +63,8 @@ namespace Damage
                                 GadgetName = gadget.GetType().Name,
                                 AssemblyPresent = true,
                                 GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
-                                DefaultSettings = gadget.DefaultSettings
+                                DefaultSettings = gadget.DefaultSettings,
+                                SettingsSchema = JsonConvert.SerializeObject(gadget.SettingsSchema)
                             }
                         );
                     }

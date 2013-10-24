@@ -13,19 +13,18 @@ namespace Damage.Gadget
 
     public enum SettingDataTypes
     {
-        Text,
-        Checkbox,
-        Radio,
-        Color,
-        Date,
-        DateTime,
-        DateTime_Local,
-        Email,
-        Month,
-        Number,
-        Tel,
-        Time,
-        Url,
-        Week
+        Text = 1,
+        Checkbox = 2,
+        Radio = 3,
+        Color = 4,
+        Date = 5,
+        DateTime_Local = 6,
+        Email = 7,
+        Month = 8,
+        Number = 9,
+        Tel = 10,
+        Time = 11,
+        Url = 12,
+        Week = 13
     }
 }

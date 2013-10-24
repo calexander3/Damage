@@ -20,6 +20,8 @@ namespace Damage.DataAccess.Models {
 		public virtual bool AssemblyPresent { get; set; }
 		[Required()]
 		public virtual string DefaultSettings { get; set; }
+		[Required()]
+		public virtual string SettingsSchema { get; set; }
 		public virtual IList<UserGadget> UserGadgets { get; set; }
 
 		public override string CompositeKey

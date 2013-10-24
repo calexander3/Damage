@@ -9,10 +9,12 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Security;
 using Damage.Gadget;
+using Damage.Filters;
 
 namespace Damage.Controllers
 {
-    public class GadgetController : ApiController
+    [InitializeSimpleMembership]
+    public class GadgetController : Controller
     {
 
         /// <summary>
@@ -20,25 +22,29 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
-        public string GetGadgetSettings(int userGadgetId)
+        public JsonResult GetGadgetSettings(int userGadgetId)
         {
+            var gadgetSettings = "";
+            var settingSchema = "";
+
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
                 var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
 
+                settingSchema = userGadget.Gadget.SettingsSchema;
                 if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                 {
                     if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
                     {
-                        return userGadget.GadgetSettings;
+                        gadgetSettings = userGadget.GadgetSettings;
                     }
                     else
                     {
-                        return userGadget.Gadget.DefaultSettings;
+                        gadgetSettings = userGadget.Gadget.DefaultSettings;
                     }
                 }
             }
-            return null;
+            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema});
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace Damage.Controllers
         /// </summary>
         public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
         {
-            var userId = (int) Membership.GetUser().ProviderUserKey;
+            var userId = (int)Membership.GetUser().ProviderUserKey;
             using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
             {
                 var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
@@ -72,8 +78,8 @@ namespace Damage.Controllers
                 Parallel.ForEach(gadgetPositions, gadgetPosition =>
                 {
                     var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
-                        userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
-                        userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
+                    userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
+                    userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                 });
                 uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
             }
