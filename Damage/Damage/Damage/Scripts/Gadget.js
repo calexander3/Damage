@@ -123,9 +123,9 @@ function OpenAddGadgetDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#displayColumn1").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn2").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn3").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
 }
 
 function updateGadgetPositions() {

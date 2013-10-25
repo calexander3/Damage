@@ -557,6 +557,11 @@ tr.pager td {
     height: 1px;
 }
 
+.sortable-placeholder {
+    border: 2px dashed #c8c8c8;
+    margin-bottom: 5px;
+}
+
 
 /********************
 *   Mobile Styles   *
