@@ -1,6 +1,6 @@
 ﻿@model Damage.Gadget.IGadget
 @{Model.Initialize();}
-<div class="GadgetSettings" onclick="OpenGadgetSettingsDialog()"></div>
+<div class="GadgetSettings" onclick="OpenGadgetSettingsDialog(@(Model.UserGadget.UserGadgetId))"></div>
 <div class="GadgetHeader">@Model.Title</div>
 <div class="GadgetFrame">
 @Html.Raw(Model.HTML)

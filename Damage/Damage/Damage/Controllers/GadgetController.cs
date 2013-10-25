@@ -22,12 +22,13 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
+        [System.Web.Mvc.HttpGet]
         public JsonResult GetGadgetSettings(int userGadgetId)
         {
             var gadgetSettings = "";
             var settingSchema = "";
 
-            using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
+            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
                 var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
 
@@ -44,7 +45,7 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema});
+            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema}, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -52,9 +53,10 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <param name="newSettings">The new settings.</param>
+        [System.Web.Mvc.HttpPost]
         public void UpdateGadgetSettings(int userGadgetId, string newSettings)
         {
-            using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
+            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
                 var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
                 if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)

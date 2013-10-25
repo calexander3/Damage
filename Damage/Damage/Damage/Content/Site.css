@@ -27,7 +27,7 @@ a {
     }
 
 
-header, footer, hgroup,
+header, hgroup,
 nav, section {
     display: block;
 }
@@ -142,7 +142,11 @@ footer {
     background-color: #333;
     color: white;
     font-size: .8em;
-    height: 100px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
 
 
@@ -545,7 +549,7 @@ tr.pager td {
 .GadgetColumn {
     width: 33%;
     float: left;
-    min-height: 300px;
+    min-height: 200px;
 }
 
 .columnPerserver {

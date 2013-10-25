@@ -38,7 +38,7 @@ namespace RSSReader
                     {
                         output.Append("<div>" + item.Title.Text + "</div>");
                         counter++;
-                        if (counter >= settings.FeedsToDisplay)
+                        if (counter >= settings.ItemsToDisplay)
                         {
                             break;
                         }
@@ -67,7 +67,7 @@ namespace RSSReader
             {
                 var defaults = new RSSOptions()
                 {
-                    FeedsToDisplay = 3,
+                    ItemsToDisplay = 3,
                     ExpandItemsByDefault = false,
                     FeedURL = ""
                 };
@@ -89,9 +89,9 @@ namespace RSSReader
             {
                 return new List<GadgetSettingField>()
                     {
-                        new GadgetSettingField(){FieldName="FeedURL", DataType= SettingDataTypes.Url },
-                        new GadgetSettingField(){FieldName="FeedURL", DataType= SettingDataTypes.Url },
-                        new GadgetSettingField(){FieldName="ExpandItemsByDefault", DataType= SettingDataTypes.Checkbox }
+                        new GadgetSettingField(){FieldName="FeedURL", DisplayName="Feed Url", DataType= SettingDataTypes.Url },
+                        new GadgetSettingField(){FieldName="ItemsToDisplay", DisplayName="Items To Display", DataType= SettingDataTypes.Number },
+                        new GadgetSettingField(){FieldName="ExpandItemsByDefault", DisplayName="Expand Items By Default", DataType= SettingDataTypes.Checkbox }
                     };
             }
         }

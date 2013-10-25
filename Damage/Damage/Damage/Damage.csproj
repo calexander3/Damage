@@ -292,6 +292,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_GadgetFramePartial.cshtml" />
+    <Content Include="Views\Shared\_ApplicationSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Damage.DataAccess\Damage.DataAccess.csproj">
