@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Damage.DataAccess.Models
 {
@@ -24,9 +20,9 @@ namespace Damage.DataAccess.Models
         /// Gets the unproxied typed.
         /// </summary>
         /// <returns></returns>
-        public virtual Type getUnproxiedTyped()
+        public virtual Type GetUnproxiedTyped()
         {
-            return this.GetType();
+            return GetType();
         }
 
         /// <summary>
@@ -45,17 +41,17 @@ namespace Damage.DataAccess.Models
             }
 
             //Check memory reference
-            if (object.ReferenceEquals(obj, this))
+            if (ReferenceEquals(obj, this))
             {
                 return true;
             }
 
             //Check keys and types
-            if (((BaseModel)obj).CompositeKey != null && this.CompositeKey != null &&
-                String.Equals(this.CompositeKey, ((BaseModel)obj).CompositeKey, StringComparison.CurrentCultureIgnoreCase))
+            if (((BaseModel)obj).CompositeKey != null && CompositeKey != null &&
+                String.Equals(CompositeKey, ((BaseModel)obj).CompositeKey, StringComparison.CurrentCultureIgnoreCase))
             {
-                Type otherType = ((BaseModel)obj).getUnproxiedTyped();
-                Type thisType = this.getUnproxiedTyped();
+                var otherType = ((BaseModel)obj).GetUnproxiedTyped();
+                var thisType = GetUnproxiedTyped();
                 return (thisType.IsAssignableFrom(otherType) || otherType.IsAssignableFrom(thisType));
             }
 
@@ -71,15 +67,11 @@ namespace Damage.DataAccess.Models
         /// </returns>
         public override int GetHashCode()
         {
-            if (this == null || this.CompositeKey == null)
+            if (CompositeKey == null)
             {
                 return base.GetHashCode();
             }
-            else
-            {
-                return this.CompositeKey.GetHashCode();
-            }
+            return CompositeKey.GetHashCode();
         }
-
     }
 }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Damage.DataAccess.Models;
 using NHibernate;
-using NHibernate.Criterion;
 
 namespace Damage.DataAccess.Repositories
 {
@@ -14,8 +9,8 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="GadgetRepository"/> class.
         /// </summary>
-        /// <param name="Session">The session.</param>
-        public GadgetRepository(ISession Session): base(Session)
+        /// <param name="session">The session.</param>
+        public GadgetRepository(ISession session): base(session)
         {
         }
 

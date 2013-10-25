@@ -60,7 +60,7 @@ namespace Damage.DataAccess
         public UnitOfWork(string ConnectionString)
         {
             //Configure a new NHivebernate Session
-            m_SessionFactory = this.ConfigureNHibernate(ConnectionString);
+            m_SessionFactory = ConfigureNHibernate(ConnectionString);
             m_Session = m_SessionFactory.OpenSession();
             m_Session.FlushMode = FlushMode.Commit;
         }
@@ -68,7 +68,7 @@ namespace Damage.DataAccess
         private ISessionFactory ConfigureNHibernate(string ConnectionString)
         {
             //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
-            return Fluently.Configure().Database(new sqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).BuildSessionFactory();
+            return Fluently.Configure().Database(new SqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).BuildSessionFactory();
         }
 
         #region "IDisposable Support"
@@ -103,12 +103,12 @@ namespace Damage.DataAccess
         #endregion
     }
 
-    public class sqlServerConfiguration : PersistenceConfiguration<sqlServerConfiguration, FluentNHibernate.Cfg.Db.MsSqlConnectionStringBuilder>
+    public class SqlServerConfiguration : PersistenceConfiguration<SqlServerConfiguration, MsSqlConnectionStringBuilder>
     {
-        public sqlServerConfiguration(string ConString)
+        public SqlServerConfiguration(string conString)
         {
             Driver<NHibernate.Driver.SqlClientDriver>();
-            ConnectionString(ConString);
+            ConnectionString(conString);
             Dialect<NHibernate.Dialect.MsSql2012Dialect>();
             ShowSql();
             IsolationLevel(System.Data.IsolationLevel.ReadCommitted);

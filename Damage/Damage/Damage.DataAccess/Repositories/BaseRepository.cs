@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using Damage.DataAccess.Models;
+using NHibernate;
 using System.Collections.Generic;
 
 namespace Damage.DataAccess.Repositories
@@ -10,11 +11,11 @@ namespace Damage.DataAccess.Repositories
 	public abstract class BaseRepository<T> where T : Damage.DataAccess.Models.BaseModel
 	{
 
-
 		protected ISession m_Session = null;
-		public BaseRepository(ISession Session)
+
+	    protected BaseRepository(ISession session)
 		{
-			m_Session = Session;
+			m_Session = session;
 		}
 
 		/// <summary>

@@ -1,6 +1,3 @@
-using System; 
-using System.Collections.Generic; 
-using System.Text; 
 using FluentNHibernate.Mapping;
 using Damage.DataAccess.Models;
 

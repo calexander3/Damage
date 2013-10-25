@@ -1,13 +1,9 @@
-﻿using Damage.DataAccess.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Damage.Gadget;
 using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
-using System.Threading;
 using System.Threading.Tasks;
-using Damage.Models;
-using System.Linq;
 using System.Web.Security;
 using Damage.Filters;
 

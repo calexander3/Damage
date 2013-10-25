@@ -1,11 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Damage.DataAccess;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Security;
 using Damage.Gadget;
@@ -22,7 +18,7 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public JsonResult GetGadgetSettings(int userGadgetId)
         {
             var gadgetSettings = "";
@@ -53,7 +49,7 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <param name="newSettings">The new settings.</param>
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public void UpdateGadgetSettings(int userGadgetId, string newSettings)
         {
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
@@ -70,7 +66,7 @@ namespace Damage.Controllers
         /// <summary>
         /// Updates the gadget position.
         /// </summary>
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
         {
             if (gadgetPositions != null && gadgetPositions.Count > 0)
@@ -89,6 +85,16 @@ namespace Damage.Controllers
                     uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds the new gadget.
+        /// </summary>
+        /// <param name="gadgetId">The gadget unique identifier.</param>
+        [HttpPost]
+        public void AddNewGadget(int gadgetId)
+        {
+            
         }
     }
 }

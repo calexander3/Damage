@@ -13,3 +13,7 @@
 GO
 
 CREATE INDEX [IX_UserGadgets_UserId] ON [dbo].[UserGadgets] ([UserId])
+
+GO
+
+CREATE INDEX [IX_UserGadgets_DisplayColumn] ON [dbo].[UserGadgets] ([DisplayColumn])

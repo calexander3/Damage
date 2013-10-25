@@ -14,8 +14,8 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository"/> class.
         /// </summary>
-        /// <param name="Session">The session.</param>
-        public UserRepository(ISession Session): base(Session)
+        /// <param name="session">The session.</param>
+        public UserRepository(ISession session): base(session)
         {
         }
     }

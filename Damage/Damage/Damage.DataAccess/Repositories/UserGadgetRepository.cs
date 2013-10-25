@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Damage.DataAccess.Models;
 using NHibernate;
-using NHibernate.Criterion;
 
 namespace Damage.DataAccess.Repositories
 {
@@ -14,34 +10,52 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="UserGadgetRepository"/> class.
         /// </summary>
-        /// <param name="Session">The session.</param>
-        public UserGadgetRepository(ISession Session) : base(Session)
+        /// <param name="session">The session.</param>
+        public UserGadgetRepository(ISession session): base(session)
         {
         }
 
         /// <summary>
         /// Gets all gadgets for a user.
         /// </summary>
-        /// <param name="UserId">The user identifier.</param>
+        /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public IList<UserGadget> GetAllUserGadgetsForUser(int UserId)
+        public IList<UserGadget> GetAllUserGadgetsForUser(int userId)
         {
             return m_Session.QueryOver<UserGadget>()
-                .Where(ug => ug.User.UserId == UserId)
+                .Where(ug => ug.User.UserId == userId)
                 .Fetch(ug => ug.User).Eager
                 .Fetch(ug => ug.Gadget).Eager
+                .List<UserGadget>();
+        }
+
+
+        /// <summary>
+        /// Gets the user gadgets for user by column.
+        /// </summary>
+        /// <param name="userId">The user unique identifier.</param>
+        /// <param name="displayColumn">The display column.</param>
+        /// <returns></returns>
+        public IList<UserGadget> GetUserGadgetsForUserByColumn(int userId, int displayColumn)
+        {
+            return m_Session.QueryOver<UserGadget>()
+                .Where(ug => ug.User.UserId == userId)
+                .And(ug => ug.DisplayColumn == displayColumn)
+                .Fetch(ug => ug.User).Eager
+                .Fetch(ug => ug.Gadget).Eager
+                .OrderBy(ug => ug.DisplayOrdinal).Asc
                 .List<UserGadget>();
         }
 
         /// <summary>
         /// Gets the gadget by identifier.
         /// </summary>
-        /// <param name="UserGadgetId">The user gadget identifier.</param>
+        /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
-        public UserGadget GetUserGadgetById(int UserGadgetId)
+        public UserGadget GetUserGadgetById(int userGadgetId)
         {
             return m_Session.QueryOver<UserGadget>()
-                .Where(ug => ug.UserGadgetId == UserGadgetId)
+                .Where(ug => ug.UserGadgetId == userGadgetId)
                 .Fetch(ug => ug.User).Eager
                 .Fetch(ug => ug.Gadget).Eager
                 .List<UserGadget>().Single();

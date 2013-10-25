@@ -26,7 +26,7 @@ namespace Damage.DataAccess.Models {
 
 		public override string CompositeKey
 		{
-			get { return (this.GadgetId.ToString()); }
+			get { return (GadgetId.ToString()); }
 		}
 	}
 }
