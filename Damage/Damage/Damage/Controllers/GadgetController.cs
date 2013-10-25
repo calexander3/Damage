@@ -68,20 +68,24 @@ namespace Damage.Controllers
         /// <summary>
         /// Updates the gadget position.
         /// </summary>
+        [System.Web.Mvc.HttpPost]
         public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
         {
-            var userId = (int)Membership.GetUser().ProviderUserKey;
-            using (var uow = new UnitOfWork("GlobalConfig.ConnectionString"))
+            if (gadgetPositions != null && gadgetPositions.Count > 0)
             {
-                var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
-
-                Parallel.ForEach(gadgetPositions, gadgetPosition =>
+                var userId = (int)Membership.GetUser().ProviderUserKey;
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
-                    userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
-                    userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
-                });
-                uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                    var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
+
+                    Parallel.ForEach(gadgetPositions, gadgetPosition =>
+                    {
+                        var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
+                        userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
+                        userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
+                    });
+                    uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                }
             }
         }
     }

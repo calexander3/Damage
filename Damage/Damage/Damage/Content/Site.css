@@ -545,6 +545,7 @@ tr.pager td {
 .GadgetColumn {
     width: 33%;
     float: left;
+    min-height: 300px;
 }
 
 .columnPerserver {

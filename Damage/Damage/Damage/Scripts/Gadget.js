@@ -12,8 +12,7 @@
     });
 }
 
-function OpenSettingsDialog()
-{
+function OpenSettingsDialog() {
     $('#settingsDialog').dialog({
         width: 525,
         modal: true,
@@ -44,14 +43,32 @@ function OpenAddGadgetDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#1").sortable({ connectWith: "#2", remove: function (event, ui) { updateGadgetPositions(1, 2); } });
-    $("#1").sortable({ connectWith: "#3", remove: function (event, ui) { updateGadgetPositions(1, 3); } });
-    $("#2").sortable({ connectWith: "#1", remove: function (event, ui) { updateGadgetPositions(2, 1); } });
-    $("#2").sortable({ connectWith: "#3", remove: function (event, ui) { updateGadgetPositions(2, 3); } });
-    $("#3").sortable({ connectWith: "#1", remove: function (event, ui) { updateGadgetPositions(3, 1); } });
-    $("#3").sortable({ connectWith: "#2", remove: function (event, ui) { updateGadgetPositions(3, 2); } });
+    $("#1").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#2").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#3").sortable({ handle: ".GadgetHeader", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
 }
 
-function updateGadgetPositions(sourceColumn, destinationColumn) {
-    alert("move " + sourceColumn + " to " + destinationColumn);
+function updateGadgetPositions() {
+    var positionArray = [];
+
+    for (column = 1; column <= 3; column++) {
+        var gadgets = $('#' + column).children('.draggable');
+
+        for (x = 0; x < gadgets.length; x++) {
+            positionArray.push({
+                UserGadgetId: $(gadgets[x]).attr('data-usergadgetid'),
+                DisplayColumn: column,
+                DisplayOrdinal: x
+            });
+        }
+    }
+
+    $.ajax({
+        url: "/gadget/UpdateGadgetPositions",
+        data: JSON.stringify({ gadgetPositions: positionArray }),
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+    });
+
 }
