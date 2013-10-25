@@ -10,16 +10,15 @@
         dataType: 'json',
         success: function (data)
         {
-            var settingsFormHTML = "<table>";
+            //Create settings form
+            var settingsFormHTML = "<table id='settingTable'>";
             var settingsSchema = JSON.parse(data.SettingsSchema);
-            
-            for (x = 0; x < settingsSchema.length; x++)
-            {
-                settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id=" + settingsSchema[x].FieldName + " type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>"
+            for (x = 0; x < settingsSchema.length; x++) {
+                settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id=" + settingsSchema[x].FieldName + " type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>";
             }
             dialogWindow.html(settingsFormHTML + "</table>");
 
-
+            //Populate settings
             var settings = JSON.parse(data.GadgetSettings);
             for (var setting in settings) {
                 $("#" + setting).val(settings[setting]);
@@ -31,10 +30,27 @@
                 width: 500,
                 buttons: {
                     Save: function () {
-                        $(this).dialog("close");
+                        //Gather settings
+                        var newSettings = {};
+                        var settingInputs = $("#settingTable").find("input");
+                        for (x = 0; x < settingInputs.length; x ++)
+                        {
+                            newSettings[settingInputs[x].id] = $(settingInputs[x]).val();
+                        }
+
+
+                        $.ajax({
+                            url: "/gadget/UpdateGadgetSettings",
+                            data: JSON.stringify({ userGadgetId: userGadgetId, newSettings: JSON.stringify(newSettings)}),
+                            type: 'POST',
+                            contentType: 'application/json',
+                            success: function () {
+                                location.reload();
+                            }
+                        });
                     },
                     Cancel: function () {
-                        $(this).dialog("close");
+                        dialogWindow.dialog("close");
                     }
                 },
                 close: function (event, ui) { dialogWindow.html(""); }
