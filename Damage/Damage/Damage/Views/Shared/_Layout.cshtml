@@ -73,18 +73,28 @@
 
 	<script type="text/javascript">
 
+	    function dialog(title, body)
+	    {
+	        var dialogWindow = $("#dialog");
+	        dialogWindow.prop("title", title);
+	        dialogWindow.html(body);
+	        dialogWindow.dialog({
+	            buttons: {
+	                Ok: function () {
+	                    $(this).dialog("close");
+	                }
+	            },
+	            close: function (event, ui) { dialogWindow.html(""); }
+	        });
+	    }
+
 		$(document).ready(function () {
 			$.ajaxSetup({
 				cache: false,
 				traditional: true,
 				type: "POST",
 				error: function (request, status, error) {
-				    var dialogWindow = $("#dialog");
-				    dialogWindow.prop("title", "Error");
-				    dialogWindow.html("An error has occurred: (" + request.status + ") " + request.statusText);
-				    dialogWindow.dialog({
-					    close: function (event, ui) { dialogWindow.html(""); }
-					});
+				    dialog("Error", "An error has occurred: (" + request.status + ") " + request.statusText);
 				}
 			});
 

@@ -146,7 +146,14 @@ function addNewGadget(gadgetId)
         dataType: 'json',
         success: function (data)
         {
-            
+            if (data)
+            {
+                dialog("Add Gadget", "Gadget has been added successfully.");
+            }
+            else
+            {
+                dialog("Add Gadget", "There was a problem adding your gadget.");
+            }
         }
     });
 }
