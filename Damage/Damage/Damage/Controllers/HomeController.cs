@@ -10,7 +10,7 @@ using Damage.Filters;
 namespace Damage.Controllers
 {
     [InitializeSimpleMembership]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -40,6 +40,16 @@ namespace Damage.Controllers
             }
 
             return View(activeGadgets);
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
+        public ActionResult AddGadget()
+        {
+            return View();
         }
     }
 }

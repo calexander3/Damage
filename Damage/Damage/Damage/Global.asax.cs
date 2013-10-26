@@ -51,6 +51,7 @@ namespace Damage
                     if (currentGadget != null)
                     {
                         currentGadget.AssemblyPresent = true;
+                        currentGadget.GadgetDescription = gadget.Description;
                         currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
                         currentGadget.DefaultSettings = gadget.DefaultSettings;
                         currentGadget.SettingsSchema = JsonConvert.SerializeObject(gadget.SettingsSchema);
@@ -62,6 +63,7 @@ namespace Damage
                             {
                                 GadgetName = gadget.GetType().Name,
                                 AssemblyPresent = true,
+                                GadgetDescription = gadget.Description,
                                 GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
                                 DefaultSettings = gadget.DefaultSettings,
                                 SettingsSchema = JsonConvert.SerializeObject(gadget.SettingsSchema)

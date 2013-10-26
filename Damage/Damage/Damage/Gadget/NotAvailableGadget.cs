@@ -35,5 +35,11 @@ namespace Damage.Gadget
         {
             get { return new List<GadgetSettingField>(); }
         }
+
+
+        public string Description
+        {
+            get { return ""; }
+        }
     }
 }

@@ -107,21 +107,6 @@ function OpenSettingsDialog() {
     });
 }
 
-
-function OpenAddGadgetDialog() {
-    $('#addGadgetDialog').dialog({
-        modal: true,
-        buttons: {
-            Add: function () {
-                $(this).dialog("close");
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        }
-    });
-}
-
 function setupDragAndDrop() {
     $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
     $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });

@@ -95,5 +95,11 @@ namespace RSSReader
                     };
             }
         }
+
+
+        public string Description
+        {
+            get { return "A simple RSS/ATOM reader gadget"; }
+        }
     }
 }

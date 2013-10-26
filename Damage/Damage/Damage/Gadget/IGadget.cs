@@ -26,6 +26,14 @@ namespace Damage.Gadget
         string Title { get; }
 
         /// <summary>
+        /// Gets the description of the gadget.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        string Description { get; }
+
+        /// <summary>
         /// Gets an empty settings object to be used during adding a gadget.
         /// </summary>
         /// <value>

@@ -5,6 +5,7 @@
 }
 
 @if (!Request.IsAuthenticated) {
+    <div class="add-gadget-button"><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
     <div class="sign-in-request">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "subLoginLink" })to customize your gadgets.</div>
 }
 else

@@ -10,7 +10,7 @@ using Damage.Filters;
 namespace Damage.Controllers
 {
     [InitializeSimpleMembership]
-    public class GadgetController : Controller
+    public class GadgetController : BaseController
     {
 
         /// <summary>

@@ -2,4 +2,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (!Request.IsAuthenticated) {
+    <div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span></div>
+}
+else
+{
+    <div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Add Gadget", "AddGadget", "Home")</span></div>
+}
+
 <h2>Contact</h2>
