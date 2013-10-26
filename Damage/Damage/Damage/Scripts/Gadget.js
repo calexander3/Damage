@@ -21,7 +21,16 @@
             //Populate settings
             var settings = JSON.parse(data.GadgetSettings);
             for (var setting in settings) {
-                $("#" + setting).val(settings[setting]);
+                switch (settings[setting]) {
+                    case true:
+                        $("#" + setting).prop("checked", "checked");
+                        break;
+                    case false:
+                        break;
+                    default:
+                        $("#" + setting).val(settings[setting]);
+                        break;
+                }
             }
 
             
@@ -35,7 +44,14 @@
                         var settingInputs = $("#settingTable").find("input");
                         for (x = 0; x < settingInputs.length; x ++)
                         {
-                            newSettings[settingInputs[x].id] = $(settingInputs[x]).val();
+                            if ($(settingInputs[x]).attr('type') == "checkbox" || $(settingInputs[x]).attr('type') == "radio")
+                            {
+                                newSettings[settingInputs[x].id] = $(settingInputs[x]).is(':checked');
+                            }
+                            else
+                            {
+                                newSettings[settingInputs[x].id] = $(settingInputs[x]).val();
+                            }
                         }
 
 
