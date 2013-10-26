@@ -143,6 +143,10 @@ function addNewGadget(gadgetId)
         data: JSON.stringify({ gadgetId: gadgetId }),
         type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
+        success: function (data)
+        {
+            
+        }
     });
 }

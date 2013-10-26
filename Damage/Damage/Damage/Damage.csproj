@@ -224,6 +224,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\Gadgets\RSSReader.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayoutComingSoon.png" />
@@ -308,9 +309,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Images\Gadgets\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

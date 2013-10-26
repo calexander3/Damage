@@ -101,7 +101,7 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="gadgetId">The gadget unique identifier.</param>
         [HttpPost]
-        public bool AddNewGadget(int gadgetId)
+        public JsonResult AddNewGadget(int gadgetId)
         {
             if (Request.IsAuthenticated)
             {
@@ -120,11 +120,11 @@ namespace Damage.Controllers
                         userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
 
                         uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.SaveNew);
-                        return true;
+                        return Json(true);
                     }
                 }
             }
-            return false;
+            return Json(false);
         }
     }
 }

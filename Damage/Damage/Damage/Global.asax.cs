@@ -51,6 +51,7 @@ namespace Damage
                     if (currentGadget != null)
                     {
                         currentGadget.AssemblyPresent = true;
+                        currentGadget.GadgetTitle = gadget.Title;
                         currentGadget.GadgetDescription = gadget.Description;
                         currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
                         currentGadget.DefaultSettings = gadget.DefaultSettings;
@@ -63,6 +64,7 @@ namespace Damage
                             {
                                 GadgetName = gadget.GetType().Name,
                                 AssemblyPresent = true,
+                                GadgetTitle = gadget.Title,
                                 GadgetDescription = gadget.Description,
                                 GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
                                 DefaultSettings = gadget.DefaultSettings,

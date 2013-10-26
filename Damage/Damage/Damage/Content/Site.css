@@ -572,6 +572,26 @@ tr.pager td {
     min-height: 200px;
 }
 
+.gadgetPreview
+{
+    float:left;
+}
+
+.gadgetPreviewTitle{
+    padding-left: 140px;
+    font-weight: 600;
+}
+
+.gadgetPreviewDescription{
+     padding-left: 140px;
+ }
+
+.gadgetAddButton{
+    position:relative;
+    top: -41px;
+    left: 380px;
+}
+
 .columnPerserver {
     width: 100%;
     height: 1px;

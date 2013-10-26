@@ -4,4 +4,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AddGadget</h2>
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/Gadget.js"></script>
+}
+
+<h2>Add New Gadget</h2>
+<br />
+<br />
+@if (Request.IsAuthenticated) {
+
+    foreach( var gadget in Model)
+    {
+        <div style="width:500px;">
+            <div class="gadgetPreview"><img src="~/Content/Images/Gadgets/@(gadget.GadgetName).png" /></div>
+            <div class="gadgetPreviewTitle">@gadget.GadgetTitle</div>
+            <div class="gadgetPreviewDescription">@gadget.GadgetDescription</div>
+        </div>
+        <div style="clear:both;" class="gadgetAddButton"><button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button></div>
+        <br />
+    }
+}
+else
+{
+    <div>You must be logged in to add a new gadget.</div>
+}

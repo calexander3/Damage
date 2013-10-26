@@ -15,6 +15,8 @@ namespace Damage.DataAccess.Models {
 		[Required()]
 		public virtual string GadgetName { get; set; }
 		[Required()]
+		public virtual string GadgetTitle { get; set; }
+		[Required()]
 		public virtual string GadgetDescription { get; set; }
 		[Required()]
 		public virtual string GadgetVersion { get; set; }
