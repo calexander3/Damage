@@ -49,7 +49,15 @@ namespace Damage.Controllers
 
         public ActionResult AddGadget()
         {
-            return View();
+            IList<Damage.DataAccess.Models.Gadget> gadgets = new List<Damage.DataAccess.Models.Gadget>();
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    gadgets = uow.GadgetRepository.GetAllAvailableGadgets();
+                }
+            }
+            return View(gadgets);
         }
     }
 }

@@ -18,5 +18,15 @@ namespace Damage.DataAccess.Repositories
         public UserRepository(ISession session): base(session)
         {
         }
+
+        /// <summary>
+        /// Gets the user by identifier.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        public User GetUserById(int userId)
+        {
+            return m_Session.QueryOver<User>().Where(u => u.UserId == userId).SingleOrDefault();
+        }
     }
 }

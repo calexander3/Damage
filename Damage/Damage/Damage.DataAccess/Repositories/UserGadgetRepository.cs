@@ -2,6 +2,7 @@
 using System.Linq;
 using Damage.DataAccess.Models;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace Damage.DataAccess.Repositories
 {
@@ -60,6 +61,23 @@ namespace Damage.DataAccess.Repositories
                 .Fetch(ug => ug.Gadget).Eager
                 .List<UserGadget>().Single();
 
+        }
+
+        /// <summary>
+        /// Gets the next ordinal in the display column.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="displayColumnId">The display column identifier.</param>
+        /// <returns></returns>
+        public int GetNextOrdinal(int userId, int displayColumnId)
+        {
+            return (m_Session.QueryOver<UserGadget>()
+                .Where(ug => ug.User.UserId == userId)
+                .And(ug => ug.DisplayColumn == displayColumnId)
+                  .Select(Projections
+                            .ProjectionList()
+                            .Add(Projections.Max<UserGadget>(x => x.DisplayOrdinal)))
+                  .List<int>().First()) + 1;
         }
     }
 }

@@ -132,6 +132,16 @@ function updateGadgetPositions() {
         url: "/gadget/UpdateGadgetPositions",
         data: JSON.stringify({ gadgetPositions: positionArray }),
         type: 'POST',
+        contentType: 'application/json'
+    });
+}
+
+function addNewGadget(gadgetId)
+{
+    $.ajax({
+        url: "/gadget/AddNewGadget",
+        data: JSON.stringify({ gadgetId: gadgetId }),
+        type: 'POST',
         contentType: 'application/json',
         dataType: 'json'
     });

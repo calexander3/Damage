@@ -31,5 +31,18 @@ namespace Damage.DataAccess.Repositories
         {
             return m_Session.QueryOver<Gadget>().Where(g => g.AssemblyPresent).List<Gadget>();
         }
+
+        /// <summary>
+        /// Gets the gadget by identifier.
+        /// </summary>
+        /// <param name="gadgetId">The gadget identifier.</param>
+        /// <returns></returns>
+        public Gadget GetGadgetById(int gadgetId)
+        {
+            return m_Session.QueryOver<Gadget>()
+                .Where(g => g.AssemblyPresent)
+                .And(g => g.GadgetId == gadgetId)
+                .SingleOrDefault();
+        }
     }
 }

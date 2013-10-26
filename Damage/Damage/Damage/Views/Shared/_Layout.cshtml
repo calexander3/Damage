@@ -60,8 +60,7 @@
 			@RenderBody()
 		</section>
 	</div>
-	<div id="dialog" title="Basic dialog" style="display: none;">
-		This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.
+	<div id="dialog" title="Error" style="display: none;">
 	</div>
 	<footer>
 		<div class="content-wrapper">
@@ -80,9 +79,12 @@
 				traditional: true,
 				type: "POST",
 				error: function (request, status, error) {
-					$("#dialog").prop("title", "Error");
-					$("#dialog").html("An error has occurred: (" + request.status + ") " + request.statusText);
-					$("#dialog").dialog();
+				    var dialogWindow = $("#dialog");
+				    dialogWindow.prop("title", "Error");
+				    dialogWindow.html("An error has occurred: (" + request.status + ") " + request.statusText);
+				    dialogWindow.dialog({
+					    close: function (event, ui) { dialogWindow.html(""); }
+					});
 				}
 			});
 

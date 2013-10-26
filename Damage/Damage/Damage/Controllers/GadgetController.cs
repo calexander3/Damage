@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Damage.Gadget;
 using Damage.Filters;
+using Damage.DataAccess.Models;
 
 namespace Damage.Controllers
 {
@@ -23,25 +24,27 @@ namespace Damage.Controllers
         {
             var gadgetSettings = "";
             var settingSchema = "";
-
-            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+            if (Request.IsAuthenticated)
             {
-                var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-
-                settingSchema = userGadget.Gadget.SettingsSchema;
-                if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
+
+                    settingSchema = userGadget.Gadget.SettingsSchema;
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
-                        gadgetSettings = userGadget.GadgetSettings;
-                    }
-                    else
-                    {
-                        gadgetSettings = userGadget.Gadget.DefaultSettings;
+                        if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
+                        {
+                            gadgetSettings = userGadget.GadgetSettings;
+                        }
+                        else
+                        {
+                            gadgetSettings = userGadget.Gadget.DefaultSettings;
+                        }
                     }
                 }
             }
-            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema}, JsonRequestBehavior.AllowGet);
+            return Json(new { GadgetSettings = gadgetSettings, SettingsSchema = settingSchema }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -52,13 +55,16 @@ namespace Damage.Controllers
         [HttpPost]
         public void UpdateGadgetSettings(int userGadgetId, string newSettings)
         {
-            using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+            if (Request.IsAuthenticated)
             {
-                var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-                if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    userGadget.GadgetSettings = newSettings;
-                    uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                    {
+                        userGadget.GadgetSettings = newSettings;
+                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                    }
                 }
             }
         }
@@ -69,20 +75,23 @@ namespace Damage.Controllers
         [HttpPost]
         public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
         {
-            if (gadgetPositions != null && gadgetPositions.Count > 0)
+            if (Request.IsAuthenticated)
             {
-                var userId = (int)Membership.GetUser().ProviderUserKey;
-                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                if (gadgetPositions != null && gadgetPositions.Count > 0)
                 {
-                    var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
-
-                    Parallel.ForEach(gadgetPositions, gadgetPosition =>
+                    var userId = (int)Membership.GetUser().ProviderUserKey;
+                    using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                     {
-                        var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
-                        userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
-                        userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
-                    });
-                    uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                        var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
+
+                        Parallel.ForEach(gadgetPositions, gadgetPosition =>
+                        {
+                            var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
+                            userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
+                            userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
+                        });
+                        uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                    }
                 }
             }
         }
@@ -92,9 +101,30 @@ namespace Damage.Controllers
         /// </summary>
         /// <param name="gadgetId">The gadget unique identifier.</param>
         [HttpPost]
-        public void AddNewGadget(int gadgetId)
+        public bool AddNewGadget(int gadgetId)
         {
-            
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var gadget = uow.GadgetRepository.GetGadgetById(gadgetId);
+
+                    if (gadget != null)
+                    {
+
+                        var userGadget = new UserGadget();
+                        userGadget.User = uow.UserRepository.GetUserById((int)Membership.GetUser().ProviderUserKey);
+                        userGadget.Gadget = gadget;
+                        userGadget.GadgetSettings = gadget.DefaultSettings;
+                        userGadget.DisplayColumn = 1;
+                        userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
+
+                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.SaveNew);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
