@@ -20,22 +20,22 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var gadgetsForUser = uow.UserGadgetRepository.GetAllUserGadgetsForUser((int)Membership.GetUser().ProviderUserKey);
-                    Parallel.ForEach(gadgetsForUser, g =>
-                                    {
-                                        if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
-                                        {
-                                            var newGadget = ServiceLocator.Current.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
-                                            newGadget.UserGadget = g;
-                                            activeGadgets.Add(newGadget);
-                                        }
-                                        else
-                                        {
-                                            activeGadgets.Add(new NotAvailableGadget()
-                                            {
-                                                UserGadget = g
-                                            });
-                                        }
-                                    });
+                    foreach ( var g in gadgetsForUser)
+                    {
+                        if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
+                        {
+                            var newGadget = ServiceLocator.Current.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
+                            newGadget.UserGadget = g;
+                            activeGadgets.Add(newGadget);
+                        }
+                        else
+                        {
+                            activeGadgets.Add(new NotAvailableGadget()
+                            {
+                                UserGadget = g
+                            });
+                        }
+                    }
                 }
             }
 
@@ -43,6 +43,11 @@ namespace Damage.Controllers
         }
 
         public ActionResult Contact()
+        {
+            return View();
+        }
+
+        public ActionResult Error()
         {
             return View();
         }

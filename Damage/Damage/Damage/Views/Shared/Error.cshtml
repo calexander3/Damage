@@ -1,10 +1,10 @@
-﻿@model System.Exception
-
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<hgroup class="title">
-    <h1 class="error">Error.</h1>
-    <h2 class="error">An error occurred while processing your request.</h2>
-</hgroup>
+<div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+
+<h1 class="error">Error</h1>
+<div class="error">An error occurred while processing your request.</div>
+<div class="error">If this continues to happen, please send the details of this issue to<a href="mailto:support@damage.io">support@damage.io</a> </div>
+<p class="error">Sorry for the inconvenience.</p>

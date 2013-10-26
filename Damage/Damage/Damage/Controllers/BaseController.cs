@@ -24,7 +24,7 @@ namespace Damage.Controllers
             //Send error to the user interface.
             if (!filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                filterContext.Result = View("Error", filterContext.Exception);
+                filterContext.Result = View("Error");
             }
             else
             {

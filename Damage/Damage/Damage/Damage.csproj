@@ -232,6 +232,7 @@
     <Content Include="Content\Images\Layouts\TwoColumnLayoutComingSoon.png" />
     <Content Include="Content\Images\searchBackground.jpg" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="error.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />

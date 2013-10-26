@@ -16,7 +16,7 @@ namespace Damage.Gadget
         {
             get
             { 
-                return UserGadget.Gadget.GadgetName; 
+                return UserGadget.Gadget.GadgetTitle; 
             }
         }
 

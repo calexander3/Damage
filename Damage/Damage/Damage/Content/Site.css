@@ -435,6 +435,7 @@ td button {
 
 .error {
     color: #e80c4d;
+    margin-left: 5px;
 }
 
 /* styles for validation helpers */
