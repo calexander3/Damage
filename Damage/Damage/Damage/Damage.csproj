@@ -228,6 +228,7 @@
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayoutComingSoon.png" />
     <Content Include="Content\Images\Layouts\TwoColumnLayout.png" />
     <Content Include="Content\Images\Layouts\TwoColumnLayoutComingSoon.png" />
+    <Content Include="Content\Images\searchBackground.jpg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -293,6 +294,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_GadgetFramePartial.cshtml" />
     <Content Include="Views\Shared\_ApplicationSettings.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\AddGadget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Damage.DataAccess\Damage.DataAccess.csproj">

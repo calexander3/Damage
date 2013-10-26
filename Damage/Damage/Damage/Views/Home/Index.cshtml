@@ -9,7 +9,7 @@
 }
 else
 {
-    <div class="add-gadget-button"><span><a href="#" onclick="OpenAddGadgetDialog()">Add Gadget</a></span><span><a href="#" onclick="OpenSettingsDialog()">Settings</a></span></div>
+    <div class="add-gadget-button"><span>@Html.ActionLink("Add Gadget", "AddGadget", "Home")</span><span><a href="#" onclick="OpenSettingsDialog()">Settings</a></span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
 }
 
 @for (int column = 1; column <= 3; column ++)
@@ -29,11 +29,6 @@ else
 
 <div id="gadgetSettingsDialog" title="Settings" style="display:none;">
 </div>
-
-<div id="addGadgetDialog" title="Add New Gadget" style="display:none;">
-    Gadget:<select></select>
-</div>
-
 
 <script type="text/javascript">
     $(document).ready(function() {
