@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using System.Web;
+using System.IO;
 
 namespace RSSReader
 {
@@ -27,16 +29,53 @@ namespace RSSReader
                 {
                     var output = new System.Text.StringBuilder();
 
-                    XmlReader reader = XmlReader.Create(settings.FeedURL);
-                    SyndicationFeed feed = SyndicationFeed.Load(reader);
+
+
+                    XmlReader reader = null;
+
+
+                    if (HttpContext.Current.Cache[settings.FeedURL] != null)
+                    {
+                        reader = XmlReader.Create(new StringReader((string)HttpContext.Current.Cache[settings.FeedURL]));
+                    }
+                    else
+                    {
+
+                        reader = XmlReader.Create(settings.FeedURL);
+                        var document = new XmlDocument();
+                        document.Load(reader);
+                        HttpContext.Current.Cache.Insert(settings.FeedURL, document.InnerXml, null, DateTime.Now.AddMinutes(30), System.Web.Caching.Cache.NoSlidingExpiration);
+                        reader.Close();
+                        reader.Dispose();
+                        reader = XmlReader.Create(new StringReader(document.InnerXml));
+                    }
+
+
+
+                    SyndicationFeed feed =  SyndicationFeed.Load(reader);
                     reader.Close();
 
-                    _title = feed.Title.Text;
+                    if (feed.Links.Count > 0)
+                    {
+                        _title = "<a href = '" + feed.Links[0].Uri.ToString() + "' target='_blank' >" + feed.Title.Text + "</a>";
+                    }
+                    else
+                    {
+                        _title = feed.Title.Text;
+                    }
 
                     var counter = 0;
                     foreach (SyndicationItem item in feed.Items)
                     {
-                        output.Append("<div>" + item.Title.Text + "</div>");
+                        output.Append("<div><a href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
+                        if (item.Content != null)
+                        {
+                            output.Append("<div style='display:none'>" + ((TextSyndicationContent)item.Content).Text + "</div>");
+                        }
+                        else if (item.Summary != null)
+                        {
+                            output.Append("<div style='display:none'>" + item.Summary.Text + "</div>");
+                        }
                         counter++;
                         if (counter >= settings.ItemsToDisplay)
                         {
