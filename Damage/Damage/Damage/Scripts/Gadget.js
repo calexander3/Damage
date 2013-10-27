@@ -8,16 +8,14 @@
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
-        success: function (data)
-        {
+        success: function (data) {
             //Create settings form
             var validationRules = {};
             var settingsFormHTML = "<form id='settingsForm'><table id='settingTable'>";
             var settingsSchema = JSON.parse(data.SettingsSchema);
             for (x = 0; x < settingsSchema.length; x++) {
                 settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>";
-                if (settingsSchema[x].Validators > 0)
-                {
+                if (settingsSchema[x].Validators > 0) {
                     validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
                 }
             }
@@ -38,12 +36,12 @@
                 }
             }
 
-            
+
             var form = $('#settingsForm');
             form.validate({
                 rules: validationRules
             });
-            
+
             dialogWindow.dialog({
                 modal: true,
                 width: 500,
@@ -85,11 +83,9 @@
     });
 }
 
-function buildValidationRules(validatorOptions)
-{
+function buildValidationRules(validatorOptions) {
     var validationRules = {};
-    if (validatorOptions & 1)
-    {
+    if (validatorOptions & 1) {
         validationRules.required = true;
     }
     if (validatorOptions & 2) {
@@ -115,8 +111,7 @@ function buildValidationRules(validatorOptions)
     return validationRules;
 }
 
-function getSettingInputType(type)
-{
+function getSettingInputType(type) {
     switch (type) {
         case 1:
             return "text";
@@ -164,9 +159,25 @@ function OpenSettingsDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".GadgetColumn", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#garbage").sortable({
+        over: function (event, ui) {
+            $(ui.placeholder).css("display", "none");
+            $("#garbage").css("background-color", "blue");
+        },
+        receive: function (event, ui) {
+            $("#garbage").css("background-color", "red");
+            $("#garbage").html("");
+            $.ajax({
+                url: "/gadget/DeleteGadget",
+                data: JSON.stringify({ userGadgetId: $(ui.item).attr("data-usergadgetid") }),
+                type: 'POST',
+                contentType: 'application/json'
+            });
+        }
+    });
 }
 
 function updateGadgetPositions() {
@@ -192,22 +203,18 @@ function updateGadgetPositions() {
     });
 }
 
-function addNewGadget(gadgetId)
-{
+function addNewGadget(gadgetId) {
     $.ajax({
         url: "/gadget/AddNewGadget",
         data: JSON.stringify({ gadgetId: gadgetId }),
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        success: function (data)
-        {
-            if (data)
-            {
+        success: function (data) {
+            if (data) {
                 dialog("Add Gadget", "Gadget has been added successfully.");
             }
-            else
-            {
+            else {
                 dialog("Add Gadget", "There was a problem adding your gadget.");
             }
         }

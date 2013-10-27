@@ -7,7 +7,10 @@
     {
     }
 }
+@if(Request.IsAuthenticated)
+{
 <div class="GadgetSettings" onclick="OpenGadgetSettingsDialog(@(Model.UserGadget.UserGadgetId))"></div>
+}
 <div class="GadgetHeader">@Model.Title</div>
 <div class="GadgetFrame">
 @Html.Raw(Model.HTML)
