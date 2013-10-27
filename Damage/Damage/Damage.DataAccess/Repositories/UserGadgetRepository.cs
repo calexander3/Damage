@@ -71,13 +71,19 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public int GetNextOrdinal(int userId, int displayColumnId)
         {
-            return (m_Session.QueryOver<UserGadget>()
-                .Where(ug => ug.User.UserId == userId)
-                .And(ug => ug.DisplayColumn == displayColumnId)
-                  .Select(Projections
-                            .ProjectionList()
-                            .Add(Projections.Max<UserGadget>(x => x.DisplayOrdinal)))
-                  .List<int>().First()) + 1;
+            int? currentMaxDisplayOrdinal = m_Session.QueryOver<UserGadget>()
+                             .Where(ug => ug.User.UserId == userId)
+                             .And(ug => ug.DisplayColumn == displayColumnId)
+                            .SelectList(x => x.SelectMax(y => y.DisplayOrdinal))
+                            .Take(1)
+                            .SingleOrDefault<int>();
+
+            if (!currentMaxDisplayOrdinal.HasValue)
+            {
+                currentMaxDisplayOrdinal = 0;
+            }
+
+            return currentMaxDisplayOrdinal.Value + 1;
         }
     }
 }
