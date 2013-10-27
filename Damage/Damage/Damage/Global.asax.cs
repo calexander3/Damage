@@ -43,7 +43,7 @@ namespace Damage
                 var currentGadgets = uow.GadgetRepository.GetAllGadgets();
                 var newGadgets = new List<Damage.DataAccess.Models.Gadget>();
 
-                Parallel.ForEach(currentGadgets, g => g.AssemblyPresent = false);
+                foreach(var currentGadget in currentGadgets) {currentGadget.AssemblyPresent = false;};
 
                 foreach (IGadget gadget in gadgetInstances)
                 {

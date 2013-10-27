@@ -22,17 +22,19 @@
             dialogWindow.html(settingsFormHTML + "</table></form>");
 
             //Populate settings
-            var settings = JSON.parse(data.GadgetSettings);
-            for (var setting in settings) {
-                switch (settings[setting]) {
-                    case true:
-                        $("#" + setting).prop("checked", "checked");
-                        break;
-                    case false:
-                        break;
-                    default:
-                        $("#" + setting).val(settings[setting]);
-                        break;
+            if (data.GadgetSettings.length > 0) {
+                var settings = JSON.parse(data.GadgetSettings);
+                for (var setting in settings) {
+                    switch (settings[setting]) {
+                        case true:
+                            $("#" + setting).prop("checked", "checked");
+                            break;
+                        case false:
+                            break;
+                        default:
+                            $("#" + setting).val(settings[setting]);
+                            break;
+                    }
                 }
             }
 

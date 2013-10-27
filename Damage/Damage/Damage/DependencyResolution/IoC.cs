@@ -18,6 +18,7 @@
 
 using StructureMap;
 using Microsoft.Practices.ServiceLocation;
+using Damage.Gadget;
 
 namespace Damage.DependencyResolution
 {
@@ -45,7 +46,7 @@ namespace Damage.DependencyResolution
                                     {
                                         with.AssembliesFromPath(System.IO.Path.Combine(binPath, "Gadgets"));
                                         with.WithDefaultConventions();
-                                        with.RegisterConcreteTypesAgainstTheFirstInterface();
+                                        with.AddAllTypesOf<IGadget>();
                                     });
                             }
                             
