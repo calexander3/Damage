@@ -6,6 +6,7 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Web;
 using System.IO;
+using Damage;
 
 namespace RSSReader
 {
@@ -29,18 +30,13 @@ namespace RSSReader
                 {
                     var output = new System.Text.StringBuilder();
 
-
-
                     XmlReader reader = null;
-
-
                     if (HttpContext.Current.Cache[settings.FeedURL] != null)
                     {
                         reader = XmlReader.Create(new StringReader((string)HttpContext.Current.Cache[settings.FeedURL]));
                     }
                     else
                     {
-
                         reader = XmlReader.Create(settings.FeedURL);
                         var document = new XmlDocument();
                         document.Load(reader);
@@ -50,9 +46,7 @@ namespace RSSReader
                         reader = XmlReader.Create(new StringReader(document.InnerXml));
                     }
 
-
-
-                    SyndicationFeed feed =  SyndicationFeed.Load(reader);
+                    SyndicationFeed feed = SyndicationFeed.Load(reader);
                     reader.Close();
 
                     if (feed.Links.Count > 0)
@@ -67,14 +61,17 @@ namespace RSSReader
                     var counter = 0;
                     foreach (SyndicationItem item in feed.Items)
                     {
-                        output.Append("<div><a href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
+                        ShortGuid sg = ShortGuid.NewGuid();
+                        output.Append(@"<div style='background-image:url(/Content/Images/" + (settings.ExpandItemsByDefault ? "CollapseArrow" : "ExpandArrow") + @".png); width:8px;height:8px;float:left;position:relative;top:7px;left:2px;cursor:pointer;' onclick='if($(""#" + sg.ToString() + @""").css(""display"") == ""none"") {$(""#" + sg.ToString() + @""").css(""display"",""block""); $(this).css(""background-image"",""url(/Content/Images/CollapseArrow.png)"");}else{$(""#" + sg.ToString() + @""").css(""display"",""none""); $(this).css(""background-image"",""url(/Content/Images/ExpandArrow.png)"");}' ></div>");
+
+                        output.Append("<div style='margin-left:11px;'><a style='padding:0px;' href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
                         if (item.Content != null)
                         {
-                            output.Append("<div style='display:none'>" + ((TextSyndicationContent)item.Content).Text + "</div>");
+                            output.Append("<div id='" + sg.ToString() + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + ((TextSyndicationContent)item.Content).Text + "</div>");
                         }
                         else if (item.Summary != null)
                         {
-                            output.Append("<div style='display:none'>" + item.Summary.Text + "</div>");
+                            output.Append("<div id='" + sg.ToString() + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + item.Summary.Text + "</div>");
                         }
                         counter++;
                         if (counter >= settings.ItemsToDisplay)
@@ -124,7 +121,7 @@ namespace RSSReader
 
         public List<GadgetSettingField> SettingsSchema
         {
-            get 
+            get
             {
                 return new List<GadgetSettingField>()
                     {
