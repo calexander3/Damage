@@ -622,10 +622,10 @@ tr.pager td {
 }
 
 .garbage {
-    width: 500px;
+    width: 400px;
     height: 70px;
     position: fixed;
-    top: 100px;
+    top: 75px;
     left: 0px;
     right: 0px;
     border: 2px dashed #c8c8c8;
