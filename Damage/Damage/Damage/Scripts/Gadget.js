@@ -161,9 +161,9 @@ function OpenSettingsDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
-    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
-    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
     $("#garbage").sortable({
         over: function (event, ui) {
             $(ui.placeholder).css("display", "none");
@@ -175,6 +175,7 @@ function setupDragAndDrop() {
         receive: function (event, ui) {
             $("#garbage").css("background-image", "url(Content/Images/garbage.png)");
             $("#garbage").html("");
+            $("#garbage").css("display", "none");
             $.ajax({
                 url: "/gadget/DeleteGadget",
                 data: JSON.stringify({ userGadgetId: $(ui.item).attr("data-usergadgetid") }),
