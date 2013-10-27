@@ -167,6 +167,10 @@ function setupDragAndDrop() {
             $(ui.placeholder).css("display", "none");
             $("#garbage").css("background-color", "blue");
         },
+        out: function (event, ui) {
+            $(ui.placeholder).css("display", "block");
+            $("#garbage").css("background-color", "red");
+        },
         receive: function (event, ui) {
             $("#garbage").css("background-color", "red");
             $("#garbage").html("");

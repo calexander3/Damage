@@ -29,8 +29,13 @@ else
     </div>
 }
 
-<div style="clear: both"></div>
-<div style="width:500px; height:100px; position:absolute; bottom:0px; left:500px; background-color:red;" class="droppable" id="garbage"></div>
+@*<div style="clear: both"></div>*@
+
+@section footer {
+    @if (Request.IsAuthenticated) {
+        <div class="garbage droppable" id="garbage"></div>
+    }
+}
 
 <div id="settingsDialog" title="Settings" style="display:none;">
 @Html.Partial("_ApplicationSettings")

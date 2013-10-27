@@ -28,12 +28,13 @@ nav, section {
     display: block;
 }
 
-header{
-    color:white;
+header {
+    color: white;
 }
-header a{
-    color:white;
-}
+
+    header a {
+        color: white;
+    }
 
 mark {
     background-color: #a6dbed;
@@ -124,9 +125,9 @@ h5, h6 {
     left: -10px;
 }
 
-.add-gadget-button a{
+    .add-gadget-button a {
         color: white;
-}
+    }
 
     .add-gadget-button span {
         margin-right: 5px;
@@ -149,11 +150,12 @@ footer {
     background-color: #333;
     color: white;
     font-size: .8em;
-    height: 30px;
+    height: 70px;
     display: block;
     position: absolute;
     bottom: 0px;
     width: 100%;
+    vertical-align: bottom;
 }
 
 
@@ -170,18 +172,19 @@ footer {
     background-repeat: no-repeat;
     background-color: black;
 }
-.site-title .subtitle{
-    font-size: 0.4em;
-    width: 100%;
-    margin-left: 167px;
-    position:relative;
-    top: -7px;
-}
+
+    .site-title .subtitle {
+        font-size: 0.4em;
+        width: 100%;
+        margin-left: 167px;
+        position: relative;
+        top: -7px;
+    }
 
     .site-title input {
         font-size: small;
         margin-left: 10px;
-        position:relative;
+        position: relative;
         top: -4px;
     }
 
@@ -585,22 +588,21 @@ tr.pager td {
     min-height: 200px;
 }
 
-.gadgetPreview
-{
-    float:left;
+.gadgetPreview {
+    float: left;
 }
 
-.gadgetPreviewTitle{
+.gadgetPreviewTitle {
     padding-left: 140px;
     font-weight: 600;
 }
 
-.gadgetPreviewDescription{
-     padding-left: 140px;
- }
+.gadgetPreviewDescription {
+    padding-left: 140px;
+}
 
-.gadgetAddButton{
-    position:relative;
+.gadgetAddButton {
+    position: relative;
     top: -41px;
     left: 380px;
 }
@@ -613,6 +615,18 @@ tr.pager td {
 .sortable-placeholder {
     border: 2px dashed #c8c8c8;
     margin-bottom: 5px;
+}
+
+.garbage {
+    width: 500px;
+    height: 70px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: red;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
