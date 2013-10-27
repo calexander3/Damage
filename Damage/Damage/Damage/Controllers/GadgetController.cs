@@ -84,12 +84,12 @@ namespace Damage.Controllers
                     {
                         var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
 
-                        Parallel.ForEach(gadgetPositions, gadgetPosition =>
+                        foreach(var gadgetPosition in gadgetPositions)
                         {
                             var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
                             userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
-                        });
+                        }
                         uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
                     }
                 }
@@ -125,6 +125,26 @@ namespace Damage.Controllers
                 }
             }
             return Json(false);
+        }
+
+        /// <summary>
+        /// Deletes the gadget.
+        /// </summary>
+        /// <param name="userGadgetId">The user gadget identifier.</param>
+        [HttpPost]
+        public void DeleteGadget(int userGadgetId)
+        {
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                    {
+                        uow.UserGadgetRepository.Delete(userGadget);
+                    }
+                }
+            }
         }
     }
 }
