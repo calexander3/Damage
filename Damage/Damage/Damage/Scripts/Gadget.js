@@ -11,12 +11,17 @@
         success: function (data)
         {
             //Create settings form
-            var settingsFormHTML = "<table id='settingTable'>";
+            var validationRules = {};
+            var settingsFormHTML = "<form id='settingsForm'><table id='settingTable'>";
             var settingsSchema = JSON.parse(data.SettingsSchema);
             for (x = 0; x < settingsSchema.length; x++) {
-                settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id=" + settingsSchema[x].FieldName + " type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>";
+                settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>";
+                if (settingsSchema[x].Validators > 0)
+                {
+                    validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
+                }
             }
-            dialogWindow.html(settingsFormHTML + "</table>");
+            dialogWindow.html(settingsFormHTML + "</table></form>");
 
             //Populate settings
             var settings = JSON.parse(data.GadgetSettings);
@@ -34,36 +39,41 @@
             }
 
             
+            var form = $('#settingsForm');
+            form.validate({
+                rules: validationRules
+            });
+            
             dialogWindow.dialog({
                 modal: true,
                 width: 500,
                 buttons: {
                     Save: function () {
-                        //Gather settings
-                        var newSettings = {};
-                        var settingInputs = $("#settingTable").find("input");
-                        for (x = 0; x < settingInputs.length; x ++)
-                        {
-                            if ($(settingInputs[x]).attr('type') == "checkbox" || $(settingInputs[x]).attr('type') == "radio")
-                            {
-                                newSettings[settingInputs[x].id] = $(settingInputs[x]).is(':checked');
+
+                        if (form.valid()) {
+                            //Gather settings
+                            var newSettings = {};
+                            var settingInputs = $("#settingTable").find("input");
+                            for (x = 0; x < settingInputs.length; x++) {
+                                if ($(settingInputs[x]).attr('type') == "checkbox" || $(settingInputs[x]).attr('type') == "radio") {
+                                    newSettings[settingInputs[x].id] = $(settingInputs[x]).is(':checked');
+                                }
+                                else {
+                                    newSettings[settingInputs[x].id] = $(settingInputs[x]).val();
+                                }
                             }
-                            else
-                            {
-                                newSettings[settingInputs[x].id] = $(settingInputs[x]).val();
-                            }
+
+
+                            $.ajax({
+                                url: "/gadget/UpdateGadgetSettings",
+                                data: JSON.stringify({ userGadgetId: userGadgetId, newSettings: JSON.stringify(newSettings) }),
+                                type: 'POST',
+                                contentType: 'application/json',
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
                         }
-
-
-                        $.ajax({
-                            url: "/gadget/UpdateGadgetSettings",
-                            data: JSON.stringify({ userGadgetId: userGadgetId, newSettings: JSON.stringify(newSettings)}),
-                            type: 'POST',
-                            contentType: 'application/json',
-                            success: function () {
-                                location.reload();
-                            }
-                        });
                     },
                     Cancel: function () {
                         dialogWindow.dialog("close");
@@ -73,6 +83,36 @@
             });
         }
     });
+}
+
+function buildValidationRules(validatorOptions)
+{
+    var validationRules = {};
+    if (validatorOptions & 1)
+    {
+        validationRules.required = true;
+    }
+    if (validatorOptions & 2) {
+        validationRules.number = true;
+    }
+    if (validatorOptions & 4) {
+        validationRules.url = true;
+    }
+
+    if (validatorOptions & 8) {
+        validationRules.date = true;
+    }
+    else {
+        if (validatorOptions & 16) {
+            validationRules.dateISO = true;
+        }
+    }
+
+    if (validatorOptions & 32) {
+        validationRules.email = true;
+    }
+
+    return validationRules;
 }
 
 function getSettingInputType(type)

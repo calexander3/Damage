@@ -435,7 +435,19 @@ td button {
 
 .error {
     color: #e80c4d;
+    font-size: .8em;
+    font-weight: 400;
+}
+
+.systemError {
+    color: #e80c4d;
     margin-left: 5px;
+}
+
+input.error,
+select.error,
+textarea.error {
+    border: 1px solid red;
 }
 
 /* styles for validation helpers */

@@ -10,6 +10,7 @@ namespace Damage.Gadget
         public string FieldName { get; set; }
         public string DisplayName { get; set; }
         public SettingDataTypes DataType { get; set; }
+        public Validators Validators { get; set; }
     }
 
     public enum SettingDataTypes
@@ -27,5 +28,15 @@ namespace Damage.Gadget
         Time = 11,
         Url = 12,
         Week = 13
+    }
+
+    public enum Validators
+    {
+        Required = 1,
+        Number = 2,
+        Url = 4,
+        Date = 8,
+        DateISO = 16,
+        Email = 32
     }
 }

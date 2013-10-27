@@ -1,5 +1,12 @@
 ﻿@model Damage.Gadget.IGadget
-@{Model.Initialize();}
+@{  try
+    {
+    Model.Initialize();
+    }
+    catch
+    {
+    }
+}
 <div class="GadgetSettings" onclick="OpenGadgetSettingsDialog(@(Model.UserGadget.UserGadgetId))"></div>
 <div class="GadgetHeader">@Model.Title</div>
 <div class="GadgetFrame">
