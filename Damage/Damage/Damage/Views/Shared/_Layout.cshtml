@@ -17,65 +17,67 @@
 	}
 </head>
 <body>
-	<header>
-		<div class="content-wrapper">
-			<div class="topMenu">
-				<nav>
-					<ul id="menu">
-						<li><a href="https://mail.google.com/mail/?tab=wm" target="_blank">Gmail</a></li>
-						<li><a href="https://www.google.com/voice#inbox" target="_blank">Voice</a></li>
-						<li><a href="https://maps.google.com/maps?hl=en&tab=wl" target="_blank">Maps</a></li>
-						<li><a href="https://play.google.com/?hl=en&tab=w8" target="_blank">Play</a></li>
-						<li><a href="https://play.google.com/music/listen#start" target="_blank">Music</a></li>
-						<li><a href="https://www.youtube.com/?tab=w1" target="_blank">YouTube</a></li>
-						<li><a href="http://www.google.com/imghp?hl=en&tab=wi" target="_blank">Images</a></li>
-						<li><a href="https://drive.google.com/?tab=wo&authuser=0" target="_blank">Drive</a></li>
-						<li><a href="https://www.google.com/calendar?tab=wc" target="_blank">Calendar</a></li>
-						<li><a href="https://translate.google.com/?hl=en&tab=wT" target="_blank">Translate</a></li>
-						<li><a href="https://wallet.google.com/manage/?tab=wa" target="_blank">Wallet</a></li>
-					</ul>
-				</nav>
-				<div class="float-right">
-					<section id="login">
-						@Html.Partial("_LoginPartial")
-					</section>
+	<div id="holder" style="min-height: 100%; position: relative;">
+		<div id="holder2" style="padding-bottom: 70px">
+			<header>
+				<div class="content-wrapper">
+					<div class="topMenu">
+						<nav>
+							<ul id="menu">
+								<li><a href="https://mail.google.com/mail/?tab=wm" target="_blank">Gmail</a></li>
+								<li><a href="https://www.google.com/voice#inbox" target="_blank">Voice</a></li>
+								<li><a href="https://maps.google.com/maps?hl=en&tab=wl" target="_blank">Maps</a></li>
+								<li><a href="https://play.google.com/?hl=en&tab=w8" target="_blank">Play</a></li>
+								<li><a href="https://play.google.com/music/listen#start" target="_blank">Music</a></li>
+								<li><a href="https://www.youtube.com/?tab=w1" target="_blank">YouTube</a></li>
+								<li><a href="http://www.google.com/imghp?hl=en&tab=wi" target="_blank">Images</a></li>
+								<li><a href="https://drive.google.com/?tab=wo&authuser=0" target="_blank">Drive</a></li>
+								<li><a href="https://www.google.com/calendar?tab=wc" target="_blank">Calendar</a></li>
+								<li><a href="https://translate.google.com/?hl=en&tab=wT" target="_blank">Translate</a></li>
+								<li><a href="https://wallet.google.com/manage/?tab=wa" target="_blank">Wallet</a></li>
+							</ul>
+						</nav>
+						<div class="float-right">
+							<section id="login">
+								@Html.Partial("_LoginPartial")
+							</section>
+						</div>
+					</div>
+				</div>
+				<div class="site-title">
+					<div>
+						<span style="cursor: default">Damage</span>
+						<span>
+							<input type="text" id="txtSearch" />
+						</span>
+						<span>
+							<img src="~/Content/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
+						</span>
+					</div>
+					<div class="subtitle">Dashboard Manager For Google</div>
+				</div>
+			</header>
+			<div id="body">
+				<section class="content-wrapper main-content clear-fix">
+					@RenderBody()
+				</section>
+			</div>
+			<div id="dialog" title="Error" style="display: none;">
+			</div>
+		</div>
+		<footer>
+			<div class="content-wrapper">
+				<div class="float-left">
+					<p>&copy; @DateTime.Now.Year - Craig Alexander</p>
 				</div>
 			</div>
-		</div>
-		<div class="site-title">
-			<div>
-				<span style="cursor: default">Damage</span>
-				<span>
-					<input type="text" id="txtSearch" />
-				</span>
-				<span>
-					<img src="~/Content/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
-				</span>
-			</div>
-			<div class="subtitle">Dashboard Manager For Google</div>
-		</div>
-	</header>
-	<div id="body">
-		<section class="content-wrapper main-content clear-fix">
-			@RenderBody()
-		</section>
+			@RenderSection("footer", required: false)
+		</footer>
 	</div>
-	<div id="dialog" title="Error" style="display: none;">
-	</div>
-	<footer>
-		<div class="content-wrapper">
-			<div class="float-left">
-				<p>&copy; @DateTime.Now.Year - Craig Alexander</p>
-			</div>
-		</div>
-		@RenderSection("footer", required: false)
-	</footer>
-
 
 	<script type="text/javascript">
 
-		function dialog(title, body)
-		{
+		function dialog(title, body) {
 			var dialogWindow = $("#dialog");
 			dialogWindow.prop("title", title);
 			dialogWindow.html(body);

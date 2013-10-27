@@ -2,6 +2,7 @@
     background-color: white;
     margin: 0;
     padding: 0;
+   height: 100%;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 a {
@@ -154,6 +156,7 @@ footer {
     display: block;
     position: absolute;
     bottom: 0px;
+    left:0px;
     width: 100%;
     vertical-align: bottom;
 }
@@ -624,7 +627,10 @@ tr.pager td {
     bottom: 0px;
     left: 0px;
     right: 0px;
-    background-color: red;
+    background-color: transparent;
+    background-image: url(Images/garbage.png);
+    background-repeat: no-repeat;
+    background-position:center; 
     margin-left: auto;
     margin-right: auto;
 }

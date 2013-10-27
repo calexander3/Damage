@@ -225,6 +225,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Gadgets\RSSReader.png" />
+    <Content Include="Content\Images\garbage-open.png" />
+    <Content Include="Content\Images\garbage.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayoutComingSoon.png" />

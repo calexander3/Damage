@@ -159,20 +159,19 @@ function OpenSettingsDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
-    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); } });
+    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", stop: function (event, ui) { updateGadgetPositions(); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
     $("#garbage").sortable({
         over: function (event, ui) {
             $(ui.placeholder).css("display", "none");
-            $("#garbage").css("background-color", "blue");
+            $("#garbage").css("background-image", "url(Content/Images/garbage-open.png)");
         },
         out: function (event, ui) {
-            $(ui.placeholder).css("display", "block");
-            $("#garbage").css("background-color", "red");
+            $("#garbage").css("background-image", "url(Content/Images/garbage.png)");
         },
         receive: function (event, ui) {
-            $("#garbage").css("background-color", "red");
+            $("#garbage").css("background-image", "url(Content/Images/garbage.png)");
             $("#garbage").html("");
             $.ajax({
                 url: "/gadget/DeleteGadget",
