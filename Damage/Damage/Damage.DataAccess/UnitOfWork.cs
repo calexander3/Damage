@@ -67,7 +67,7 @@ namespace Damage.DataAccess
 
         private ISessionFactory ConfigureNHibernate(string ConnectionString)
         {
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
             return Fluently.Configure().Database(new SqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).BuildSessionFactory();
         }
 
@@ -110,7 +110,7 @@ namespace Damage.DataAccess
             Driver<NHibernate.Driver.SqlClientDriver>();
             ConnectionString(conString);
             Dialect<NHibernate.Dialect.MsSql2012Dialect>();
-            ShowSql();
+            //ShowSql();
             IsolationLevel(System.Data.IsolationLevel.ReadCommitted);
         }
     }

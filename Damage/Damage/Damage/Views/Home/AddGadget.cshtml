@@ -20,7 +20,7 @@
         <div style="width:500px;">
             <div class="gadgetPreview"><img src="~/Content/Images/Gadgets/@(gadget.GadgetName).png" /></div>
             <div class="gadgetPreviewTitle">@gadget.GadgetTitle</div>
-            <div class="gadgetPreviewDescription">@gadget.GadgetDescription</div>
+            <div class="gadgetPreviewDescription">@Html.Raw(gadget.GadgetDescription)</div>
         </div>
         <div style="clear:both;" class="gadgetAddButton"><button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button></div>
         <br />

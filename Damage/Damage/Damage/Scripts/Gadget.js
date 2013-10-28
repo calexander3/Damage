@@ -13,10 +13,18 @@
             var validationRules = {};
             var settingsFormHTML = "<form id='settingsForm'><table id='settingTable'>";
             var settingsSchema = JSON.parse(data.SettingsSchema);
-            for (x = 0; x < settingsSchema.length; x++) {
-                settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + getSettingInputType(settingsSchema[x].DataType) + "' /></td></div>";
-                if (settingsSchema[x].Validators > 0) {
-                    validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
+            for (var x = 0; x < settingsSchema.length; x++) {
+                var dataType = getSettingInputType(settingsSchema[x].DataType);
+                if (dataType == "radio")
+                {
+                    settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='radios' type = '" + dataType + "' /></td></div>";
+                }
+                else
+                {
+                    settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + dataType + "' /></td></div>";
+                    if (settingsSchema[x].Validators > 0) {
+                        validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
+                    }
                 }
             }
             dialogWindow.html(settingsFormHTML + "</table></form>");
