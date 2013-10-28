@@ -14,7 +14,7 @@ namespace Damage.Models
         public DbSet<UserProfile> UserProfiles { get; set; }
     }
 
-    [Table("UserProfile")]
+    [Table("Users")]
     public class UserProfile
     {
         [Key]

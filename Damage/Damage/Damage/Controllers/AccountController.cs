@@ -273,7 +273,7 @@ namespace Damage.Controllers
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
 
                         return RedirectToLocal(returnUrl);
                     }
