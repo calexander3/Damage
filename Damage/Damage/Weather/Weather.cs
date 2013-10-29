@@ -63,7 +63,7 @@ namespace Weather
 
                 if (lat != 0 && lng != 0)
                 {
-                    _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='100%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
+                    _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace Weather
             else if (settings.Latitude.HasValue && settings.Longitude.HasValue)
             {
                 var location = HttpUtility.HtmlEncode(settings.Latitude.Value.ToString() + " by " + settings.Longitude.Value.ToString());
-                _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='100%' src='https://forecast.io/embed/#lat=" + settings.Latitude.Value + "&lon=" + settings.Longitude.Value + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
+                _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + settings.Latitude.Value + "&lon=" + settings.Longitude.Value + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
             }
             else
             {
