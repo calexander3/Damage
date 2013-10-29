@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Damage.DataAccess;
+﻿using Damage.DataAccess;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -63,7 +62,7 @@ namespace Damage.Controllers
                     if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
                         userGadget.GadgetSettings = newSettings;
-                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
                     }
                 }
             }
@@ -90,7 +89,7 @@ namespace Damage.Controllers
                             userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                         }
-                        uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<DataAccess.Models.UserGadget>.SaveOperation.Update);
+                        uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
                     }
                 }
             }
@@ -112,11 +111,13 @@ namespace Damage.Controllers
                     if (gadget != null)
                     {
 
-                        var userGadget = new UserGadget();
-                        userGadget.User = uow.UserRepository.GetUserById((int)Membership.GetUser().ProviderUserKey);
-                        userGadget.Gadget = gadget;
-                        userGadget.GadgetSettings = gadget.DefaultSettings;
-                        userGadget.DisplayColumn = 1;
+                        var userGadget = new UserGadget()
+                            {
+                                User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
+                                Gadget = gadget,
+                                GadgetSettings = gadget.DefaultSettings,
+                                DisplayColumn = 1
+                            };
                         userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
 
                         uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.SaveNew);

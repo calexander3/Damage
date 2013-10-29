@@ -3,11 +3,8 @@ using System.Web.Mvc;
 using Damage.Gadget;
 using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
-using System.Threading.Tasks;
 using System.Web.Security;
 using Damage.Filters;
-using DotNetOpenAuth.AspNet;
-using Microsoft.Web.WebPages.OAuth;
 
 namespace Damage.Controllers
 {
@@ -56,7 +53,7 @@ namespace Damage.Controllers
 
         public ActionResult AddGadget()
         {
-            IList<Damage.DataAccess.Models.Gadget> gadgets = new List<Damage.DataAccess.Models.Gadget>();
+            IList<DataAccess.Models.Gadget> gadgets = new List<Damage.DataAccess.Models.Gadget>();
             if (Request.IsAuthenticated)
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
