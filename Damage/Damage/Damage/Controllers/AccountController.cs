@@ -1,6 +1,7 @@
 ﻿using Damage.Filters;
 using Damage.Models;
 using DotNetOpenAuth.AspNet;
+using DotNetOpenAuth.GoogleOAuth2;
 using Microsoft.Web.WebPages.OAuth;
 using System;
 using System.Collections.Generic;
@@ -216,6 +217,7 @@ namespace Damage.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginCallback(string returnUrl)
         {
+            GoogleOAuth2Client.RewriteRequest();
             AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
             if (!result.IsSuccessful)
             {

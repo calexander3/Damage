@@ -16,15 +16,17 @@ namespace Gmail
         string _output = "";
         public void Initialize()
         {
+
+
             //var emailaddress = "craig.d.alexander@gmail.com";
-            //var oauthtoken = "AItOawm4BG1g1pWjNFn5f917IqLWZhEj27PpylY";
+            //var oauthtoken = "xxx";
 
             //var client = new ImapClient("imap.gmail.com", true);
 
             //if (client.Connect())
             //{
 
-            //    var credentials = new OAuth2Credentials(emailaddress, getAccessToken(oauthtoken));
+            //    var credentials = new OAuth2Credentials(emailaddress, oauthtoken);
 
             //    if (client.Login(credentials))
             //    {

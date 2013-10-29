@@ -6,6 +6,8 @@ using Damage.DataAccess;
 using System.Threading.Tasks;
 using System.Web.Security;
 using Damage.Filters;
+using DotNetOpenAuth.AspNet;
+using Microsoft.Web.WebPages.OAuth;
 
 namespace Damage.Controllers
 {
