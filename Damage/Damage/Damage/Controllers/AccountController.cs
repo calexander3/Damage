@@ -9,6 +9,7 @@ using System.Linq;
 using System.Transactions;
 using System.Web.Mvc;
 using System.Web.Security;
+using Newtonsoft.Json;
 using WebMatrix.WebData;
 
 namespace Damage.Controllers
@@ -224,7 +225,7 @@ namespace Damage.Controllers
                 return RedirectToAction("ExternalLoginFailure");
             }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
+            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: true))
             {
                 return RedirectToLocal(returnUrl);
             }
@@ -233,6 +234,18 @@ namespace Damage.Controllers
             {
                 // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
+
+                using (UsersContext db = new UsersContext())
+                {
+                    UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
+                    if (user != null)
+                    {
+                        user.EmailAddress = result.ExtraData["email"];
+                        user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -241,7 +254,7 @@ namespace Damage.Controllers
                 string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
                 ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
                 ViewBag.ReturnUrl = returnUrl;
-                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
+                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel {UserName = result.ExtraData["email"], ExternalLoginData = loginData, ExtraData = JsonConvert.SerializeObject(result.ExtraData) });
             }
         }
 
@@ -270,8 +283,10 @@ namespace Damage.Controllers
                     // Check if user already exists
                     if (user == null)
                     {
+                        var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
+
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
+                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = extraData["email"], CurrentOAuthAccessToken = extraData["accesstoken"] });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);

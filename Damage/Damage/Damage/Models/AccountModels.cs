@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
@@ -21,6 +22,8 @@ namespace Damage.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string CurrentOAuthAccessToken { get; set; }
+        public string EmailAddress { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -30,6 +33,7 @@ namespace Damage.Models
         public string UserName { get; set; }
 
         public string ExternalLoginData { get; set; }
+        public string ExtraData { get; set; }
     }
 
     public class LocalPasswordModel

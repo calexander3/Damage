@@ -10,6 +10,8 @@ namespace Damage.DataAccess.Maps {
 			Table("Users");
 			Id(x => x.UserId).GeneratedBy.Identity().Column("UserId");
 			Map(x => x.UserName).Column("UserName").Not.Nullable().Unique();
+			Map(x => x.EmailAddress).Column("EmailAddress").Not.Nullable().Unique();
+			Map(x => x.CurrentOAuthAccessToken).Column("CurrentOAuthAccessToken").Not.Nullable().Unique();
 			HasMany(x => x.UserGadgets).KeyColumn("UserId");
 		}
 	}

@@ -13,6 +13,8 @@ namespace Damage.DataAccess.Models {
 		public virtual int UserId { get; set; }
 		[Required()]
 		public virtual string UserName { get; set; }
+		public virtual string CurrentOAuthAccessToken { get; set; }
+		public virtual string EmailAddress { get; set; }
 		public virtual IList<UserGadget> UserGadgets { get; set; }
 
 		public override string CompositeKey
