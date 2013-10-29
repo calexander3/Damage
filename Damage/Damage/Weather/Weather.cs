@@ -35,9 +35,10 @@ namespace Weather
 
                 if (HttpContext.Current.Cache[settings.CityName] != null)
                 {
-                    var latlng = (double[])HttpContext.Current.Cache[settings.CityName];
-                    lat = latlng[0];
-                    lng = latlng[1];
+                    var latlng = (string[])HttpContext.Current.Cache[settings.CityName];
+                    lat = double.Parse(latlng[0]);
+                    lng = double.Parse(latlng[1]);
+                    location = latlng[2];
                 }
                 else
                 {
@@ -52,7 +53,7 @@ namespace Weather
                                 location = HttpUtility.HtmlEncode(addresses.results[0].formatted_address);
                                 lat = double.Parse(addresses.results[0].geometry.location.lat);
                                 lng = double.Parse(addresses.results[0].geometry.location.lng);
-                                HttpContext.Current.Cache.Insert(settings.CityName, new double[] {lat, lng}, null,
+                                HttpContext.Current.Cache.Insert(settings.CityName, new string[] { lat.ToString(), lng.ToString(), location }, null,
                                                                  System.Web.Caching.Cache.NoAbsoluteExpiration,
                                                                  new TimeSpan(365, 0, 0, 0));
                             }

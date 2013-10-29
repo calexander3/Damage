@@ -29,7 +29,10 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<Gadget> GetAllAvailableGadgets()
         {
-            return m_Session.QueryOver<Gadget>().Where(g => g.AssemblyPresent).List<Gadget>();
+            return m_Session.QueryOver<Gadget>()
+                .Where(g => g.AssemblyPresent)
+                .OrderBy(g => g.GadgetName).Asc
+                .List<Gadget>();
         }
 
         /// <summary>

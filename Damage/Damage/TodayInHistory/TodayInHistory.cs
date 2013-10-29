@@ -16,7 +16,7 @@ namespace TodayInHistory
 
         public string HTML
         {
-            get { return ""; }
+            get { return "<script type='text/javascript' src='http://rss.brainyhistory.com/link/historyevents.js'></script><small><i>more <a href='http://www.brainyhistory.com/' target='_blank'>History</a></i></small><br/><br/><script type='text/javascript' src='http://rss.brainyhistory.com/link/historybirthdays.js'></script><small><i>more <a href='http://www.brainyhistory.com/' target='_blank'>Birthdays</a></i></small>"; }
         }
 
         public string Title
