@@ -3,34 +3,40 @@
     ViewBag.Title = "Register";
 }
 
+
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
 </hgroup>
-
-@using (Html.BeginForm()) {
+<section id="loginForm">
+    <h2>Create a new local account.</h2>
+    @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
     <fieldset>
         <legend>Registration Form</legend>
         <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
+            <li>@Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
             </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
+            <li>@Html.LabelFor(m => m.Password)
                 @Html.PasswordFor(m => m.Password)
             </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
+            <li>@Html.LabelFor(m => m.ConfirmPassword)
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
         </ol>
         <input type="submit" value="Register" />
     </fieldset>
-}
+    }
+</section>
+
+<section class="social" id="socialLoginForm">
+    <h2>Use another service to register.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+
+<div style="clear:both;margin-top:400px; margin-left:auto; margin-right:auto; font-weight:600; font-size: large; width:75%; text-align:center;">If you are planning on using any gadgets that rely on Google services, it is recommended that you register via Google.</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
