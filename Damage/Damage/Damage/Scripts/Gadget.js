@@ -196,7 +196,7 @@ function setupDragAndDrop() {
 
 function updateGadgetPositions() {
     var positionArray = [];
-    if ($('.sign-in-request').length) {
+    if (!$('.sign-in-request').length) {
         for (var column = 1; column <= 3; column++) {
             var gadgets = $('#displayColumn' + column).children('.draggable');
 

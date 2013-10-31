@@ -98,7 +98,7 @@ namespace Damage.DataAccess.Repositories
                 DisplayColumn = 1,
                 DisplayOrdinal = 2,
                 Gadget = rssGadget,
-                GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
+                GadgetSettings = @"{""FeedURL"":""http://feeds.feedburner.com/codinghorror?format=xml"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
             });
 
             defaultGadgets.Add(new UserGadget()
