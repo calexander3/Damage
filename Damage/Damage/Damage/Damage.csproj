@@ -255,6 +255,7 @@
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayoutComingSoon.png" />
     <Content Include="Content\Images\Layouts\TwoColumnLayout.png" />
     <Content Include="Content\Images\Layouts\TwoColumnLayoutComingSoon.png" />
+    <Content Include="Content\Images\logo.PNG" />
     <Content Include="Content\Images\searchBackground.jpg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="error.html" />
