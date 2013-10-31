@@ -19,7 +19,7 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Gets all gadgets for a user.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
+        /// <param name="username">The username.</param>
         /// <returns></returns>
         public IList<UserGadget> GetAllUserGadgetsForUser(string username)
         {
@@ -30,7 +30,6 @@ namespace Damage.DataAccess.Repositories
                 .Where(u => u.UserName == username)
                 .List<UserGadget>();
         }
-
 
         /// <summary>
         /// Gets the user gadgets for user by column.

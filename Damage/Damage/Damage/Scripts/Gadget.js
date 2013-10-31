@@ -15,12 +15,10 @@
             var settingsSchema = JSON.parse(data.SettingsSchema);
             for (var x = 0; x < settingsSchema.length; x++) {
                 var dataType = getSettingInputType(settingsSchema[x].DataType);
-                if (dataType == "radio")
-                {
+                if (dataType == "radio") {
                     settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='radios' type = '" + dataType + "' /></td></div>";
                 }
-                else
-                {
+                else {
                     settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + dataType + "' /></td></div>";
                     if (settingsSchema[x].Validators > 0) {
                         validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
@@ -198,16 +196,17 @@ function setupDragAndDrop() {
 
 function updateGadgetPositions() {
     var positionArray = [];
+    if ($('.sign-in-request').length) {
+        for (var column = 1; column <= 3; column++) {
+            var gadgets = $('#displayColumn' + column).children('.draggable');
 
-    for (column = 1; column <= 3; column++) {
-        var gadgets = $('#displayColumn' + column).children('.draggable');
-
-        for (x = 0; x < gadgets.length; x++) {
-            positionArray.push({
-                UserGadgetId: $(gadgets[x]).attr('data-usergadgetid'),
-                DisplayColumn: column,
-                DisplayOrdinal: x
-            });
+            for (var x = 0; x < gadgets.length; x++) {
+                positionArray.push({
+                    UserGadgetId: $(gadgets[x]).attr('data-usergadgetid'),
+                    DisplayColumn: column,
+                    DisplayOrdinal: x
+                });
+            }
         }
     }
 
