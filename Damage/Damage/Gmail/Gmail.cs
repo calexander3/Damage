@@ -67,24 +67,9 @@ namespace Gmail
 
         public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
 
-
-        private string getAccessToken(string OAuthToken)
+        public bool InBeta
         {
-
-            byte[] buffer = Encoding.ASCII.GetBytes("?code=" + OAuthToken + "&client_id=14362457062.apps.googleusercontent.com&client_secret=AAHirbGW44QCmGG1VUSqvV2c&redirect_uri=http://damage.io&grant_type=authorization_code");
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://accounts.google.com/o/oauth2/token");
-            req.Method = "POST";
-            req.ContentType = "application/x-www-form-urlencoded";
-            req.ContentLength = buffer.Length;
-
-            Stream strm = req.GetRequestStream();
-            strm.Write(buffer, 0, buffer.Length);
-            strm.Close();
-
-            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
-            StreamReader responseStreamReader = new StreamReader(resp.GetResponseStream());
-            var result = responseStreamReader.ReadToEnd();
-            return "";
+            get { return true; }
         }
     }
 }

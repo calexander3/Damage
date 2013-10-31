@@ -78,10 +78,9 @@ namespace Damage.Controllers
             {
                 if (gadgetPositions != null && gadgetPositions.Count > 0)
                 {
-                    var userId = (int)Membership.GetUser().ProviderUserKey;
                     using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                     {
-                        var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(userId);
+                        var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(User.Identity.Name);
 
                         foreach(var gadgetPosition in gadgetPositions)
                         {

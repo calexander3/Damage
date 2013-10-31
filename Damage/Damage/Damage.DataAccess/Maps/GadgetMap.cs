@@ -15,6 +15,7 @@ namespace Damage.DataAccess.Maps {
 			Map(x => x.GadgetVersion).Column("GadgetVersion").Not.Nullable();
 			Map(x => x.DefaultSettings).Column("DefaultSettings").Not.Nullable();
 			Map(x => x.SettingsSchema).Column("SettingsSchema").Not.Nullable();
+			Map(x => x.InBeta).Column("InBeta").Not.Nullable();
 			Map(x => x.AssemblyPresent).Column("AssemblyPresent").Not.Nullable();
 			HasMany(x => x.UserGadgets).KeyColumn("GadgetId");
 		}

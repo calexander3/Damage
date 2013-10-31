@@ -31,6 +31,7 @@ namespace Damage.DataAccess.Repositories
         {
             return m_Session.QueryOver<Gadget>()
                 .Where(g => g.AssemblyPresent)
+                .OrderBy(g => g.InBeta).Asc
                 .OrderBy(g => g.GadgetName).Asc
                 .List<Gadget>();
         }

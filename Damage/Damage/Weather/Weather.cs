@@ -123,13 +123,18 @@ namespace Weather
                         new GadgetSettingField(){FieldName="CityName", DisplayName="City Name, State", DataType= SettingDataTypes.Text },
                         new GadgetSettingField(){FieldName="Latitude", DisplayName="Latitude", DataType= SettingDataTypes.Number, Validators = Validators.Number },
                         new GadgetSettingField(){FieldName="Longitude", DisplayName="Longitude", DataType= SettingDataTypes.Number, Validators = Validators.Number},
-                        new GadgetSettingField(){FieldName="USUnits", DisplayName="US Units", DataType= SettingDataTypes.Radio},
-                        new GadgetSettingField(){FieldName="UKUnits", DisplayName="UK Units", DataType= SettingDataTypes.Radio}
+                        new GadgetSettingField(){FieldName="USUnits", DisplayName="Fahrenheit", DataType= SettingDataTypes.Radio},
+                        new GadgetSettingField(){FieldName="UKUnits", DisplayName="Celsius", DataType= SettingDataTypes.Radio}
                     };
             }
         }
 
         public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
+
+        public bool InBeta
+        {
+            get { return false; }
+        }
 
 
         public class GoogleGeoCodeResponse

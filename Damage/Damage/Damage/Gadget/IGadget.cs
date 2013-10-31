@@ -34,6 +34,14 @@ namespace Damage.Gadget
         string Description { get; }
 
         /// <summary>
+        /// Gets a value indicating whether [in beta].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [in beta]; otherwise, <c>false</c>.
+        /// </value>
+        bool InBeta { get; }
+
+        /// <summary>
         /// Gets an empty settings object to be used during adding a gadget.
         /// </summary>
         /// <value>

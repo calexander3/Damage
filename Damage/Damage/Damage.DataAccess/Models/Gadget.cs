@@ -21,6 +21,8 @@ namespace Damage.DataAccess.Models {
 		[Required()]
 		public virtual string GadgetVersion { get; set; }
 		[Required()]
+		public virtual bool InBeta { get; set; }
+		[Required()]
 		public virtual bool AssemblyPresent { get; set; }
 		[Required()]
 		public virtual string DefaultSettings { get; set; }

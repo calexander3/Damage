@@ -15,14 +15,23 @@
 <br />
 @if (Request.IsAuthenticated) {
 
-    foreach( var gadget in Model)
+    foreach(var gadget in Model)
     {
         <div style="width:500px;">
             <div class="gadgetPreview"><img src="~/Content/Images/Gadgets/@(gadget.GadgetName).png" /></div>
             <div class="gadgetPreviewTitle">@gadget.GadgetTitle</div>
             <div class="gadgetPreviewDescription">@Html.Raw(gadget.GadgetDescription)</div>
         </div>
-        <div style="clear:both;" class="gadgetAddButton"><button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button></div>
+        <div style="clear:both;" class="gadgetAddButton">
+            @if(!gadget.InBeta)
+            {
+                <button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button>
+            }
+            else
+            {
+                <button disabled="disabled">Coming Soon</button>
+            }
+        </div>
         <br />
     }
 }

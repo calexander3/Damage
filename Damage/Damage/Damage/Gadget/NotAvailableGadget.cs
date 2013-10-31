@@ -41,5 +41,11 @@ namespace Damage.Gadget
         {
             get { return ""; }
         }
+
+
+        public bool InBeta
+        {
+            get { return false; }
+        }
     }
 }

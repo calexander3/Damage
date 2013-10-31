@@ -26,9 +26,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleCalendar", "GoogleCal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodayInHistory", "TodayInHistory\TodayInHistory.csproj", "{4DE32A42-FB59-4C81-91D2-459C4ECF2E38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleDrive", "GoogleDrive\GoogleDrive.csproj", "{0D11193C-E604-4903-B1E1-B97283477588}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTicker", "StockTicker\StockTicker.csproj", "{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 11
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://calexander3.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -61,6 +65,14 @@ Global
 		SccProjectTopLevelParentUniqueName8 = Damage.sln
 		SccProjectName8 = TodayInHistory
 		SccLocalPath8 = TodayInHistory
+		SccProjectUniqueName9 = GoogleDrive\\GoogleDrive.csproj
+		SccProjectTopLevelParentUniqueName9 = Damage.sln
+		SccProjectName9 = GoogleDrive
+		SccLocalPath9 = GoogleDrive
+		SccProjectUniqueName10 = StockTicker\\StockTicker.csproj
+		SccProjectTopLevelParentUniqueName10 = Damage.sln
+		SccProjectName10 = StockTicker
+		SccLocalPath10 = StockTicker
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +113,14 @@ Global
 		{4DE32A42-FB59-4C81-91D2-459C4ECF2E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE32A42-FB59-4C81-91D2-459C4ECF2E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE32A42-FB59-4C81-91D2-459C4ECF2E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D11193C-E604-4903-B1E1-B97283477588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D11193C-E604-4903-B1E1-B97283477588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D11193C-E604-4903-B1E1-B97283477588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D11193C-E604-4903-B1E1-B97283477588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +131,7 @@ Global
 		{08E5A139-F525-4B8C-8BCA-998534BC6F7E} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{605CCA1A-E164-45D1-BAC3-1F206910E7C6} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{4DE32A42-FB59-4C81-91D2-459C4ECF2E38} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
+		{0D11193C-E604-4903-B1E1-B97283477588} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
+		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 	EndGlobalSection
 EndGlobal

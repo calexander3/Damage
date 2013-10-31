@@ -137,5 +137,10 @@ namespace RSSReader
         {
             get { return "A simple RSS/ATOM reader gadget."; }
         }
+
+        public bool InBeta
+        {
+            get { return false; }
+        }
     }
 }

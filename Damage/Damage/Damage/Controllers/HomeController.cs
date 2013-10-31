@@ -18,7 +18,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var gadgetsForUser = uow.UserGadgetRepository.GetAllUserGadgetsForUser((int)Membership.GetUser().ProviderUserKey);
+                    var gadgetsForUser = uow.UserGadgetRepository.GetAllUserGadgetsForUser(User.Identity.Name);
                     foreach ( var g in gadgetsForUser)
                     {
                         if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))

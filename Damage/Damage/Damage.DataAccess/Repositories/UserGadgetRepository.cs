@@ -21,12 +21,13 @@ namespace Damage.DataAccess.Repositories
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public IList<UserGadget> GetAllUserGadgetsForUser(int userId)
+        public IList<UserGadget> GetAllUserGadgetsForUser(string username)
         {
             return m_Session.QueryOver<UserGadget>()
-                .Where(ug => ug.User.UserId == userId)
                 .Fetch(ug => ug.User).Eager
                 .Fetch(ug => ug.Gadget).Eager
+                .JoinQueryOver(x => x.User)
+                .Where(u => u.UserName == username)
                 .List<UserGadget>();
         }
 

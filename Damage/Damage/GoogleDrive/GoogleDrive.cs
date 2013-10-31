@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodayInHistory
+namespace GoogleDrive
 {
-    public class TodayInHistory : IGadget
+    public class GoogleDrive:IGadget
     {
+        string _output = "";
         public void Initialize()
         {
 
@@ -16,17 +17,17 @@ namespace TodayInHistory
 
         public string HTML
         {
-            get { return "<script type='text/javascript' src='https://rss.brainyhistory.com/link/historyevents.js'></script><small><i>more <a href='https://www.brainyhistory.com/' target='_blank'>History</a></i></small><br/><br/><script type='text/javascript' src='https://rss.brainyhistory.com/link/historybirthdays.js'></script><small><i>more <a href='https://www.brainyhistory.com/' target='_blank'>Birthdays</a></i></small>"; }
+            get { return _output; }
         }
 
         public string Title
         {
-            get { return "Today In History"; }
+            get { return "Google Drive"; }
         }
 
         public string Description
         {
-            get { return "Expand your knowledge with fun facts from this day in History."; }
+            get { return "Access your recent documents and create new ones."; }
         }
 
         public string DefaultSettings
@@ -43,7 +44,7 @@ namespace TodayInHistory
 
         public bool InBeta
         {
-            get { return false; }
+            get { return true; }
         }
     }
 }
