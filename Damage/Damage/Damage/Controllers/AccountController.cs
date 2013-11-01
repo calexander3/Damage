@@ -222,8 +222,19 @@ namespace Damage.Controllers
                 return RedirectToAction("ExternalLoginFailure");
             }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: true))
+            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
             {
+                //update oauth token
+                using (var db = new UsersContext())
+                {
+                    var email = result.ExtraData["email"];
+                    var user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == email.ToLower());
+                    if (user != null)
+                    {
+                        user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -287,7 +298,7 @@ namespace Damage.Controllers
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
+                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
 
                         return RedirectToLocal(returnUrl);
                     }

@@ -16,28 +16,33 @@ namespace Gmail
         string _output = "";
         public void Initialize()
         {
+            var client = new ImapClient("imap.gmail.com", true);
 
+            if (client.Connect())
+            {
 
-            //var emailaddress = "craig.d.alexander@gmail.com";
-            //var oauthtoken = "xxx";
+                var credentials = new OAuth2Credentials(UserGadget.User.EmailAddress, UserGadget.User.CurrentOAuthAccessToken);
 
-            //var client = new ImapClient("imap.gmail.com", true);
-
-            //if (client.Connect())
-            //{
-
-            //    var credentials = new OAuth2Credentials(emailaddress, oauthtoken);
-
-            //    if (client.Login(credentials))
-            //    {
-            //        _output = "login successful";
-            //    }
-
-            //}
-            //else
-            //{
-            //    _output = "connection not successful";
-            //}
+                if (ExecuteWithTimeLimit(new TimeSpan(0,0,5), () => { client.Login(credentials);}))
+                {
+                    if (client.IsAuthenticated)
+                    {
+                        _output = "login successful";
+                    }
+                    else
+                    {
+                        _output = "connection not successful";
+                    }
+                }
+                else
+                {
+                    _output = "connection not successful";
+                }
+            }
+            else
+            {
+                _output = "connection not successful";
+            }
         }
 
         public string HTML
@@ -69,7 +74,21 @@ namespace Gmail
 
         public bool InBeta
         {
-            get { return true; }
+            get { return false; }
+        }
+
+        public static bool ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock)
+        {
+            try
+            {
+                Task task = Task.Factory.StartNew(() => codeBlock());
+                task.Wait(timeSpan);
+                return task.IsCompleted;
+            }
+            catch (AggregateException ae)
+            {
+                throw ae.InnerExceptions[0];
+            }
         }
     }
 }
