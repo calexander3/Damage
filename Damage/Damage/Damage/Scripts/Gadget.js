@@ -174,14 +174,14 @@ function setupDragAndDrop() {
         over: function (event, ui) {
             $(ui.placeholder).css("display", "none");
             $(ui.item).children('div').css("background-color", "pink");
-            $("#garbage").css("background-image", "url(Content/Images/garbage-open.png)");
+            $("#garbage").css("background-image", "url(../Content/Images/garbage-open.png)");
         },
         out: function (event, ui) {
-            $("#garbage").css("background-image", "url(Content/Images/garbage.png)");
+            $("#garbage").css("background-image", "url(../Content/Images/garbage.png)");
             $(ui.item).children('div').css("background-color", "");
         },
         receive: function (event, ui) {
-            $("#garbage").css("background-image", "url(Content/Images/garbage.png)");
+            $("#garbage").css("background-image", "url(../Content/Images/garbage.png)");
             $("#garbage").html("");
             $("#garbage").css("display", "none");
             $.ajax({
