@@ -18,6 +18,7 @@ namespace Damage.Controllers
     {
         public ActionResult Index()
         {
+            var hasLinkedGoogleAccount = false;
             var activeGadgets = new List<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
@@ -31,11 +32,14 @@ namespace Damage.Controllers
                     //refresh oauth access token if needed
                     if (gadgetsForUser.Count > 0)
                     {
-                        if (OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 0 && 
-                            DateTime.Compare(DateTime.Now, gadgetsForUser.First().User.OAuthAccessTokenExpiration) > 0 && 
-                            gadgetsForUser.Any(g => g.Gadget.RequiresValidGoogleAccessToken))
+                        if (OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 0)
                         {
-                            return new Damage.Controllers.AccountController.ExternalLoginResult("google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = "" }));
+                            hasLinkedGoogleAccount = true;
+                            if (DateTime.Compare(DateTime.Now, gadgetsForUser.First().User.OAuthAccessTokenExpiration) > 0 &&
+                                gadgetsForUser.Any(g => g.Gadget.RequiresValidGoogleAccessToken))
+                            {
+                                return new Damage.Controllers.AccountController.ExternalLoginResult("google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = "" }));
+                            }
                         }
                     }
 
@@ -47,7 +51,14 @@ namespace Damage.Controllers
 
                 foreach (var g in gadgetsForUser)
                 {
-                    if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
+                    if (g.Gadget.RequiresValidGoogleAccessToken && !hasLinkedGoogleAccount)
+                    {
+                        activeGadgets.Add(new RequiresOAuthGadget()
+                        {
+                            UserGadget = g
+                        });
+                    }
+                    else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
                         var newGadget = ServiceLocator.Current.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
                         newGadget.UserGadget = g;

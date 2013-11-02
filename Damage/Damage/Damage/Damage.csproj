@@ -228,6 +228,7 @@
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Gadget\GadgetPosition.cs" />
     <Compile Include="Gadget\GadgetSettingField.cs" />
+    <Compile Include="Gadget\RequiresOAuthGadget.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="Gadget\IGadget.cs" />
     <Compile Include="Global.asax.cs">
