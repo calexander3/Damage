@@ -42,6 +42,15 @@ namespace Damage.Gadget
         bool InBeta { get; }
 
         /// <summary>
+        /// Gets a value indicating whether [requires valid google access token]. 
+        /// If this flag is set to true, the application to get a new access token if the current one is expired.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [requires valid google access token]; otherwise, <c>false</c>.
+        /// </value>
+        bool RequiresValidGoogleAccessToken { get; }
+
+        /// <summary>
         /// Gets an empty settings object to be used during adding a gadget.
         /// </summary>
         /// <value>

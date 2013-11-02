@@ -46,5 +46,10 @@ namespace StockTicker
         {
             get { return true; }
         }
+
+        public bool RequiresValidGoogleAccessToken
+        {
+            get { return false; }
+        }
     }
 }

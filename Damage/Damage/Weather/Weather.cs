@@ -136,6 +136,10 @@ namespace Weather
             get { return false; }
         }
 
+        public bool RequiresValidGoogleAccessToken
+        {
+            get { return false; }
+        }
 
         public class GoogleGeoCodeResponse
         {

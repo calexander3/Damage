@@ -222,7 +222,7 @@ namespace Damage.Controllers
                 return RedirectToAction("ExternalLoginFailure");
             }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
+            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: true))
             {
                 //update oauth token
                 using (var db = new UsersContext())
@@ -232,6 +232,7 @@ namespace Damage.Controllers
                     if (user != null)
                     {
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
+                        user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         db.SaveChanges();
                     }
                 }
@@ -250,6 +251,7 @@ namespace Damage.Controllers
                     {
                         user.EmailAddress = result.ExtraData["email"];
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
+                        user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         db.SaveChanges();
                     }
                 }
@@ -294,11 +296,11 @@ namespace Damage.Controllers
                         var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
 
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = extraData["email"], CurrentOAuthAccessToken = extraData["accesstoken"] });
+                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = extraData["email"], CurrentOAuthAccessToken = extraData["accesstoken"], OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55) });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
 
                         return RedirectToLocal(returnUrl);
                     }

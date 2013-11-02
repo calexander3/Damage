@@ -42,8 +42,12 @@ namespace Damage.Gadget
             get { return ""; }
         }
 
-
         public bool InBeta
+        {
+            get { return false; }
+        }
+
+        public bool RequiresValidGoogleAccessToken
         {
             get { return false; }
         }

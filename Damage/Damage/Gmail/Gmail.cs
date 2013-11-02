@@ -77,6 +77,11 @@ namespace Gmail
             get { return false; }
         }
 
+        public bool RequiresValidGoogleAccessToken
+        {
+            get { return true; }
+        }
+
         public static bool ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock)
         {
             try

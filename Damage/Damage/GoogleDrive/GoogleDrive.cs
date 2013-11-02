@@ -46,5 +46,10 @@ namespace GoogleDrive
         {
             get { return true; }
         }
+
+        public bool RequiresValidGoogleAccessToken
+        {
+            get { return true; }
+        }
     }
 }

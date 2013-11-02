@@ -63,6 +63,7 @@ namespace Damage
                         currentGadget.AssemblyPresent = true;
                         currentGadget.GadgetTitle = gadget.Title;
                         currentGadget.GadgetDescription = gadget.Description;
+                        currentGadget.RequiresValidGoogleAccessToken = gadget.RequiresValidGoogleAccessToken;
                         currentGadget.InBeta = gadget.InBeta;
                         currentGadget.GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString();
                         currentGadget.DefaultSettings = gadget.DefaultSettings;
@@ -77,6 +78,7 @@ namespace Damage
                                 AssemblyPresent = true,
                                 GadgetTitle = gadget.Title,
                                 GadgetDescription = gadget.Description,
+                                RequiresValidGoogleAccessToken = gadget.RequiresValidGoogleAccessToken,
                                 InBeta = gadget.InBeta,
                                 GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
                                 DefaultSettings = gadget.DefaultSettings,

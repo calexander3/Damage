@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -23,6 +24,7 @@ namespace Damage.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string CurrentOAuthAccessToken { get; set; }
+        public DateTime OAuthAccessTokenExpiration { get; set; }
         public string EmailAddress { get; set; }
     }
 

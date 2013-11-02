@@ -142,5 +142,10 @@ namespace RSSReader
         {
             get { return false; }
         }
+
+        public bool RequiresValidGoogleAccessToken
+        {
+            get { return false; }
+        }
     }
 }
