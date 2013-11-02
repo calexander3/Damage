@@ -28,5 +28,15 @@ namespace Damage.DataAccess.Repositories
         {
             return m_Session.QueryOver<User>().Where(u => u.UserId == userId).SingleOrDefault();
         }
+
+        /// <summary>
+        /// Gets the user by username.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns></returns>
+        public User GetUserByUsername(string username)
+        {
+            return m_Session.QueryOver<User>().Where(u => u.UserName == username).SingleOrDefault();
+        }
     }
 }

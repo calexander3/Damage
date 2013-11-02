@@ -11,7 +11,8 @@ namespace Damage
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery.ui.touch-punch.min"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
@@ -19,7 +20,7 @@ namespace Damage
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/jquery-ui.css",
-                         "~/Content/site.css"));
+                        "~/Content/site.css"));
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.ServiceModel.Syndication;
+using Newtonsoft.Json;
 
 namespace GoogleCalendar
 {
@@ -13,12 +16,26 @@ namespace GoogleCalendar
         string _output = "";
         public void Initialize()
         {
-            //var request = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/calendar/v3/calendars/craig.d.alexander@gmail.com/events?timeMin=2013-04-26T00:00:00Z");
-            //using (var response = request.GetResponse())
-            //{
-            //    _output = new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd();
-            //}
+            var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
+            var sb = new System.Text.StringBuilder("<div style='max-height:600px;'>");
+            Calendar calendar = null;
+            var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
+            var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");
+            var request = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/calendar/v3/calendars/" + UserGadget.User.EmailAddress + "/events?singleEvents=true&orderBy=startTime&sanitizeHtml=true&timeMin=" + startTime + "&timeMax=" + endTime);
+            request.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
+            using (var response = request.GetResponse())
+            {
+                calendar = JsonConvert.DeserializeObject<Calendar>(new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd());
+            }
+
+            foreach (var calItem in calendar.items)
+            {
+                sb.Append(calItem.summary + "<br />");
+            }
+
+            sb.Append("</div>");
+            _output = sb.ToString();
         }
 
         public string HTML
@@ -38,19 +55,30 @@ namespace GoogleCalendar
 
         public string DefaultSettings
         {
-            get { return ""; }
+            get { return JsonConvert.SerializeObject(new GoogleCalendarOptions() { MonthsToDisplay = 6 }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
         {
-            get { return new List<GadgetSettingField>(); }
+            get
+            {
+                return new List<GadgetSettingField>() 
+                { 
+                    new GadgetSettingField() {
+                        DisplayName="Months to Display", 
+                        FieldName="MonthsToDisplay", 
+                        DataType= SettingDataTypes.Number, 
+                        Validators= Validators.Number | Validators.Required
+                    }
+                };
+            }
         }
 
         public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
 
         public bool InBeta
         {
-            get { return true; }
+            get { return false; }
         }
 
         public bool RequiresValidGoogleAccessToken

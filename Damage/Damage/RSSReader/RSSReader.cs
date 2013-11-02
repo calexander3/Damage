@@ -48,6 +48,7 @@ namespace RSSReader
 
                     SyndicationFeed feed = SyndicationFeed.Load(reader);
                     reader.Close();
+                    reader.Dispose();
 
                     if (feed.Links.Count > 0)
                     {

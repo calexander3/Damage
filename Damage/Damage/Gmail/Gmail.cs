@@ -27,7 +27,10 @@ namespace Gmail
                 {
                     if (client.IsAuthenticated)
                     {
-                        _output = "login successful";
+                        foreach (var folder in client.Folders)
+                        {
+                            _output += folder.Name + "<br />";
+                        }
                     }
                     else
                     {
@@ -74,7 +77,7 @@ namespace Gmail
 
         public bool InBeta
         {
-            get { return true; }
+            get { return false; }
         }
 
         public bool RequiresValidGoogleAccessToken

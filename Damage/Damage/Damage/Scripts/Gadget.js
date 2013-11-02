@@ -52,7 +52,7 @@
 
             dialogWindow.dialog({
                 modal: true,
-                width: 500,
+                width: 'auto',
                 buttons: {
                     Save: function () {
 
