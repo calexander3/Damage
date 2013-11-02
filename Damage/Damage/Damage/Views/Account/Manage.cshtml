@@ -1,13 +1,14 @@
 ﻿@model Damage.Models.LocalPasswordModel
+
 @{
-    ViewBag.Title = "Manage Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
 <div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+
+<hgroup class="title">
+    <h1>Manage Account</h1>
+</hgroup>
 
 <p class="message-success">@ViewBag.StatusMessage</p>
 

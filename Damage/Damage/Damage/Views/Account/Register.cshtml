@@ -1,11 +1,12 @@
 ﻿@model Damage.Models.RegisterModel
 @{
-    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>Register</h1>
 </hgroup>
 <section id="loginForm">
     <h2>Create a new local account.</h2>
@@ -36,7 +37,7 @@
     @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
 </section>
 
-<div style="clear:both;margin-top:400px; margin-left:auto; margin-right:auto; font-weight:600; font-size: large; width:75%; text-align:center;">If you are planning on using any gadgets that rely on Google services, it is recommended that you register via Google.</div>
+<div class="registration-account-warning">If you are planning on using any gadgets that rely on Google services, it is recommended that you register via Google.</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

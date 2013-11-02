@@ -1,11 +1,13 @@
 ﻿@model Damage.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>Log in</h1>
 </hgroup>
 
 <section id="loginForm">

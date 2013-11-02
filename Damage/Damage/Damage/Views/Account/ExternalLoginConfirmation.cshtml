@@ -1,10 +1,12 @@
 ﻿@model Damage.Models.RegisterExternalLoginModel
 @{
-    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>Register</h1>
     <h2>Associate your @ViewBag.ProviderDisplayName account.</h2>
 </hgroup>
 

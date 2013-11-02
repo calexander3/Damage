@@ -1,8 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Login Failure";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>Login Failure</h1>
     <h2>Unsuccessful login with service.</h2>
 </hgroup>
