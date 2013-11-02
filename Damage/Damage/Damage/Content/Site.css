@@ -2,7 +2,7 @@
     background-color: white;
     margin: 0;
     padding: 0;
-   height: 100%;
+    height: 100%;
 }
 
 body {
@@ -148,6 +148,12 @@ h5, h6 {
     padding: 10px;
 }
 
+.contact-content {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 footer {
     clear: both;
     background-color: #333;
@@ -157,7 +163,7 @@ footer {
     display: block;
     position: absolute;
     bottom: 0px;
-    left:0px;
+    left: 0px;
     width: 100%;
     vertical-align: bottom;
 }
@@ -192,9 +198,9 @@ footer {
     }
 
     .site-title img {
-        position: absolute;
-        top: 68px;
-        left: 750px;
+        margin-left: 5px;
+        position: relative;
+        top: 5px;
     }
 
 
@@ -380,9 +386,10 @@ input, textarea {
     padding: 5px;
     width: 300px;
 }
-input[type='radio'] {
-    width: 25px;
-}
+
+    input[type='radio'] {
+        width: 25px;
+    }
 
 textarea {
     font-family: inherit;
@@ -635,7 +642,7 @@ tr.pager td {
     background-color: rgba(23, 23, 23, 0.80);
     background-image: url(Images/garbage.png);
     background-repeat: no-repeat;
-    background-position:center; 
+    background-position: center;
     margin-left: auto;
     margin-right: auto;
     display: none;
@@ -645,7 +652,7 @@ tr.pager td {
 /********************
 *   Mobile Styles   *
 ********************/
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 650px) {
 
     /* header
     ----------------------------------------------------------*/
@@ -655,41 +662,36 @@ tr.pager td {
     }
 
     /* logo */
-    header .site-title {
-        margin: 10px;
-        text-align: center;
+    .site-title {
+        padding: 0px;
+        text-align: right;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    /* login */
-    #login {
-        font-size: .85em;
-        margin: 0 0 12px;
-        text-align: center;
+        .site-title img {
+            top: -10px;
+            left: -5px;
+        }
+
+        .site-title .subtitle {
+            display: none;
+        }
+
+        .site-title input {
+            margin-left: 5px;
+            margin-right: 5px;
+            position: relative;
+            top: -4px;
+        }
+
+    .add-gadget-button {
+        left: 10px;
     }
 
-        #login ul {
-            margin: 5px 0;
-            padding: 0;
+        .add-gadget-button a {
+            color: #c8c8c8;
         }
-
-        #login li {
-            display: inline;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        #login a {
-            background: none;
-            color: #999;
-            font-weight: 600;
-            margin: 2px;
-            padding: 0;
-        }
-
-            #login a:hover {
-                color: #333;
-            }
 
     /* menu */
     nav {
@@ -707,6 +709,11 @@ tr.pager td {
             padding: 0;
         }
 
+
+    .GadgetColumn {
+        width: 100%;
+        min-height: 200px;
+    }
 
     /* main layout
     ----------------------------------------------------------*/
