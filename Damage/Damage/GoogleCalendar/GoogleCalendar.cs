@@ -18,7 +18,7 @@ namespace GoogleCalendar
         {
             var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
-            var sb = new System.Text.StringBuilder("<div style='max-height:600px;'>");
+            var sb = new System.Text.StringBuilder("<div style='max-height:600px; margin-left:5px; margin-right:5px;'>");
             Calendar calendar = null;
             var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
             var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");
@@ -29,9 +29,21 @@ namespace GoogleCalendar
                 calendar = JsonConvert.DeserializeObject<Calendar>(new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd());
             }
 
+            var previousDate = "";
             foreach (var calItem in calendar.items)
             {
-                sb.Append(calItem.summary + "<br />");
+                var eventDate = System.DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
+                if (previousDate != eventDate)
+                {
+                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold'>" + eventDate  + "</div>");
+                    previousDate = eventDate;
+                }
+                sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") + 
+                    System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary) +
+                    "' href='" + calItem.htmlLink + "' >" + calItem.summary + "</a><div style='float:right;white-space:nowrap;'>" +
+                    (calItem.start.dateTime != null ? System.DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
+                    (calItem.end.dateTime != null ? " - " + System.DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
+                    "</div></div>");
             }
 
             sb.Append("</div>");
