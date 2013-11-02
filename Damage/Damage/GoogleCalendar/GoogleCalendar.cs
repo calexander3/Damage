@@ -14,8 +14,10 @@ namespace GoogleCalendar
     public class GoogleCalendar : IGadget
     {
         string _output = "";
+        string _title = "Google Calendar";
         public void Initialize()
         {
+            _title = "<a href='https://www.google.com/calendar' target='_blank' >Google Calendar</a>";
             var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
             var sb = new System.Text.StringBuilder("<div style='max-height:600px; margin-left:5px; margin-right:5px;'>");
@@ -35,7 +37,7 @@ namespace GoogleCalendar
                 var eventDate = System.DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
                 if (previousDate != eventDate)
                 {
-                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold'>" + eventDate  + "</div>");
+                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;'>" + eventDate + "</div>");
                     previousDate = eventDate;
                 }
                 sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") + 
@@ -57,7 +59,7 @@ namespace GoogleCalendar
 
         public string Title
         {
-            get { return "Google Calendar"; }
+            get { return _title; }
         }
 
         public string Description
