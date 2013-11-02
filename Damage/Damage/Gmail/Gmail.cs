@@ -74,7 +74,7 @@ namespace Gmail
 
         public bool InBeta
         {
-            get { return false; }
+            get { return true; }
         }
 
         public bool RequiresValidGoogleAccessToken
