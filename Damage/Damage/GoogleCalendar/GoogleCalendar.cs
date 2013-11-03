@@ -20,7 +20,7 @@ namespace GoogleCalendar
             _title = "<a href='https://www.google.com/calendar' target='_blank' >Google Calendar</a>";
             var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
-            var sb = new System.Text.StringBuilder("<div style='max-height:600px; margin-left:5px; margin-right:5px;'>");
+            var sb = new System.Text.StringBuilder("<div style='max-height:400px;overflow-y:auto;margin-left:5px;margin-right:5px;'>");
             Calendar calendar = null;
             var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
             var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");

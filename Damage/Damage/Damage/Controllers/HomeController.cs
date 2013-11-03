@@ -77,6 +77,11 @@ namespace Damage.Controllers
             return View(activeGadgets);
         }
 
+        public string healthCheck()
+        {
+            return "ok";
+        }
+
         public ActionResult Contact()
         {
             return View();
