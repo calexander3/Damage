@@ -168,6 +168,20 @@ footer {
     vertical-align: bottom;
 }
 
+.paypal {
+    margin-top: 10px;
+    margin-right: 3px;
+}
+
+    .paypal input {
+        border: none;
+        background: transparent;
+        font-size: 1.2em;
+        margin: 0px;
+        padding: 0px;
+        width: auto;
+    }
+
 
 /* site title
 ----------------------------------------------------------*/
