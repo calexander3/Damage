@@ -68,7 +68,7 @@ namespace Damage.DataAccess
         private ISessionFactory ConfigureNHibernate(string ConnectionString)
         {
             //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
-            return Fluently.Configure().Database(new SqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).BuildSessionFactory();
+            return Fluently.Configure().Database(new SqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).ExposeConfiguration(cfg => cfg.SetProperty("hbm2ddl.keywords", "none")).BuildSessionFactory();
         }
 
         #region "IDisposable Support"
