@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Newtonsoft.Json;
 using WebMatrix.WebData;
+using Damage.DataAccess;
 
 namespace Damage.Controllers
 {
@@ -82,6 +83,16 @@ namespace Damage.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
+                    using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                    {
+                        var gadgets = uow.GadgetRepository.GetDefaultGadgets();
+                        var user = uow.UserRepository.GetUserByUsername(model.UserName);
+                        foreach (var gadget in gadgets)
+                        {
+                            gadget.User = user;
+                        }
+                        uow.UserGadgetRepository.Save(gadgets);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -301,6 +312,17 @@ namespace Damage.Controllers
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
+
+                        using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                        {
+                            var gadgets = uow.GadgetRepository.GetDefaultGadgets();
+                            var nhUser = uow.UserRepository.GetUserByUsername(model.UserName);
+                            foreach (var gadget in gadgets)
+                            {
+                                gadget.User = nhUser;
+                            }
+                            uow.UserGadgetRepository.Save(gadgets);
+                        }
 
                         return RedirectToLocal(returnUrl);
                     }
