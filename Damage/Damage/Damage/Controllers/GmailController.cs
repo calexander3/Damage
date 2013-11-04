@@ -13,7 +13,7 @@ namespace Damage.Controllers
 {
     public class GmailController : BaseController
     {
-        public JsonResult GetMail(int? timezoneOffset)
+        public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, string folderName)
         {
             var successful = false;
             var output = new List<GmailMessage>();
@@ -35,7 +35,7 @@ namespace Damage.Controllers
                             {
                                 if (client.IsAuthenticated)
                                 {
-                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search().OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
+                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == folderName.ToLower()).Search((showUnreadOnly ? "UNSEEN" : "ALL")).OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
                                     foreach (var m in _messages)
                                     {
                                         var messageDate =  (timezoneOffset.HasValue ? m.InternalDate.Value.AddMinutes(timezoneOffset.Value) : m.InternalDate.Value.AddMinutes(timezoneOffset.Value));

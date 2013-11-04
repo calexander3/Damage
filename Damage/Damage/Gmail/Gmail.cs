@@ -1,12 +1,8 @@
 ﻿using Damage;
 using Damage.Gadget;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Gmail
 {
@@ -17,8 +13,10 @@ namespace Gmail
         public void Initialize()
         {
             _title = "<a href='https://mail.google.com/mail/' target='_blank' >Gmail</a>";
+            var settings = JsonConvert.DeserializeObject<GmailOptions>(UserGadget.GadgetSettings);
+
             var id = ShortGuid.NewGuid().ToString();
-            var sb = new System.Text.StringBuilder("<div id='" + id + "' class='gmailContainer'><div class='gmailToolbox'><img src='' alt='Delete' onclick='deleteMail()' /></div></div>");
+            var sb = new StringBuilder("<div id='" + id + "' class='gmailContainer'><div class='gmailToolbox'><img src='' alt='Delete' onclick='deleteMail()' /></div></div>");
             sb.Append("<script type='text/javascript' >");
 
             sb.Append(@"function openToolbox()
@@ -50,7 +48,7 @@ namespace Gmail
 
             sb.Append(@" $.ajax({
         url: '/gmail/GetMail',
-        data: { timezoneOffset: $('#timeZoneOffset').val() },
+        data: { timezoneOffset: $('#timeZoneOffset').val(), showUnreadOnly : " + settings.ShowUnreadOnly.ToString().ToLower() + @", folderName : '" + settings.FolderName + @"' },
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -94,12 +92,19 @@ namespace Gmail
 
         public string DefaultSettings
         {
-            get { return ""; }
+            get { return JsonConvert.SerializeObject(new GmailOptions { FolderName = "Inbox", ShowUnreadOnly = false }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
         {
-            get { return new List<GadgetSettingField>(); }
+            get
+            {
+                return new List<GadgetSettingField>
+                {
+                    new GadgetSettingField{FieldName="FolderName", DisplayName = "Folder Name", DataType= SettingDataTypes.Text, Validators= Validators.Required},
+                    new GadgetSettingField{FieldName="ShowUnreadOnly", DisplayName = "Show Unread Items Only", DataType= SettingDataTypes.Checkbox, Validators= Validators.None}
+                };
+            }
         }
 
         public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }

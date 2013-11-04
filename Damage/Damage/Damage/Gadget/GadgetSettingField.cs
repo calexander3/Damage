@@ -33,6 +33,7 @@ namespace Damage.Gadget
     [Flags]
     public enum Validators
     {
+        None = 0,
         Required = 1,
         Number = 2,
         Url = 4,
