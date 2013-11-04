@@ -89,7 +89,7 @@ namespace Damage.DataAccess.Repositories
                 DisplayColumn = 1,
                 DisplayOrdinal = 1,
                 Gadget = rssGadget,
-                GadgetSettings = @"{""FeedURL"":""http://www.marco.org/rss"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
+                GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
             });
 
 

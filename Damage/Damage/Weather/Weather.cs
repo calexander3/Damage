@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Damage.Gadget;
 using Newtonsoft.Json;
+using Damage;
 
 namespace Weather
 {
@@ -64,7 +65,7 @@ namespace Weather
 
                 if (lat != 0 && lng != 0)
                 {
-                    _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
+                    _output = "<iframe id='forecast_embed" + ShortGuid.NewGuid().ToString() + "' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
                 }
                 else
                 {

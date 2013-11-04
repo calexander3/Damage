@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Damage.Controllers
 {
@@ -28,6 +30,26 @@ namespace Damage.Controllers
             }
             filterContext.ExceptionHandled = true;
             base.OnException(filterContext);
+        }
+
+        /// <summary>
+        /// Executes the action but limits the execution to the given timespan.
+        /// </summary>
+        /// <param name="timeSpan">The time span.</param>
+        /// <param name="codeBlock">The code block.</param>
+        /// <returns>True if the action was able to be executed within the timespan, otherwise false</returns>
+        protected static bool ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock)
+        {
+            try
+            {
+                Task task = Task.Factory.StartNew(() => codeBlock());
+                task.Wait(timeSpan);
+                return task.IsCompleted;
+            }
+            catch (AggregateException ae)
+            {
+                throw ae.InnerExceptions[0];
+            }
         }
     }
 }

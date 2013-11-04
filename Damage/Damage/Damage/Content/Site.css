@@ -7,7 +7,7 @@
 
 body {
     background-color: white;
-    color: #333;
+    color: black;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -16,7 +16,7 @@ body {
 }
 
 a {
-    color: #333;
+    color: black;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -673,6 +673,61 @@ tr.pager td {
     margin-left: auto;
     margin-right: auto;
     display: none;
+}
+
+.gmailContainer {
+    height: 500px;
+    overflow-y: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-image: url(Images/AjaxLoader.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.gmailItem {
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.gmailCheckBox {
+    float: left;
+    margin-left: 3px;
+    margin-right: 15px;
+    margin-top: 20px;
+}
+
+.gmailFrom {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.gmailDate {
+    float: right;
+    font-size: 0.8em;
+}
+
+.gmailSubject {
+}
+
+.gmailPreview {
+    font-size: 0.8em;
+}
+
+.gmailDivider {
+    height: 1px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #c8c8c8;
+}
+
+.gmailread {
+    color: #787878;
+    font-weight: 400;
 }
 
 

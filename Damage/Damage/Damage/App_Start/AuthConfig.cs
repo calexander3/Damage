@@ -13,7 +13,7 @@ namespace Damage
             var client = new GoogleOAuth2Client("14362457062.apps.googleusercontent.com", "AAHirbGW44QCmGG1VUSqvV2c", 
                 new[] { "userinfo.profile", 
                         "userinfo.email", 
-                        "https://mail.google.com/", 
+                        "https://mail.google.com/",
                         "calendar.readonly",
                         "drive.metadata.readonly"});
             var extraData = new Dictionary<string, object>();

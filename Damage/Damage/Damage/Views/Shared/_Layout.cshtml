@@ -16,6 +16,59 @@
 	}
 </head>
 <body>
+	<input id="timeZoneOffset" type="hidden" />
+	<script type="text/javascript">
+		var offset = new Date();
+		$("#timeZoneOffset").val(-offset.getTimezoneOffset());
+
+		function dialog(title, body) {
+		    var dialogWindow = $("#dialog");
+		    dialogWindow.prop("title", title);
+		    dialogWindow.html(body);
+		    dialogWindow.dialog({
+		        buttons: {
+		            Ok: function () {
+		                $(this).dialog("close");
+		            }
+		        },
+		        close: function (event, ui) { dialogWindow.html(""); }
+		    });
+		}
+
+		$(document).ready(function () {
+		    $.ajaxSetup({
+		        cache: false,
+		        traditional: true,
+		        type: "POST",
+		        error: function (request, status, error) {
+		            dialog("Error", "An error has occurred: (" + request.status + ") " + request.statusText);
+		        }
+		    });
+
+
+
+		    $("#txtSearch").autocomplete({
+		        source: function (request, response) {
+		            $.ajax({
+		                url: "https://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
+		                dataType: "jsonp",
+		                success: function (data) {
+		                    response($.map(data[1], function (item) {
+		                        return {
+		                            label: item,
+		                            value: item
+		                        }
+		                    }));
+		                }
+		            });
+		        },
+		        minLength: 2,
+		        select: function (event, ui) {
+		            Search(ui.item.value)
+		        }
+		    });
+		});
+	</script>
 	<div id="holder" style="min-height: 100%; position: relative;">
 		<div id="holder2" style="padding-bottom: 70px">
 			<header>
@@ -84,57 +137,5 @@
 			@RenderSection("footer", required: false)
 		</footer>
 	</div>
-
-	<script type="text/javascript">
-
-		function dialog(title, body) {
-			var dialogWindow = $("#dialog");
-			dialogWindow.prop("title", title);
-			dialogWindow.html(body);
-			dialogWindow.dialog({
-				buttons: {
-					Ok: function () {
-						$(this).dialog("close");
-					}
-				},
-				close: function (event, ui) { dialogWindow.html(""); }
-			});
-		}
-
-		$(document).ready(function () {
-			$.ajaxSetup({
-				cache: false,
-				traditional: true,
-				type: "POST",
-				error: function (request, status, error) {
-					dialog("Error", "An error has occurred: (" + request.status + ") " + request.statusText);
-				}
-			});
-
-
-
-			$("#txtSearch").autocomplete({
-				source: function (request, response) {
-					$.ajax({
-						url: "https://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
-						dataType: "jsonp",
-						success: function (data) {
-							response($.map(data[1], function (item) {
-								return {
-									label: item,
-									value: item
-								}
-							}));
-						}
-					});
-				},
-				minLength: 2,
-				select: function (event, ui) {
-					Search(ui.item.value)
-				}
-			});
-		});
-
-	</script>
 </body>
 </html>
