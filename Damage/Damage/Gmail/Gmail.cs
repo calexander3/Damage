@@ -18,8 +18,24 @@ namespace Gmail
         {
             _title = "<a href='https://mail.google.com/mail/' target='_blank' >Gmail</a>";
             var id = ShortGuid.NewGuid().ToString();
-            var sb = new System.Text.StringBuilder("<div id='" + id + "' class='gmailContainer'></div>");
+            var sb = new System.Text.StringBuilder("<div id='" + id + "' class='gmailContainer'><div class='gmailToolbox'></div></div>");
             sb.Append("<script type='text/javascript' >");
+
+            sb.Append(@"function openToolbox()
+                        {
+                            var container = $('#" + id + @"');
+                            if(container.find('input:checked').length > 0)
+                            {
+                                //container.children('.gmailToolbox').css('display','block');
+                                container.children('.gmailToolbox').slideDown('fast');
+                            }
+                            else
+                            {
+                                //container.children('.gmailToolbox').css('display','none');
+                                container.children('.gmailToolbox').slideUp('fast');
+                            }
+                        }");
+
             sb.Append("$(document).ready(function () {");
 
             sb.Append(@" $.ajax({
@@ -35,7 +51,7 @@ namespace Gmail
             {
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
-                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageId + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageId + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div></div><div class=""gmailDivider""></div>');
+                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageid=""' + message.MessageId + '"" onclick=""openToolbox()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageIdHex + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageIdHex + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div></div><div class=""gmailDivider""></div>');
                 });
             }
             else
