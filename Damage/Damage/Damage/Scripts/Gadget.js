@@ -10,6 +10,13 @@
         dataType: 'json',
         success: function (data) {
             //Create settings form
+            
+            //TODO: Move this into a plugin or something
+            $.validator.addMethod('integer', function (value, element, param) {
+                return (value > 0) && (value == parseInt(value, 10));
+            }, 'Please enter a non zero, positive, integer value.');
+            
+
             var validationRules = {};
             var settingsFormHTML = "<form id='settingsForm'><table id='settingTable'>";
             var settingsSchema = JSON.parse(data.SettingsSchema);
@@ -114,6 +121,10 @@ function buildValidationRules(validatorOptions) {
 
     if (validatorOptions & 32) {
         validationRules.email = true;
+    }
+    
+    if (validatorOptions & 64) {
+        validationRules.integer = true;
     }
 
     return validationRules;

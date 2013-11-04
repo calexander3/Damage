@@ -127,7 +127,7 @@ namespace RSSReader
                 return new List<GadgetSettingField>()
                     {
                         new GadgetSettingField(){FieldName="FeedURL", DisplayName="Feed Url", DataType= SettingDataTypes.Url, Validators = Validators.Required | Validators.Url },
-                        new GadgetSettingField(){FieldName="ItemsToDisplay", DisplayName="Items To Display", DataType= SettingDataTypes.Number,  Validators = Validators.Required | Validators.Number },
+                        new GadgetSettingField(){FieldName="ItemsToDisplay", DisplayName="Items To Display", DataType= SettingDataTypes.Number,  Validators = Validators.Required | Validators.Integer },
                         new GadgetSettingField(){FieldName="ExpandItemsByDefault", DisplayName="Expand Items By Default", DataType= SettingDataTypes.Checkbox }
                     };
             }

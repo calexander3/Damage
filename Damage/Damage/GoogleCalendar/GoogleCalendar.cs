@@ -82,7 +82,7 @@ namespace GoogleCalendar
                         DisplayName="Months to Display", 
                         FieldName="MonthsToDisplay", 
                         DataType= SettingDataTypes.Number, 
-                        Validators= Validators.Number | Validators.Required
+                        Validators= Validators.Integer | Validators.Required
                     }
                 };
             }

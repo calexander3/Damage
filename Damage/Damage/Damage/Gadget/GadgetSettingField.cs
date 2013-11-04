@@ -30,6 +30,7 @@ namespace Damage.Gadget
         Week = 13
     }
 
+    [Flags]
     public enum Validators
     {
         Required = 1,
@@ -37,6 +38,7 @@ namespace Damage.Gadget
         Url = 4,
         Date = 8,
         DateISO = 16,
-        Email = 32
+        Email = 32,
+        Integer = 64
     }
 }
