@@ -685,6 +685,10 @@ tr.pager td {
     background-position: center;
 }
 
+    .gmailContainer a {
+        text-decoration: none;
+    }
+
 
 .gmailItem {
     overflow: hidden;

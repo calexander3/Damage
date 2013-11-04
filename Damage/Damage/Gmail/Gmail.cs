@@ -35,7 +35,7 @@ namespace Gmail
             {
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
-                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom"">' + message.From + '</div><div class=""gmailSubject"">' + message.Subject + '</div><div class=""gmailPreview"">' + message.Preview + '</div></div><div class=""gmailDivider""></div>');
+                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageId + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.MessageId + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div></div><div class=""gmailDivider""></div>');
                 });
             }
             else

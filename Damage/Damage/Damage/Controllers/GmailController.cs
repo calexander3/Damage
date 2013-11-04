@@ -44,7 +44,7 @@ namespace Damage.Controllers
                                         {
                                             Subject = m.Subject,
                                             From = (m.From.DisplayName.Length > 0 ? m.From.DisplayName : m.From.Address),
-                                            MessageId = m.GMailMessageId.Value,
+                                            MessageId = m.GmailThread.Id.ToString("X").ToLower(),
                                             Date = messageDateString,
                                             Preview = getPreview(m.Body),
                                             Unread = !m.Seen,
@@ -84,7 +84,7 @@ namespace Damage.Controllers
             public string From { get; set; }
             public string Preview { get; set; }
             public string Subject { get; set; }
-            public long MessageId { get; set; }
+            public string MessageId { get; set; }
             public string Date { get; set; }
             public bool Unread { get; set; }
             public bool Important { get; set; }
