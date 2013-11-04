@@ -46,6 +46,7 @@ namespace Damage.Controllers
                                             From = (m.From.DisplayName.Length > 0 ? m.From.DisplayName : m.From.Address),
                                             MessageIdHex = m.GmailThread.Id.ToString("X").ToLower(),
                                             MessageId =  m.GmailThread.Id,
+                                            ImapId = m.UId,
                                             Date = messageDateString,
                                             Preview = getPreview(m.Body),
                                             Unread = !m.Seen,
@@ -60,6 +61,38 @@ namespace Damage.Controllers
                 }
             }
             return Json(new { Result = successful, Data = output }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteMail(string MessageId)
+        {
+            var successful = false;
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+
+                    if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
+                    {
+                        var client = new ImapX.ImapClient("imap.gmail.com", true, true);
+                        client.Behavior.MessageFetchMode = MessageFetchMode.Basic | MessageFetchMode.GMailExtendedData | MessageFetchMode.InternalDate;
+                        if (client.Connect())
+                        {
+                            var credentials = new OAuth2Credentials(user.EmailAddress, user.CurrentOAuthAccessToken);
+                            if (ExecuteWithTimeLimit(new TimeSpan(0, 0, 5), () => { client.Login(credentials); }))
+                            {
+                                if (client.IsAuthenticated)
+                                {
+                                    var _message = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search("uid " + MessageId, MessageFetchMode.GMailExtendedData).Single();
+                                    successful = _message.Remove();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Json(new { Result = successful }, JsonRequestBehavior.AllowGet);
         }
 
         private string getPreview(MessageBody body)
@@ -87,6 +120,7 @@ namespace Damage.Controllers
             public string Subject { get; set; }
             public string MessageIdHex { get; set; }
             public long MessageId { get; set; }
+            public long ImapId { get; set; }
             public string Date { get; set; }
             public bool Unread { get; set; }
             public bool Important { get; set; }
