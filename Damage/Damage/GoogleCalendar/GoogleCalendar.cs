@@ -20,7 +20,7 @@ namespace GoogleCalendar
             _title = "<a href='https://www.google.com/calendar' target='_blank' >Google Calendar</a>";
             var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
-            var sb = new System.Text.StringBuilder("<div style='max-height:400px;overflow-y:auto;margin-left:5px;margin-right:5px;'>");
+            var sb = new System.Text.StringBuilder("<div style='max-height:400px;overflow-y:auto;margin-left:5px;margin-right:5px;margin-top:2px;margin-bottom:2px;'>");
             Calendar calendar = null;
             var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
             var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");
@@ -37,7 +37,7 @@ namespace GoogleCalendar
                 var eventDate = System.DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
                 if (previousDate != eventDate)
                 {
-                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;'>" + eventDate + "</div>");
+                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'>" + eventDate + "</div>");
                     previousDate = eventDate;
                 }
                 sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") + 

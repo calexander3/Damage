@@ -16,7 +16,7 @@ namespace Gmail
             var settings = JsonConvert.DeserializeObject<GmailOptions>(UserGadget.GadgetSettings);
 
             var id = ShortGuid.NewGuid().ToString();
-            var sb = new StringBuilder("<div id='" + id + "' class='gmailContainer'><div class='gmailToolbox'><img src='' alt='Delete' onclick='deleteMail()' /></div></div>");
+            var sb = new StringBuilder("<div style='position: relative;'><div id='" + id + "' class='gmailContainer'></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' onclick='archiveMail()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' onclick='deleteMail()' /></div></div></div>");
             sb.Append("<script type='text/javascript' >");
 
             sb.Append(@"function openToolbox()
@@ -24,38 +24,70 @@ namespace Gmail
                             var container = $('#" + id + @"');
                             if(container.find('input:checked').length > 0)
                             {
-                                //container.children('.gmailToolbox').css('display','block');
-                                container.children('.gmailToolbox').slideDown('fast');
+                                container.parent().children('.gmailToolbox').slideDown('fast');
                             }
                             else
                             {
-                                //container.children('.gmailToolbox').css('display','none');
-                                container.children('.gmailToolbox').slideUp('fast');
+                                container.parent().children('.gmailToolbox').slideUp('fast');
                             }
                         }");
 
             sb.Append(@"function deleteMail()
                         {
-//                            var container = $('#" + id + @"');
-//                            var inputs = container.find('input:checked');
-//                            if(inputs.length > 0)
-//                            {
-//                                messageIds = [];
-//                                $.each(inputs, function(index, input) {
-//                                    messageIds.push($(input).attr('data-messageid'));
-//                                });
-//
-//                                $.ajax({
-//                                url: '/gmail/DeleteMail',
-//                                data: JSON.stringify( { 'MessageIds': messageIds}),
-//                                type: 'POST',
-//                                contentType: 'application/json',
-//                                dataType: 'json',
-//                                success: function (resultSet) {
-//                                    alert(resultSet.Result);
-//                                }
-//                                });
-//                            }
+                            var container = $('#" + id + @"');
+                            var inputs = container.find('input:checked');
+                            if(inputs.length > 0)
+                            {
+                                var messageIds = [];
+                                $.each(inputs, function(index, input) {
+                                    var internalMessageIds = $(input).attr('data-messageids').split(',');
+                                    messageIds = $.merge(messageIds,internalMessageIds);
+                                    $(input).parent().parent().css('display','none');
+                                });
+
+                                $.ajax({
+                                url: '/gmail/DeleteMail',
+                                data: JSON.stringify( { 'MessageIds': messageIds}),
+                                type: 'POST',
+                                contentType: 'application/json',
+                                dataType: 'json',
+                                success: function (resultSet) {
+                                    if(!resultSet.Result)
+                                    {
+                                        dialog('Error','There was a problem with deleting your mail messages. Please refresh and try again.');
+                                    }
+                                }
+                                });
+                            }
+                        }");
+
+            sb.Append(@"function archiveMail()
+                        {
+                            var container = $('#" + id + @"');
+                            var inputs = container.find('input:checked');
+                            if(inputs.length > 0)
+                            {
+                                var messageIds = [];
+                                $.each(inputs, function(index, input) {
+                                    var internalMessageIds = $(input).attr('data-messageids').split(',');
+                                    messageIds = $.merge(messageIds,internalMessageIds);
+                                    $(input).parent().parent().css('display','none');
+                                });
+
+                                $.ajax({
+                                url: '/gmail/ArchiveMail',
+                                data: JSON.stringify( { 'MessageIds': messageIds}),
+                                type: 'POST',
+                                contentType: 'application/json',
+                                dataType: 'json',
+                                success: function (resultSet) {
+                                    if(!resultSet.Result)
+                                    {
+                                        dialog('Error','There was a problem with archiving your mail messages. Please refresh and try again.');
+                                    }
+                                }
+                                });
+                            }
                         }");
 
             sb.Append("$(document).ready(function () {");
@@ -73,7 +105,7 @@ namespace Gmail
             {
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
-                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageid=""' + message.ThreadId + '"" onclick=""openToolbox()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div></div><div class=""gmailDivider""></div>');
+                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
                 });
             }
             else

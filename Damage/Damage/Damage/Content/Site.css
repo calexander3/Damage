@@ -615,7 +615,7 @@ tr.pager td {
     margin-right: 5px;
     margin-left: 5px;
     margin-bottom: 10px;
-    padding: 2px;
+    padding: 1px;
     background: white;
     overflow-x: auto;
 }
@@ -681,7 +681,6 @@ tr.pager td {
     background-image: url(Images/AjaxLoader.gif);
     background-repeat: no-repeat;
     background-position: center;
-    position: relative;
 }
 
     .gmailContainer a {
@@ -689,19 +688,27 @@ tr.pager td {
     }
 
 .gmailToolbox {
-    height: 50px;
+    height: 40px;
     position: absolute;
     bottom: 0px;
     width: 100%;
     background: #333;
     display: none;
+    z-index:999;
+}
+
+.gmailToolboxItem{
+    float:left;
+    margin-left:10px;
+    margin-right:5px;
+    margin-top:5px;
+    cursor:pointer;
 }
 
 
 .gmailItem {
     overflow: hidden;
     white-space: nowrap;
-    margin-bottom: 10px;
     margin-top: 5px;
 }
 
@@ -735,6 +742,7 @@ tr.pager td {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 10px;
     background-color: #c8c8c8;
 }
 

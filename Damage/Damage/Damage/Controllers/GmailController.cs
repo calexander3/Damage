@@ -45,7 +45,7 @@ namespace Damage.Controllers
                                         {
                                             threads.Add(m.GmailThread.Id, m);
                                             threadCounts.Add(m.GmailThread.Id, 1);
-                                            threadMessages.Add(m.GmailThread.Id, new List<long>() {m.UId});
+                                            threadMessages.Add(m.GmailThread.Id, new List<long>() { m.UId });
                                         }
                                         else
                                         {
@@ -64,7 +64,7 @@ namespace Damage.Controllers
                                             From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
                                             ThreadIdHex = thread.Value.GmailThread.Id.ToString("X").ToLower(),
                                             ThreadId = thread.Value.GmailThread.Id,
-                                            ThreadMessageIds = threadMessages[thread.Value.GmailThread.Id],
+                                            ThreadMessageIds = string.Join(",", threadMessages[thread.Value.GmailThread.Id].ToArray()),
                                             Date = messageDateString,
                                             Preview = getPreview(thread.Value.Body),
                                             Unread = !thread.Value.Seen,
@@ -85,6 +85,8 @@ namespace Damage.Controllers
         [HttpPost]
         public JsonResult DeleteMail(string[] MessageIds)
         {
+            var t = new System.Diagnostics.Stopwatch();
+            t.Start();
             var successful = false;
             if (Request.IsAuthenticated)
             {
@@ -95,7 +97,7 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         var client = new ImapX.ImapClient("imap.gmail.com", true, true);
-                        client.Behavior.MessageFetchMode = MessageFetchMode.Headers | MessageFetchMode.GMailExtendedData | MessageFetchMode.InternalDate;
+                        client.Behavior.MessageFetchMode = MessageFetchMode.Headers | MessageFetchMode.GMailExtendedData;
                         if (client.Connect())
                         {
                             var credentials = new OAuth2Credentials(user.EmailAddress, user.CurrentOAuthAccessToken);
@@ -103,17 +105,18 @@ namespace Damage.Controllers
                             {
                                 if (client.IsAuthenticated)
                                 {
-                                    var MessageIdSequence =  string.Join(",", MessageIds);
-                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search("uid " + MessageIdSequence, MessageFetchMode.GMailExtendedData);
+                                    var MessageIdSequence = string.Join(",", MessageIds);
+
+                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search("uid " + MessageIdSequence);
                                     foreach (var m in _messages)
                                     {
+                                        var trash = client.Folders.Single(f => f.Name.ToLower() == "[gmail]").SubFolders.Single(f => f.Name.ToLower() == "trash");
                                         foreach (var tm in m.GmailThread.Messages)
                                         {
-                                             tm.MoveTo(client.Folders.Single(f => f.Name.ToLower() == "[gmail]").SubFolders.Single(f => f.Name.ToLower() == "trash"));
+                                            tm.MoveTo(trash);
                                         }
                                     }
-
-                                   successful = true;
+                                    successful = true;
                                 }
                             }
                         }
@@ -146,7 +149,7 @@ namespace Damage.Controllers
                                 if (client.IsAuthenticated)
                                 {
                                     var MessageIdSequence = string.Join(",", MessageIds);
-                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search("uid " + MessageIdSequence, MessageFetchMode.GMailExtendedData);
+                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == "inbox").Search("uid " + MessageIdSequence);
                                     foreach (var m in _messages)
                                     {
                                         foreach (var tm in m.GmailThread.Messages)
@@ -190,7 +193,7 @@ namespace Damage.Controllers
             public string Subject { get; set; }
             public string ThreadIdHex { get; set; }
             public long ThreadId { get; set; }
-            public List<long> ThreadMessageIds { get; set; }
+            public string ThreadMessageIds { get; set; }
             public string Date { get; set; }
             public bool Unread { get; set; }
             public bool Important { get; set; }
