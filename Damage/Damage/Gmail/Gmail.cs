@@ -42,7 +42,8 @@ namespace Gmail
                                 $.each(inputs, function(index, input) {
                                     var internalMessageIds = $(input).attr('data-messageids').split(',');
                                     messageIds = $.merge(messageIds,internalMessageIds);
-                                    $(input).parent().parent().css('display','none');
+                                    $(input).parent().parent().remove();
+                                    openToolbox();
                                 });
 
                                 $.ajax({
@@ -71,7 +72,8 @@ namespace Gmail
                                 $.each(inputs, function(index, input) {
                                     var internalMessageIds = $(input).attr('data-messageids').split(',');
                                     messageIds = $.merge(messageIds,internalMessageIds);
-                                    $(input).parent().parent().css('display','none');
+                                    $(input).parent().parent().remove();
+                                    openToolbox();
                                 });
 
                                 $.ajax({
