@@ -32,6 +32,11 @@ namespace Gmail
                             }
                         }");
 
+            sb.Append(@"function makeRead" + id + @"(element)
+                        {
+                            $(element).parent().addClass('gmailread').parent().addClass('gmailread');
+                        }");
+
             sb.Append(@"function deleteMail" + id + @"()
                         {
                             var container = $('#" + id + @"').children('.gmailContainer');
@@ -110,7 +115,7 @@ namespace Gmail
                 header.html('" + settings.FolderName + @"  (' + resultSet.UnreadCount + ')');
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
-                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox" + id + @"()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
+                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox" + id + @"()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.From + '</a></div><div class=""gmailSubject""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
                 });
             }
             else

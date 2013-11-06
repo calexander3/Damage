@@ -76,7 +76,7 @@ namespace Damage.Controllers
                                             Date = messageDateString,
                                             Preview = getPreview(thread.Value.Body),
                                             Unread = unread,
-                                            Important = (thread.Value.Labels.Any() && thread.Value.Labels[0].Equals("////Important"))
+                                            Important = (thread.Value.Labels.Any() && thread.Value.Labels[0].Equals("\\\\Important"))
                                         });
                                     }
 
