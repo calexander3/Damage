@@ -15,8 +15,6 @@ namespace Damage.Controllers
     {
         public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, string folderName)
         {
-            var t = new System.Diagnostics.Stopwatch();
-            t.Start();
             var successful = false;
             var output = new List<GmailMessage>();
             var unreadCount = 0;
@@ -29,7 +27,7 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        var client = new ImapX.ImapClient("imap.gmail.com", true, true);
+                        var client = new ImapX.ImapClient("imap.gmail.com", true, false);
                         client.Behavior.MessageFetchMode = MessageFetchMode.Headers | MessageFetchMode.Tiny | MessageFetchMode.GMailExtendedData | MessageFetchMode.InternalDate;
                         if (client.Connect())
                         {
@@ -87,7 +85,6 @@ namespace Damage.Controllers
                     }
                 }
             }
-            t.Stop();
             return Json(new { Result = successful, Data = output, UnreadCount = unreadCount }, JsonRequestBehavior.AllowGet);
         }
 
