@@ -67,7 +67,7 @@ namespace Damage.Controllers
                                         output.Add(new GmailMessage()
                                         {
                                             Subject = thread.Value.Subject,
-                                            From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
+                                            From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address.Split("@".ToCharArray())[0]) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
                                             ThreadIdHex = thread.Value.GmailThread.Id.ToString("X").ToLower(),
                                             ThreadId = thread.Value.GmailThread.Id,
                                             ThreadMessageIds = string.Join(",", threadMessages[thread.Value.GmailThread.Id].ToArray()),
