@@ -34,7 +34,7 @@ namespace Gmail
 
             sb.Append(@"function makeRead" + id + @"(element)
                         {
-                            $(element).parent().addClass('gmailread').parent().addClass('gmailread');
+                            $(element).parent().parent().addClass('gmailread').children().addClass('gmailread');
                         }");
 
             sb.Append(@"function deleteMail" + id + @"()
