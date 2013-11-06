@@ -15,6 +15,8 @@ namespace Damage.Controllers
     {
         public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, string folderName)
         {
+            var t = new System.Diagnostics.Stopwatch();
+            t.Start();
             var successful = false;
             var output = new List<GmailMessage>();
 
@@ -35,6 +37,7 @@ namespace Damage.Controllers
                             {
                                 if (client.IsAuthenticated)
                                 {
+                                    var unreadCount = 0;
                                     var _messages = client.Folders.Single(f => f.Name.ToLower() == folderName.ToLower()).Search((showUnreadOnly ? "UNSEEN" : "ALL"), client.Behavior.MessageFetchMode, 100).OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
                                     var threads = new Dictionary<long, ImapX.Message>();
                                     var threadMessages = new Dictionary<long, List<long>>();
@@ -58,6 +61,11 @@ namespace Damage.Controllers
                                     {
                                         var messageDate = (timezoneOffset.HasValue ? thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value) : thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value));
                                         var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
+                                        var unread = !thread.Value.Seen;
+                                        if (unread)
+                                        {
+                                            unreadCount++;
+                                        }
                                         output.Add(new GmailMessage()
                                         {
                                             Subject = thread.Value.Subject,
@@ -67,8 +75,8 @@ namespace Damage.Controllers
                                             ThreadMessageIds = string.Join(",", threadMessages[thread.Value.GmailThread.Id].ToArray()),
                                             Date = messageDateString,
                                             Preview = getPreview(thread.Value.Body),
-                                            Unread = !thread.Value.Seen,
-                                            Important = (thread.Value.Labels.Count() > 0 && thread.Value.Labels[0].Equals(""))
+                                            Unread = unread,
+                                            Important = (thread.Value.Labels.Any() && thread.Value.Labels[0].Equals("////Important"))
                                         });
                                     }
 
@@ -79,7 +87,8 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new { Result = successful, Data = output }, JsonRequestBehavior.AllowGet);
+            t.Stop();
+            return Json(new { Result = successful, Data = output, UnreadCount = unreadCount }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -169,6 +178,8 @@ namespace Damage.Controllers
             return Json(new { Result = successful });
         }
 
+        static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled | RegexOptions.Singleline);
+
         private string getPreview(MessageBody body)
         {
             if (body.HasText)
@@ -177,7 +188,7 @@ namespace Damage.Controllers
             }
             else if (body.HasHtml)
             {
-                var text = Regex.Replace(body.Html, "<.*?>", "", RegexOptions.Singleline);
+                var text = _htmlRegex.Replace(body.Html, "");
                 return HttpUtility.HtmlEncode(text.Length > 80 ? text.Substring(0, 80) : text);
             }
             else
