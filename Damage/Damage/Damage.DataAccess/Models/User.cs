@@ -17,6 +17,7 @@ namespace Damage.DataAccess.Models {
 		public virtual string CurrentOAuthAccessToken { get; set; }
 		public virtual DateTime OAuthAccessTokenExpiration { get; set; }
 		public virtual string EmailAddress { get; set; }
+		public virtual DateTime LastLoginTime { get; set; }
 		public virtual IList<UserGadget> UserGadgets { get; set; }
 
 		public override string CompositeKey

@@ -25,6 +25,7 @@ namespace Damage.Models
         public string UserName { get; set; }
         public string CurrentOAuthAccessToken { get; set; }
         public DateTime OAuthAccessTokenExpiration { get; set; }
+        public DateTime LastLoginTime { get; set; }
         public string EmailAddress { get; set; }
     }
 
