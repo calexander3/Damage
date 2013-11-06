@@ -173,8 +173,8 @@ namespace Damage
         {
             string encoded = Convert.ToBase64String(guid.ToByteArray());
             encoded = encoded
-              .Replace("/", "_")
-              .Replace("+", "-");
+              .Replace("/", "q")
+              .Replace("+", "a");
             return encoded.Substring(0, 22);
         }
 

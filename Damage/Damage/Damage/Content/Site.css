@@ -694,15 +694,15 @@ tr.pager td {
     width: 100%;
     background: #333;
     display: none;
-    z-index:999;
+    z-index: 999;
 }
 
-.gmailToolboxItem{
-    float:left;
-    margin-left:10px;
-    margin-right:5px;
-    margin-top:5px;
-    cursor:pointer;
+.gmailToolboxItem {
+    float: left;
+    margin-left: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 
@@ -744,6 +744,18 @@ tr.pager td {
     margin-right: auto;
     margin-top: 10px;
     background-color: #c8c8c8;
+}
+
+.gmailHeader {
+    font-weight: 600;
+    font-size: 1.5em;
+    text-align: center;
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom: 1px solid black;
+    height: 30px;
+    display: none;
 }
 
 .gmailread {
