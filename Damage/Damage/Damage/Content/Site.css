@@ -729,7 +729,9 @@ tr.pager td {
     font-size: 0.8em;
 }
 
-.gmailSubject {
+.gmailSubject img {
+    position: relative;
+    top: 1px;
 }
 
 .gmailPreview {

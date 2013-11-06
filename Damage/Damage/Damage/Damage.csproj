@@ -255,6 +255,7 @@
     <Content Include="Content\Images\garbage.png" />
     <Content Include="Content\Images\gmailArchive.png" />
     <Content Include="Content\Images\gmailGarbage.png" />
+    <Content Include="Content\Images\gmailImportant.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayout.png" />
     <Content Include="Content\Images\Layouts\ThreeColumnWideLayoutComingSoon.png" />
