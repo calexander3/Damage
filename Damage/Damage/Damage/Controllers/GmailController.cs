@@ -19,6 +19,7 @@ namespace Damage.Controllers
             t.Start();
             var successful = false;
             var output = new List<GmailMessage>();
+            var unreadCount = 0;
 
             if (Request.IsAuthenticated)
             {
@@ -37,7 +38,6 @@ namespace Damage.Controllers
                             {
                                 if (client.IsAuthenticated)
                                 {
-                                    var unreadCount = 0;
                                     var _messages = client.Folders.Single(f => f.Name.ToLower() == folderName.ToLower()).Search((showUnreadOnly ? "UNSEEN" : "ALL"), client.Behavior.MessageFetchMode, 100).OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
                                     var threads = new Dictionary<long, ImapX.Message>();
                                     var threadMessages = new Dictionary<long, List<long>>();
