@@ -1,4 +1,5 @@
-﻿using Damage.DataAccess;
+﻿using AE.Net.Mail;
+using Damage.DataAccess;
 using ImapX;
 using ImapX.Authentication;
 using ImapX.Enums;
@@ -27,60 +28,118 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        var client = new ImapX.ImapClient("imap.gmail.com", true, false);
-                        client.Behavior.MessageFetchMode = MessageFetchMode.Headers | MessageFetchMode.Tiny | MessageFetchMode.GMailExtendedData | MessageFetchMode.InternalDate;
-                        if (client.Connect())
+                        //var client = new ImapX.ImapClient("imap.gmail.com", true, false);
+                        //client.Behavior.MessageFetchMode = MessageFetchMode.Headers | MessageFetchMode.Tiny | MessageFetchMode.GMailExtendedData | MessageFetchMode.InternalDate;
+                        //if (client.Connect())
+                        //{
+                        //    var credentials = new OAuth2Credentials(user.EmailAddress, user.CurrentOAuthAccessToken);
+                        //    if (ExecuteWithTimeLimit(new TimeSpan(0, 0, 5), () => { client.Login(credentials); }))
+                        //    {
+                        //        if (client.IsAuthenticated)
+                        //        {
+                        //            var _messages = client.Folders.Single(f => f.Name.ToLower() == folderName.ToLower()).Search((showUnreadOnly ? "UNSEEN" : "ALL"), client.Behavior.MessageFetchMode, 100).OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
+                        //            var threads = new Dictionary<long, ImapX.Message>();
+                        //            var threadMessages = new Dictionary<long, List<long>>();
+                        //            var threadCounts = new Dictionary<long, int>();
+                        //            foreach (var m in _messages)
+                        //            {
+                        //                if (!threads.ContainsKey(m.GmailThread.Id))
+                        //                {
+                        //                    threads.Add(m.GmailThread.Id, m);
+                        //                    threadCounts.Add(m.GmailThread.Id, 1);
+                        //                    threadMessages.Add(m.GmailThread.Id, new List<long>() { m.UId });
+                        //                }
+                        //                else
+                        //                {
+                        //                    threadCounts[m.GmailThread.Id] += 1;
+                        //                    threadMessages[m.GmailThread.Id].Add(m.UId);
+                        //                }
+                        //            }
+
+                        //            foreach (var thread in threads)
+                        //            {
+                        //                var messageDate = (timezoneOffset.HasValue ? thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value) : thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value));
+                        //                var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
+                        //                var unread = !thread.Value.Seen;
+                        //                if (unread)
+                        //                {
+                        //                    unreadCount++;
+                        //                }
+                        //                output.Add(new GmailMessage()
+                        //                {
+                        //                    Subject = thread.Value.Subject,
+                        //                    From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address.Split("@".ToCharArray())[0]) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
+                        //                    ThreadIdHex = thread.Value.GmailThread.Id.ToString("X").ToLower(),
+                        //                    ThreadId = thread.Value.GmailThread.Id,
+                        //                    ThreadMessageIds = string.Join(",", threadMessages[thread.Value.GmailThread.Id].ToArray()),
+                        //                    Date = messageDateString,
+                        //                    Preview = getPreview(thread.Value.Body),
+                        //                    Unread = unread,
+                        //                    Important = (thread.Value.Labels.Any() && thread.Value.Labels[0].Equals("\\\\Important"))
+                        //                });
+                        //            }
+
+                        //        }
+                        //        successful = true;
+                        //    }
+                        //}
+
+
+                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,true))
                         {
-                            var credentials = new OAuth2Credentials(user.EmailAddress, user.CurrentOAuthAccessToken);
-                            if (ExecuteWithTimeLimit(new TimeSpan(0, 0, 5), () => { client.Login(credentials); }))
+                            imap.SelectMailbox(folderName);
+                            var searchCondition = SearchCondition.Undeleted();
+                            if (showUnreadOnly)
                             {
-                                if (client.IsAuthenticated)
-                                {
-                                    var _messages = client.Folders.Single(f => f.Name.ToLower() == folderName.ToLower()).Search((showUnreadOnly ? "UNSEEN" : "ALL"), client.Behavior.MessageFetchMode, 100).OrderByDescending(m => (m.InternalDate ?? m.Date).Value).ToList();
-                                    var threads = new Dictionary<long, ImapX.Message>();
-                                    var threadMessages = new Dictionary<long, List<long>>();
-                                    var threadCounts = new Dictionary<long, int>();
-                                    foreach (var m in _messages)
-                                    {
-                                        if (!threads.ContainsKey(m.GmailThread.Id))
-                                        {
-                                            threads.Add(m.GmailThread.Id, m);
-                                            threadCounts.Add(m.GmailThread.Id, 1);
-                                            threadMessages.Add(m.GmailThread.Id, new List<long>() { m.UId });
-                                        }
-                                        else
-                                        {
-                                            threadCounts[m.GmailThread.Id] += 1;
-                                            threadMessages[m.GmailThread.Id].Add(m.UId);
-                                        }
-                                    }
-
-                                    foreach (var thread in threads)
-                                    {
-                                        var messageDate = (timezoneOffset.HasValue ? thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value) : thread.Value.InternalDate.Value.AddMinutes(timezoneOffset.Value));
-                                        var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
-                                        var unread = !thread.Value.Seen;
-                                        if (unread)
-                                        {
-                                            unreadCount++;
-                                        }
-                                        output.Add(new GmailMessage()
-                                        {
-                                            Subject = thread.Value.Subject,
-                                            From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address.Split("@".ToCharArray())[0]) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
-                                            ThreadIdHex = thread.Value.GmailThread.Id.ToString("X").ToLower(),
-                                            ThreadId = thread.Value.GmailThread.Id,
-                                            ThreadMessageIds = string.Join(",", threadMessages[thread.Value.GmailThread.Id].ToArray()),
-                                            Date = messageDateString,
-                                            Preview = getPreview(thread.Value.Body),
-                                            Unread = unread,
-                                            Important = (thread.Value.Labels.Any() && thread.Value.Labels[0].Equals("\\\\Important"))
-                                        });
-                                    }
-
-                                }
-                                successful = true;
+                                searchCondition = searchCondition.And(SearchCondition.Unseen());
                             }
+
+                            var messages = imap.SearchMessages(searchCondition, true, false).ToList();
+                            var threads = new Dictionary<long, AE.Net.Mail.MailMessage>();
+                            var threadMessages = new Dictionary<long, List<long>>();
+                            var threadCounts = new Dictionary<long, int>();
+                            foreach (var m in messages)
+                            {
+                                var messageId = long.Parse(m.Value.Uid);
+                                var headers = m.Value.Headers;
+                                var gmailThreadId = long.Parse(headers["X-GM-THRID"].Value);
+
+                                if (!threads.ContainsKey(gmailThreadId))
+                                {
+                                    threads.Add(gmailThreadId, m.Value);
+                                    threadCounts.Add(gmailThreadId, 1);
+                                    threadMessages.Add(gmailThreadId, new List<long>() { messageId });
+                                }
+                                else
+                                {
+                                    threadCounts[gmailThreadId] += 1;
+                                    threadMessages[gmailThreadId].Add(messageId);
+                                }
+                            }
+
+                            foreach (var thread in threads)
+                            {
+                                var messageDate = (timezoneOffset.HasValue ? thread.Value.Date.AddMinutes(timezoneOffset.Value) : thread.Value.Date.AddMinutes(timezoneOffset.Value));
+                                var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
+                                var unread = !(thread.Value.Flags.HasFlag(Flags.Seen));
+                                if (unread)
+                                {
+                                    unreadCount++;
+                                }
+                                output.Add(new GmailMessage()
+                                {
+                                    Subject = thread.Value.Subject,
+                                    From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address.Split("@".ToCharArray())[0]) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
+                                    ThreadIdHex = thread.Key.ToString("X").ToLower(),
+                                    ThreadId = thread.Key,
+                                    ThreadMessageIds = string.Join(",", threadMessages[thread.Key].ToArray()),
+                                    Date = messageDateString,
+                                    //Preview = getPreview(thread.Value.Body),
+                                    Unread = unread,
+                                    Important = (thread.Value.Headers.ContainsKey("X-GM-LABELS") && thread.Value.Headers["X-GM-LABELS"].Value.Equals("\"\\\\Important\""))
+                                });
+                            }
+                            successful = true;
                         }
                     }
                 }
