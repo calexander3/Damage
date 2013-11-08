@@ -39,6 +39,15 @@ namespace Damage.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                using (var db = new UsersContext())
+                {
+                    var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    if (user != null)
+                    {
+                        user.LastLoginTime = DateTime.Now;
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -244,6 +253,7 @@ namespace Damage.Controllers
                     {
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
+                        user.LastLoginTime = DateTime.Now;
                         db.SaveChanges();
                     }
                 }
@@ -275,7 +285,7 @@ namespace Damage.Controllers
                 string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
                 ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
                 ViewBag.ReturnUrl = returnUrl;
-                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel {UserName = result.ExtraData["email"], ExternalLoginData = loginData, ExtraData = JsonConvert.SerializeObject(result.ExtraData) });
+                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.ExtraData["email"], ExternalLoginData = loginData, ExtraData = JsonConvert.SerializeObject(result.ExtraData) });
             }
         }
 
