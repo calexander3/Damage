@@ -10,5 +10,6 @@ namespace Gmail
     {
         public string FolderName { get; set; }
         public bool ShowUnreadOnly { get; set; }
+        public bool? ShowPreview { get; set; }
     }
 }

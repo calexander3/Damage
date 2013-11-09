@@ -14,7 +14,7 @@ namespace Damage.Controllers
 {
     public class GmailController : BaseController
     {
-        public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, string folderName)
+        public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, bool showPreview, string folderName)
         {
             var successful = false;
             var output = new List<GmailMessage>();
@@ -94,7 +94,8 @@ namespace Damage.Controllers
                                 searchCondition = searchCondition.And(SearchCondition.Unseen());
                             }
 
-                            var messages = imap.SearchMessages(searchCondition, true, false).ToList();
+                            //Get messages and organize into threads
+                            var messages = imap.SearchMessages(searchCondition, !showPreview, false).OrderByDescending(m => m.Value.Date).Take(100).ToList();
                             var threads = new Dictionary<long, AE.Net.Mail.MailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
@@ -117,6 +118,8 @@ namespace Damage.Controllers
                                 }
                             }
 
+
+                            //Bundle threads
                             foreach (var thread in threads)
                             {
                                 var messageDate = (timezoneOffset.HasValue ? thread.Value.Date.AddMinutes(timezoneOffset.Value) : thread.Value.Date.AddMinutes(timezoneOffset.Value));
@@ -134,7 +137,7 @@ namespace Damage.Controllers
                                     ThreadId = thread.Key,
                                     ThreadMessageIds = string.Join(",", threadMessages[thread.Key].ToArray()),
                                     Date = messageDateString,
-                                    //Preview = getPreview(thread.Value.Body),
+                                    Preview = (showPreview ? getPreview(thread.Value.Body) : ""),
                                     Unread = unread,
                                     Important = (thread.Value.Headers.ContainsKey("X-GM-LABELS") && thread.Value.Headers["X-GM-LABELS"].Value.Equals("\"\\\\Important\""))
                                 });
@@ -236,21 +239,21 @@ namespace Damage.Controllers
 
         static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private string getPreview(MessageBody body)
+        private string getPreview(string body)
         {
-            if (body.HasText)
-            {
-                return HttpUtility.HtmlEncode(body.Text.Length > 80 ? body.Text.Substring(0, 80) : body.Text);
-            }
-            else if (body.HasHtml)
-            {
-                var text = _htmlRegex.Replace(body.Html, "");
-                return HttpUtility.HtmlEncode(text.Length > 80 ? text.Substring(0, 80) : text);
-            }
-            else
-            {
-                return "";
-            }
+            //if (body.HasText)
+            //{
+                return HttpUtility.HtmlEncode(body.Length > 80 ? body.Substring(0, 80) : body);
+            //}
+            //else if (body.HasHtml)
+            //{
+            //    var text = _htmlRegex.Replace(body.Html, "");
+            //    return HttpUtility.HtmlEncode(text.Length > 80 ? text.Substring(0, 80) : text);
+            //}
+            //else
+            //{
+            //    return "";
+            //}
         }
 
         private class GmailMessage

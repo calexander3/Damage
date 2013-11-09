@@ -15,6 +15,8 @@ namespace Gmail
             _title = "<a href='https://mail.google.com/mail/' target='_blank' >Gmail</a>";
             var settings = JsonConvert.DeserializeObject<GmailOptions>(UserGadget.GadgetSettings);
 
+            var showPreview = settings.ShowPreview ?? false;
+
             var id = ShortGuid.NewGuid().ToString();
             var sb = new StringBuilder("<div style='position: relative;' id='" + id + "' ><div class='gmailContainer'><div class='gmailHeader'></div></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' onclick='archiveMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' onclick='deleteMail" + id + @"()' /></div></div></div>");
             sb.Append("<script type='text/javascript' >");
@@ -101,7 +103,7 @@ namespace Gmail
 
             sb.Append(@" $.ajax({
         url: '/gmail/GetMail',
-        data: { timezoneOffset: $('#timeZoneOffset').val(), showUnreadOnly : " + settings.ShowUnreadOnly.ToString().ToLower() + @", folderName : '" + settings.FolderName + @"' },
+        data: { timezoneOffset: $('#timeZoneOffset').val(), showPreview : " + showPreview.ToString().ToLower() + @", showUnreadOnly : " + settings.ShowUnreadOnly.ToString().ToLower() + @", folderName : '" + settings.FolderName + @"' },
         type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
@@ -115,7 +117,7 @@ namespace Gmail
                 header.html('" + settings.FolderName + @"  (' + resultSet.UnreadCount + ')');
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
-                    container.append('<div class=""' + unreadCss + 'gmailItem""><div class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox" + id + @"()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.From + '</a></div><div class=""gmailSubject"">' + (message.Important ? '<img src=""/content/images/gmailImportant.png"">' : '') + '<a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
+                    container.append('<div class=""' + unreadCss + 'gmailItem""><div style=""" + (showPreview ? "margin-top: 20px;" : "margin-top: 10px;") + @""" class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox" + id + @"()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.From + '</a></div><div class=""gmailSubject"">' + (message.Important ? '<img src=""/content/images/gmailImportant.png"">' : '') + '<a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
                 });
             }
             else
@@ -148,7 +150,7 @@ namespace Gmail
 
         public string DefaultSettings
         {
-            get { return JsonConvert.SerializeObject(new GmailOptions { FolderName = "Inbox", ShowUnreadOnly = false }); }
+            get { return JsonConvert.SerializeObject(new GmailOptions { FolderName = "Inbox", ShowPreview = false, ShowUnreadOnly = false }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
@@ -158,7 +160,8 @@ namespace Gmail
                 return new List<GadgetSettingField>
                 {
                     new GadgetSettingField{FieldName="FolderName", DisplayName = "Folder Name", DataType= SettingDataTypes.Text, Validators= Validators.Required},
-                    new GadgetSettingField{FieldName="ShowUnreadOnly", DisplayName = "Show Unread Items Only", DataType= SettingDataTypes.Checkbox, Validators= Validators.None}
+                    new GadgetSettingField{FieldName="ShowUnreadOnly", DisplayName = "Show Unread Items Only", DataType= SettingDataTypes.Checkbox, Validators= Validators.None},
+                    new GadgetSettingField{FieldName="ShowPreview", DisplayName = "Show Preview(Slower)", DataType= SettingDataTypes.Checkbox, Validators= Validators.None}
                 };
             }
         }
