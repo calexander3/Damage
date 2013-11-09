@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Damage.DataAccess.Models;
 using Damage.Gadget;
-using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
 using System.Web.Security;
 using Damage.Filters;
@@ -60,7 +59,7 @@ namespace Damage.Controllers
                     }
                     else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
-                        var newGadget = ServiceLocator.Current.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
+                        var newGadget = DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
                         newGadget.UserGadget = g;
                         activeGadgets.Add(newGadget);
                     }

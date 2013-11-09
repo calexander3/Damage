@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Damage.Gadget;
-using Microsoft.Practices.ServiceLocation;
 using Damage.DataAccess;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web;
 using System;
+using SimpleInjector.Integration.Web.Mvc;
+using Damage.App_Start;
 
 namespace Damage
 {
@@ -37,6 +38,7 @@ namespace Damage
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            SimpleInjectorInitializer.Initialize();
 
             GlobalConfig.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Type>();
@@ -46,7 +48,7 @@ namespace Damage
 
         private void LoadGadgets()
         {
-            var gadgetInstances = ServiceLocator.Current.GetAllInstances<IGadget>();
+            var gadgetInstances = DependencyResolver.Current.GetServices<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
