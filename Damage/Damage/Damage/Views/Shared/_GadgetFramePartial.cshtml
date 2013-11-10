@@ -1,4 +1,5 @@
-﻿@model Damage.Gadget.IGadget
+﻿@using Damage
+@model Damage.Gadget.IGadget
 @{  
     var timer = new System.Diagnostics.Stopwatch();
     timer.Start();
@@ -6,8 +7,9 @@
     {
     Model.Initialize();
     }
-    catch
+    catch (Exception ex)
     {
+        GlobalConfig.Log.Error("Gadget Error", ex);
     }
     timer.Stop();
     var time = timer.ElapsedMilliseconds;

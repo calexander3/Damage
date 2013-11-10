@@ -1,5 +1,5 @@
-using FluentNHibernate.Mapping;
 using Damage.DataAccess.Models;
+using FluentNHibernate.Mapping;
 
 namespace Damage.DataAccess.Maps {
 	

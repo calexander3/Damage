@@ -1,18 +1,14 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.IO;
+using Damage.DataAccess;
+using Damage.Gadget;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Damage.Gadget;
-using Damage.DataAccess;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Web;
-using System;
-using SimpleInjector.Integration.Web.Mvc;
-using Damage.App_Start;
 
 namespace Damage
 {
@@ -21,24 +17,18 @@ namespace Damage
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        //protected void Application_BeginRequest(Object sender, EventArgs e)
-        //{
-        //    if (HttpContext.Current.Request.IsSecureConnection.Equals(false) && HttpContext.Current.Request.IsLocal.Equals(false))
-        //    {
-        //        Response.Redirect("https://" + Request.ServerVariables["HTTP_HOST"] + HttpContext.Current.Request.RawUrl);
-        //    }
-        //}
-
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
+            GlobalConfig.Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+            AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-            SimpleInjectorInitializer.Initialize();
+            SimpleInjectorInitializer.InitializeInjector();
 
             GlobalConfig.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Type>();
@@ -48,7 +38,7 @@ namespace Damage
 
         private void LoadGadgets()
         {
-            var gadgetInstances = DependencyResolver.Current.GetServices<IGadget>();
+            var gadgetInstances = GlobalConfig.DependencyResolver.GetAllInstances<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {

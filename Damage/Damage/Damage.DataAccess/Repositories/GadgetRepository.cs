@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Damage.DataAccess.Models;
+﻿using Damage.DataAccess.Models;
 using NHibernate;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Damage.DataAccess.Repositories

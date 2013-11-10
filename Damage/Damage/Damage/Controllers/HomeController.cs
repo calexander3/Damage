@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Damage.DataAccess;
+using Damage.DataAccess.Models;
+using Damage.Filters;
+using Damage.Gadget;
+using Microsoft.Web.WebPages.OAuth;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.Mvc;
-using Damage.DataAccess.Models;
-using Damage.Gadget;
-using Damage.DataAccess;
-using System.Web.Security;
-using Damage.Filters;
 using System.Linq;
-using Microsoft.Web.WebPages.OAuth;
+using System.Web.Mvc;
 
 namespace Damage.Controllers
 {

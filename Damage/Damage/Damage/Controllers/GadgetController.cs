@@ -1,11 +1,11 @@
 ﻿using Damage.DataAccess;
+using Damage.DataAccess.Models;
+using Damage.Filters;
+using Damage.Gadget;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using Damage.Gadget;
-using Damage.Filters;
-using Damage.DataAccess.Models;
 
 namespace Damage.Controllers
 {

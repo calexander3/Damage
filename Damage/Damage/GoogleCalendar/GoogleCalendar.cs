@@ -1,13 +1,8 @@
 ﻿using Damage.Gadget;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.ServiceModel.Syndication;
-using Newtonsoft.Json;
 
 namespace GoogleCalendar
 {
@@ -41,8 +36,8 @@ namespace GoogleCalendar
                     previousDate = eventDate;
                 }
                 sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") + 
-                    System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary) +
-                    "' href='" + calItem.htmlLink + "' >" + calItem.summary + "</a><div style='float:right;white-space:nowrap;'>" +
+                    System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary ?? "") +
+                    "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;white-space:nowrap;'>" +
                     (calItem.start.dateTime != null ? System.DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
                     (calItem.end.dateTime != null ? " - " + System.DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
                     "</div></div>");

@@ -1,6 +1,5 @@
 ﻿using AE.Net.Mail;
 using Damage.DataAccess;
-using ImapX;
 using ImapX.Authentication;
 using ImapX.Enums;
 using System;
@@ -122,7 +121,7 @@ namespace Damage.Controllers
                             //Bundle threads
                             foreach (var thread in threads)
                             {
-                                var messageDate = (timezoneOffset.HasValue ? thread.Value.Date.AddMinutes(timezoneOffset.Value) : thread.Value.Date.AddMinutes(timezoneOffset.Value));
+                                var messageDate =(thread.Value.Date.Ticks > 0 ? (timezoneOffset.HasValue ? thread.Value.Date.AddMinutes(timezoneOffset.Value) : thread.Value.Date) : new DateTime(1900,1,1));
                                 var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
                                 var unread = !(thread.Value.Flags.HasFlag(Flags.Seen));
                                 if (unread)

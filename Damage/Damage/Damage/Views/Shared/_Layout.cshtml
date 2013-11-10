@@ -67,6 +67,12 @@
 		            Search(ui.item.value)
 		        }
 		    });
+		    
+		    $("#txtSearch").keyup(function (event) {
+		        if (event.keyCode == 13) {
+		            $("#btnSearch").click();
+		        }
+		    });
 		});
 	</script>
 	<div id="holder" style="min-height: 100%; position: relative;">
@@ -101,7 +107,7 @@
 						<span style="cursor: default">Damage</span>
 						<span>
 							<input type="text" id="txtSearch" />
-							<img src="~/Content/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
+							<img id="btnSearch"src="~/Content/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
 						</span>
 					</div>
 					<div class="subtitle">Dashboard Manager For Google</div>

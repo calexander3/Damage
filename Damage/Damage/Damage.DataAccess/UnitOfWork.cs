@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Damage.DataAccess.Models;
+using Damage.DataAccess.Repositories;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
-using Damage.DataAccess.Models;
-using Damage.DataAccess.Repositories;
+using System;
 
 namespace Damage.DataAccess
 {
