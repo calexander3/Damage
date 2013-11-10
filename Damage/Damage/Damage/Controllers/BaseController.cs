@@ -28,6 +28,7 @@ namespace Damage.Controllers
             {
                 filterContext.Result = new HttpStatusCodeResult(500, filterContext.Exception.Message);
             }
+            GlobalConfig.Log.Error("Controller Error", filterContext.Exception);
             filterContext.ExceptionHandled = true;
             base.OnException(filterContext);
         }
