@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Damage.DataAccessEF.Contexts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,50 @@ namespace Damage.DataAccessEF
 {
     public class UnitOfWork : IDisposable
     {
+        private string _connectionString = "DefaultConnection";
+        public void UnitOfWork(string ConnectionString)
+        {
+            _connectionString = ConnectionString;
+        }
 
+        private UserGadgetsContext _userGadgetsContext = null;
+        public UserGadgetsContext UserGadgetsContext
+        {
+            get
+            {
+                if (_userGadgetsContext == null)
+                {
+                    _userGadgetsContext = new UserGadgetsContext(_connectionString);
+                }
+                return _userGadgetsContext;
+            }
+        }
 
+        private GadgetsContext _gadgetsContext = null;
+        public GadgetsContext GadgetsContext
+        {
+            get
+            {
+                if (_gadgetsContext == null)
+                {
+                    _gadgetsContext = new GadgetsContext(_connectionString);
+                }
+                return _gadgetsContext;
+            }
+        }
+
+        private UsersContext _usersContext = null;
+        public UsersContext UsersContext
+        {
+            get
+            {
+                if (_usersContext == null)
+                {
+                    _usersContext = new UsersContext(_connectionString);
+                }
+                return _usersContext;
+            }
+        }
 
         #region "IDisposable Support"
         // To detect redundant calls
@@ -21,11 +64,10 @@ namespace Damage.DataAccessEF
             {
                 if (disposing)
                 {
-                    //Set repositories to null
-                    //m_UserGadgetRepository = null;
-                    //m_GadgetRepository = null;
-                    //m_Session.Dispose();
-                    //m_SessionFactory.Dispose();
+                    //Set contexts to null
+                    _gadgetsContext = null;
+                    _userGadgetsContext = null;
+                    _usersContext = null;
                 }
             }
             _disposedValue = true;

@@ -5,8 +5,7 @@ namespace Damage.DataAccessEF.Contexts
 {
     public class UserGadgetsContext : DbContext
     {
-        public UserGadgetsContext()
-            : base("DefaultConnection")
+        public UserGadgetsContext(string ConnectionString) : base(ConnectionString)
         {
         }
 

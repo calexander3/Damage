@@ -5,8 +5,7 @@ namespace Damage.DataAccessEF.Contexts
 {
     public class UsersContext : DbContext
     {
-        public UsersContext()
-            : base("DefaultConnection")
+        public UsersContext(string ConnectionString) : base(ConnectionString)
         {
         }
 
