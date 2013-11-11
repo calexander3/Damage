@@ -30,9 +30,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleDrive", "GoogleDrive\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTicker", "StockTicker\StockTicker.csproj", "{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Damage.DataAccessEF", "Damage.DataAccessEF\Damage.DataAccessEF.csproj", "{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://calexander3.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -73,6 +75,9 @@ Global
 		SccProjectTopLevelParentUniqueName10 = Damage.sln
 		SccProjectName10 = StockTicker
 		SccLocalPath10 = StockTicker
+		SccProjectUniqueName11 = Damage.DataAccessEF\\Damage.DataAccessEF.csproj
+		SccProjectName11 = Damage.DataAccessEF
+		SccLocalPath11 = Damage.DataAccessEF
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +126,10 @@ Global
 		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
