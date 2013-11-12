@@ -43,7 +43,7 @@ namespace GoogleCalendar
                     "</div></div>");
             }
 
-            sb.Append("</div>");
+            sb.Append("<div style='width:100%;text-align:right;margin-top:13px;'><a style='padding:0px;' href='https://www.google.com/calendar/render?action=TEMPLATE' target='_blank'>Create New Event</a></div></div>");
             _output = sb.ToString();
         }
 
