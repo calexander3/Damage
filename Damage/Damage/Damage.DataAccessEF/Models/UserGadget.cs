@@ -9,8 +9,8 @@ namespace Damage.DataAccessEF.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserGadgetId { get; set; }
-        public UserProfile User { get; set; }
-        public Gadget Gadget { get; set; }
+        public virtual UserProfile User { get; set; }
+        public virtual Gadget Gadget { get; set; }
         [Required]
         public string GadgetSettings { get; set; }
         [Required]

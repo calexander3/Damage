@@ -1,5 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using Damage.DataAccessEF.Models;
+using System.Linq;
 
 namespace Damage.DataAccessEF.Contexts
 {
@@ -9,7 +11,6 @@ namespace Damage.DataAccessEF.Contexts
         {
         }
 
-        public DbSet<Gadget> Gadgets { get; set; }
-
+        private DbSet<Gadget> Gadgets { get; set; }
     }
 }

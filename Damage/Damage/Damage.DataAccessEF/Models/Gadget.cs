@@ -8,12 +8,6 @@ namespace Damage.DataAccessEF.Models {
 	[Table("Gadgets")]
 	public class Gadget
 	{
-		public Gadget() 
-		{
-			UserGadgets = new List<UserGadget>();
-		}
-
-
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int GadgetId { get; set; }
@@ -35,7 +29,7 @@ namespace Damage.DataAccessEF.Models {
 		public string DefaultSettings { get; set; }
 		[Required]
 		public string SettingsSchema { get; set; }
-		public IList<UserGadget> UserGadgets { get; set; }
+		public virtual ICollection<UserGadget> UserGadgets { get; set; }
 
 	}
 }
