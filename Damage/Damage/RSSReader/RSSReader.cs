@@ -63,9 +63,9 @@ namespace RSSReader
                     foreach (SyndicationItem item in feed.Items)
                     {
                         ShortGuid sg = ShortGuid.NewGuid();
-                        output.Append(@"<div style='background-repeat:no-repeat;background-position:center;background-image:url(/Content/Images/" + (settings.ExpandItemsByDefault ? "CollapseArrow" : "ExpandArrow") + @".png); width:8px;height:10px;float:left;position:relative;top:7px;left:2px;cursor:pointer;' onclick='if($(""#" + sg.ToString() + @""").css(""display"") == ""none"") {$(""#" + sg.ToString() + @""").css(""display"",""block""); $(this).css(""background-image"",""url(/Content/Images/CollapseArrow.png)"");}else{$(""#" + sg.ToString() + @""").css(""display"",""none""); $(this).css(""background-image"",""url(/Content/Images/ExpandArrow.png)"");}' ></div>");
+                        output.Append(@"<div style='background-repeat:no-repeat;background-position:center;background-image:url(/Content/Images/" + (settings.ExpandItemsByDefault ? "CollapseArrow" : "ExpandArrow") + @".png); width:10px;height:12px;float:left;position:relative;top:7px;left:4px;cursor:pointer;' onclick='if($(""#" + sg.ToString() + @""").css(""display"") == ""none"") {$(""#" + sg.ToString() + @""").css(""display"",""block""); $(this).css(""background-image"",""url(/Content/Images/CollapseArrow.png)"");}else{$(""#" + sg.ToString() + @""").css(""display"",""none""); $(this).css(""background-image"",""url(/Content/Images/ExpandArrow.png)"");}' ></div>");
 
-                        output.Append("<div style='margin-left:11px;margin-top:2px;'><a style='padding:0px;' href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
+                        output.Append("<div style='margin-left:15px;margin-bottom:2px;margin-top:3px;'><a style='padding:0px;' href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
                         if (item.Content != null)
                         {
                             output.Append("<div id='" + sg.ToString() + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + ((TextSyndicationContent)item.Content).Text + "</div>");

@@ -19,7 +19,7 @@ public static class SimpleInjectorInitializer
 
         //container.RegisterMvcAttributeFilterProvider();
 
-        container.Verify();
+        //container.Verify();
 
         //DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
         GlobalConfig.DependencyResolver = container;
