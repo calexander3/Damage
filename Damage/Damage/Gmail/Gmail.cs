@@ -161,7 +161,7 @@ namespace Gmail
                 {
                     new GadgetSettingField{FieldName="FolderName", DisplayName = "Folder Name", DataType= SettingDataTypes.Text, Validators= Validators.Required},
                     new GadgetSettingField{FieldName="ShowUnreadOnly", DisplayName = "Show Unread Items Only", DataType= SettingDataTypes.Checkbox, Validators= Validators.None},
-                    new GadgetSettingField{FieldName="ShowPreview", DisplayName = "Show Preview(Slower)", DataType= SettingDataTypes.Checkbox, Validators= Validators.None}
+                    new GadgetSettingField{FieldName="ShowPreview", DisplayName = "Show Preview (Slower)", DataType= SettingDataTypes.Checkbox, Validators= Validators.None}
                 };
             }
         }
