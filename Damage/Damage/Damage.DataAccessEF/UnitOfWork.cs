@@ -9,7 +9,7 @@ namespace Damage.DataAccessEF
     public class UnitOfWork : IDisposable
     {
         private string _connectionString = "DefaultConnection";
-        public void UnitOfWork(string ConnectionString)
+        public UnitOfWork(string ConnectionString)
         {
             _connectionString = ConnectionString;
         }
