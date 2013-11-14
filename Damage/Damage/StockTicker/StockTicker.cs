@@ -15,17 +15,17 @@ namespace StockTicker
             var htmlBuilder = new System.Text.StringBuilder("<div style='margin:3px;'>");
             var settings = JsonConvert.DeserializeObject<StockTickerOptions>(UserGadget.GadgetSettings);
             string tickerData = null;
-            if (HttpContext.Current.Cache[settings.StockSymbols] != null)
+            if (HttpContext.Current.Cache[settings.StockSymbols.Trim()] != null)
             {
                 tickerData = (string)HttpContext.Current.Cache[settings.StockSymbols];
             }
             else
             {
-                var request = (HttpWebRequest)WebRequest.Create("http://finance.google.com/finance/info?client=ig&q=" + HttpContext.Current.Server.UrlEncode(settings.StockSymbols));
+                var request = (HttpWebRequest)WebRequest.Create("http://finance.google.com/finance/info?client=ig&q=" + HttpContext.Current.Server.UrlEncode(settings.StockSymbols.Trim()));
                 using (var response = request.GetResponse())
                 {
                     tickerData = new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd().Substring(4);
-                    HttpContext.Current.Cache.Insert(settings.StockSymbols, tickerData, null, DateTime.Now.AddMinutes(30), System.Web.Caching.Cache.NoSlidingExpiration);
+                    HttpContext.Current.Cache.Insert(settings.StockSymbols.Trim(), tickerData, null, DateTime.Now.AddMinutes(30), System.Web.Caching.Cache.NoSlidingExpiration);
                 }
             }
 
@@ -33,7 +33,12 @@ namespace StockTicker
 
             foreach (var result in results)
             {
-                htmlBuilder.Append("<div>" + result.t + "&nbsp;&nbsp;&nbsp;" + result.l + "&nbsp;&nbsp;&nbsp;" + result.c + "</div>");
+                var color = "red";
+                if (double.Parse(result.c) > 0)
+                {
+                    color = "green";
+                }
+                htmlBuilder.Append("<div style='clear:both;width:250px;'><div style='float:left;margin-left:2px;margin-right:10px;'><a href='https://www.google.com/finance?q=" + result.e + "%3a" + result.t + "' target='_blank' >" + result.t + "</a></div><div style='float:right;color:" + color + ";'>" + result.c + "(" + double.Parse(result.cp).ToString("0.##") + "%)</div><div style='float:right;margin-right:5px;font-weight:bold;'>" + result.l + "</div></div>");
             }
 
             htmlBuilder.Append("</div>");
