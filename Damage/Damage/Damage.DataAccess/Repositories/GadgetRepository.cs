@@ -117,6 +117,15 @@ namespace Damage.DataAccess.Repositories
                 GadgetSettings = @"{""FeedURL"":""https://news.google.com/news/feeds?pz=1&cf=all&ned=us&hl=en&topic=b&output=rss"",""ItemsToDisplay"":""10"",""ExpandItemsByDefault"":false}"
             });
 
+            var stockGadget = gadgets.Single(g => g.GadgetName == "StockTicker");
+            defaultGadgets.Add(new UserGadget()
+            {
+                DisplayColumn = 1,
+                DisplayOrdinal = 3,
+                Gadget = stockGadget,
+                GadgetSettings = stockGadget.DefaultSettings
+            });
+
             return defaultGadgets;
         }
     }

@@ -12,7 +12,7 @@ namespace StockTicker
         string _output = "";
         public void Initialize()
         {
-            var htmlBuilder = new System.Text.StringBuilder("<div style='margin:3px;'>");
+            var htmlBuilder = new System.Text.StringBuilder("<div style='margin:3px;'><table style='margin:0px;'>");
             var settings = JsonConvert.DeserializeObject<StockTickerOptions>(UserGadget.GadgetSettings);
             string tickerData = null;
             if (HttpContext.Current.Cache[settings.StockSymbols.Trim()] != null)
@@ -38,10 +38,10 @@ namespace StockTicker
                 {
                     color = "green";
                 }
-                htmlBuilder.Append("<div style='clear:both;width:250px;'><div style='float:left;margin-left:2px;margin-right:10px;'><a href='https://www.google.com/finance?q=" + result.e + "%3a" + result.t + "' target='_blank' >" + result.t + "</a></div><div style='float:right;color:" + color + ";'>" + result.c + "(" + double.Parse(result.cp).ToString("0.##") + "%)</div><div style='float:right;margin-right:5px;font-weight:bold;'>" + result.l + "</div></div>");
+                htmlBuilder.Append("<tr><td style='padding:0px;'><div style='margin-right:30px;'><a href='https://www.google.com/finance?q=" + result.e + "%3a" + result.t + "' target='_blank' >" + result.t + "</a></div></td><td style='text-align:right;padding:0px;'><div style='margin-right:10px;font-weight:bold;'>" + result.l + "</div></td><td style='color:" + color + ";padding:0px;text-align:right;font-weight:bold;'>" + result.c + "</td><td style='padding:0px;color:" + color + ";'><div style='margin-left:3px;'>(" + Math.Abs(double.Parse(result.cp)).ToString("0.00") + "&#37)</div></td></tr>");
             }
 
-            htmlBuilder.Append("</div>");
+            htmlBuilder.Append("</table></div>");
             _output = htmlBuilder.ToString();
         }
 
@@ -62,7 +62,7 @@ namespace StockTicker
 
         public string DefaultSettings
         {
-            get { return JsonConvert.SerializeObject(new StockTickerOptions() { StockSymbols = "NYSE:DLX,NASDAQ:GOOG" }); }
+            get { return JsonConvert.SerializeObject(new StockTickerOptions() { StockSymbols = "GOOG,MSFT,AAPL,YHOO" }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
