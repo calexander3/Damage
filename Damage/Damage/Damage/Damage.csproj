@@ -251,6 +251,7 @@
     <Content Include="Content\Images\Gadgets\RSSReader.png" />
     <Content Include="Content\Images\Gadgets\StockTicker.png" />
     <Content Include="Content\Images\Gadgets\TodayInHistory.png" />
+    <Content Include="Content\Images\Gadgets\Traffic.png" />
     <Content Include="Content\Images\Gadgets\Weather.png" />
     <Content Include="Content\Images\garbage-open.png" />
     <Content Include="Content\Images\garbage.png" />

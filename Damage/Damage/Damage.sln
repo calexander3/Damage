@@ -32,9 +32,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTicker", "StockTicker\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Damage.DataAccessEF", "Damage.DataAccessEF\Damage.DataAccessEF.csproj", "{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traffic", "Traffic\Traffic.csproj", "{F5846D06-D067-48A6-8D67-C980E53D7322}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 13
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://calexander3.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -78,6 +80,10 @@ Global
 		SccProjectUniqueName11 = Damage.DataAccessEF\\Damage.DataAccessEF.csproj
 		SccProjectName11 = Damage.DataAccessEF
 		SccLocalPath11 = Damage.DataAccessEF
+		SccProjectUniqueName12 = Traffic\\Traffic.csproj
+		SccProjectTopLevelParentUniqueName12 = Damage.sln
+		SccProjectName12 = Traffic
+		SccLocalPath12 = Traffic
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +136,10 @@ Global
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5846D06-D067-48A6-8D67-C980E53D7322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5846D06-D067-48A6-8D67-C980E53D7322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5846D06-D067-48A6-8D67-C980E53D7322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5846D06-D067-48A6-8D67-C980E53D7322}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,5 +152,6 @@ Global
 		{4DE32A42-FB59-4C81-91D2-459C4ECF2E38} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{0D11193C-E604-4903-B1E1-B97283477588} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
+		{F5846D06-D067-48A6-8D67-C980E53D7322} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 	EndGlobalSection
 EndGlobal
