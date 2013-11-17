@@ -248,6 +248,7 @@
     <Content Include="Content\Images\Gadgets\Gmail.png" />
     <Content Include="Content\Images\Gadgets\GoogleCalendar.png" />
     <Content Include="Content\Images\Gadgets\GoogleDrive.png" />
+    <Content Include="Content\Images\Gadgets\GoogleVoice.png" />
     <Content Include="Content\Images\Gadgets\RSSReader.png" />
     <Content Include="Content\Images\Gadgets\StockTicker.png" />
     <Content Include="Content\Images\Gadgets\TodayInHistory.png" />
