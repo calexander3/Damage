@@ -1,5 +1,6 @@
 ﻿using Damage.Gadget;
 using System.Collections.Generic;
+using Damage;
 
 
 namespace GoogleVoice
@@ -9,7 +10,24 @@ namespace GoogleVoice
         string _output = "";
         public void Initialize()
         {
+            var id = ShortGuid.NewGuid().ToString();
+            var outputBuilder = new System.Text.StringBuilder("<div id='GoogleVoiceMessageContainer" + id +"' style='width:100%;max-height:500px;overflow-x:hidden;overflow-y:auto;'></div>");
 
+            outputBuilder.Append(@"<script type='text/javascript' >
+        $.ajax({
+            url: 'https://www.google.com/voice/request/messages',
+            type: 'GET',
+            dataType: 'jsonp',
+            success: function (resultSet) 
+            {
+                var container=$('#GoogleVoiceMessageContainer" + id + @"');
+                container.append('<div>' + resultSet.messageList.length + '</div>');
+            }
+        });
+</script>");
+
+
+            _output = outputBuilder.ToString();
         }
 
         public string HTML
@@ -24,7 +42,7 @@ namespace GoogleVoice
 
         public string Description
         {
-            get { return "View your Google Voice messages."; }
+            get { return "View your recent Google Voice messages."; }
         }
 
         public string DefaultSettings
