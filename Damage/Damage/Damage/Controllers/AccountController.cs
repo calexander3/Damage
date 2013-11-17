@@ -256,6 +256,14 @@ namespace Damage.Controllers
                         user.LastLoginTime = DateTime.Now;
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        // User is new, ask for their desired membership name
+                        string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
+                        ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
+                        ViewBag.ReturnUrl = returnUrl;
+                        return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.ExtraData["email"], ExternalLoginData = loginData, ExtraData = JsonConvert.SerializeObject(result.ExtraData) });
+                    }
                 }
                 return RedirectToLocal(returnUrl);
             }
