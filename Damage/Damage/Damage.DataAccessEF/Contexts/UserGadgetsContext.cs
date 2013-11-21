@@ -7,7 +7,7 @@ namespace Damage.DataAccessEF.Contexts
 {
     public class UserGadgetsContext : DbContext
     {
-        public UserGadgetsContext(string ConnectionString) : base(ConnectionString)
+        public UserGadgetsContext(string connectionString) : base(connectionString)
         {
         }
 

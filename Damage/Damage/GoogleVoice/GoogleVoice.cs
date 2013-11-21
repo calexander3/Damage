@@ -14,17 +14,42 @@ namespace GoogleVoice
             var outputBuilder = new System.Text.StringBuilder("<div id='GoogleVoiceMessageContainer" + id +"' style='width:100%;max-height:500px;overflow-x:hidden;overflow-y:auto;'></div>");
 
             outputBuilder.Append(@"<script type='text/javascript' >
-        $.ajax({
-            url: 'https://www.google.com/voice/request/messages',
-            type: 'GET',
-            dataType: 'jsonp',
-            success: function (resultSet) 
-            {
-                var container=$('#GoogleVoiceMessageContainer" + id + @"');
-                container.append('<div>' + resultSet.messageList.length + '</div>');
-            }
-        });
-</script>");
+
+function parseVoiceMessages" + id + @"(data)
+{
+var container=$('#GoogleVoiceMessageContainer" + id + @"');
+               var result = $.parseJSON(resultSet);
+               container.append('<div>' + result.messageList.length + '</div>');
+}
+
+
+//var container=$('#GoogleVoiceMessageContainer" + id + @"');
+//if($.support.cors)
+//{
+//        $.ajax({
+//            url: 'https://www.google.com/voice/request/messages',
+//            type: 'GET',
+//            contentType: 'text/plain',
+//            xhrFields: {
+//                  withCredentials: true
+//               },
+//            success: function (resultSet) 
+//            {
+//                var result = $.parseJSON(resultSet);
+//                container.append('<div>' + result.messageList.length + '</div>');
+//            }
+//        });
+//}
+//else
+//{
+//    container.append('<div>Your browser must support CORS</div>');
+//}
+
+</script>
+<script type='application/javascript'
+        src='https://www.google.com/voice/request/messages?callback=parseVoiceMessages" + id + @"'>
+</script>
+");
 
 
             _output = outputBuilder.ToString();
