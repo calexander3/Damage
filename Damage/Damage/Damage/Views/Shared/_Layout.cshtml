@@ -39,6 +39,10 @@
 		}
 
 		$(document).ready(function () {
+		    $(function () {
+		        $('[autofocus]:not(:focus)').eq(0).focus();
+		    });
+		    
 			$.ajaxSetup({
 				cache: false,
 				traditional: true,
@@ -110,7 +114,7 @@
 					<div>
 						<span style="cursor: default">Damage</span>
 						<span>
-							<input type="text" id="txtSearch" />
+							<input type="text" id="txtSearch" autofocus="autofocus" />
 							<img id="btnSearch"src="~/Content/Images/searchButton.png" alt="Search" style="cursor: pointer" onclick="Search($('#txtSearch').val())" />
 						</span>
 					</div>
