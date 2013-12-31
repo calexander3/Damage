@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Web;
 
 namespace GoogleCalendar
 {
@@ -17,13 +18,22 @@ namespace GoogleCalendar
 
             var sb = new System.Text.StringBuilder("<div style='max-height:400px;overflow-y:auto;margin-left:5px;margin-right:5px;margin-top:2px;margin-bottom:2px;'>");
             Calendar calendar = null;
-            var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
-            var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");
-            var request = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/calendar/v3/calendars/" + UserGadget.User.EmailAddress + "/events?singleEvents=true&orderBy=startTime&sanitizeHtml=true&timeMin=" + startTime + "&timeMax=" + endTime);
-            request.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
-            using (var response = request.GetResponse())
+
+            if (HttpContext.Current.Cache[UserGadget.User.UserId + "_cal"] != null)
             {
-                calendar = JsonConvert.DeserializeObject<Calendar>(new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd());
+                calendar = (Calendar)HttpContext.Current.Cache[UserGadget.User.UserId + "_cal"];
+            }
+            else
+            {
+                var startTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00Z");
+                var endTime = DateTime.Now.AddMonths(settings.MonthsToDisplay).ToString("yyyy-MM-ddT00:00:00Z");
+                var request = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/calendar/v3/calendars/" + UserGadget.User.EmailAddress + "/events?singleEvents=true&orderBy=startTime&sanitizeHtml=true&timeMin=" + startTime + "&timeMax=" + endTime);
+                request.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
+                using (var response = request.GetResponse())
+                {
+                    calendar = JsonConvert.DeserializeObject<Calendar>(new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd());
+                    HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_cal", calendar, null, DateTime.Now.AddMinutes(1), System.Web.Caching.Cache.NoSlidingExpiration);
+                }
             }
 
             var previousDate = "";
@@ -35,7 +45,7 @@ namespace GoogleCalendar
                     sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'>" + eventDate + "</div>");
                     previousDate = eventDate;
                 }
-                sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") + 
+                sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") +
                     System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary ?? "") +
                     "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;white-space:nowrap;'>" +
                     (calItem.start.dateTime != null ? System.DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +

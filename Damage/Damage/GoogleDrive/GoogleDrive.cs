@@ -4,6 +4,7 @@ using System.Net;
 using Damage.Gadget;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace GoogleDrive
 {
@@ -25,12 +26,22 @@ namespace GoogleDrive
             if (settings.DisplayRecentFiles)
             {
                 FileList fileList = null;
-                var recentFilesRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/files?maxResults=" + (settings.FilesToDisplay + 1).ToString() + "&q=mimeType!%3D%27application/vnd.google-apps.folder%27and%20trashed=false");
-                recentFilesRequest.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
-                using (var recentFilesResponse = recentFilesRequest.GetResponse())
+
+                if (HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles"] != null)
                 {
-                    fileList = JsonConvert.DeserializeObject<FileList>(new System.IO.StreamReader(recentFilesResponse.GetResponseStream()).ReadToEnd());
+                    fileList = (FileList)HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles"];
                 }
+                else
+                {
+                    var recentFilesRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/files?maxResults=" + (settings.FilesToDisplay + 1).ToString() + "&q=mimeType!%3D%27application/vnd.google-apps.folder%27and%20trashed=false");
+                    recentFilesRequest.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
+                    using (var recentFilesResponse = recentFilesRequest.GetResponse())
+                    {
+                        fileList = JsonConvert.DeserializeObject<FileList>(new System.IO.StreamReader(recentFilesResponse.GetResponseStream()).ReadToEnd());
+                        HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_drvFiles", fileList, null, DateTime.Now.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
+                    }
+                }
+
                 if (fileList != null)
                 {
                     foreach (var file in fileList.items)
@@ -42,11 +53,20 @@ namespace GoogleDrive
 
 
             UsageInfo usageInfo = null;
-            var usageRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/about?maxChangeIdCount=1");
-            usageRequest.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
-            using (var usageResponse = usageRequest.GetResponse())
+
+            if (HttpContext.Current.Cache[UserGadget.User.UserId + "_usage"] != null)
             {
-                usageInfo = JsonConvert.DeserializeObject<UsageInfo>(new System.IO.StreamReader(usageResponse.GetResponseStream()).ReadToEnd());
+                usageInfo = (UsageInfo)HttpContext.Current.Cache[UserGadget.User.UserId + "_usage"];
+            }
+            else
+            {
+                var usageRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/about?maxChangeIdCount=1");
+                usageRequest.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
+                using (var usageResponse = usageRequest.GetResponse())
+                {
+                    usageInfo = JsonConvert.DeserializeObject<UsageInfo>(new System.IO.StreamReader(usageResponse.GetResponseStream()).ReadToEnd());
+                    HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_usage", usageInfo, null, DateTime.Now.AddMinutes(60), System.Web.Caching.Cache.NoSlidingExpiration);
+                }
             }
 
             if (usageInfo != null)
