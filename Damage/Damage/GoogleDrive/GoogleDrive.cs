@@ -5,6 +5,7 @@ using Damage.Gadget;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Web;
+using System.Linq;
 
 namespace GoogleDrive
 {
@@ -23,13 +24,13 @@ namespace GoogleDrive
             outputBuilder.Append("<div style='margin-bottom:2px;white-space:nowrap;'><img src='https://ssl.gstatic.com/docs/doclist/images/icon_11_document_list.png' style='margin-right:2px;' /><a style='position:relative;top:-3px;' href='https://docs.google.com/document/' target='_blank'>Create New Document</a></div>");
             outputBuilder.Append("<div style='margin-bottom:2px;white-space:nowrap;'><img src='https://ssl.gstatic.com/docs/doclist/images/icon_11_spreadsheet_list.png' style='margin-right:2px;' /><a style='position:relative;top:-3px;' href='https://docs.google.com/spreadsheet' target='_blank'>Create New Spreadsheet</a></div>");
 
-            if (settings.DisplayRecentFiles)
+            if (settings.DisplayRecentFiles && settings.FilesToDisplay > 0)
             {
                 FileList fileList = null;
 
-                if (HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles"] != null)
+                if (HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay] != null)
                 {
-                    fileList = (FileList)HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles"];
+                    fileList = (FileList)HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay];
                 }
                 else
                 {
@@ -38,13 +39,13 @@ namespace GoogleDrive
                     using (var recentFilesResponse = recentFilesRequest.GetResponse())
                     {
                         fileList = JsonConvert.DeserializeObject<FileList>(new System.IO.StreamReader(recentFilesResponse.GetResponseStream()).ReadToEnd());
-                        HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_drvFiles", fileList, null, DateTime.Now.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
+                        HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay, fileList, null, DateTime.Now.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
                     }
                 }
 
                 if (fileList != null)
                 {
-                    foreach (var file in fileList.items)
+                    foreach (var file in fileList.items.Take(settings.FilesToDisplay))
                     {
                         outputBuilder.Append("<div style='margin-bottom:2px;white-space:nowrap;'><img src='" + file.iconLink + "' style='margin-right:2px;' /><a style='position:relative;top:-3px;' href='" + file.alternateLink + "' target='_blank' title='" + file.title + "'>" + file.title + "</a></div>");
                     }
