@@ -281,6 +281,7 @@ namespace Damage.Controllers
                         user.EmailAddress = result.ExtraData["email"];
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
+                        user.LastLoginTime = DateTime.Now;
                         db.SaveChanges();
                     }
                 }
@@ -325,7 +326,7 @@ namespace Damage.Controllers
                         var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
 
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = extraData["email"], CurrentOAuthAccessToken = extraData["accesstoken"], OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55) });
+                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = extraData["email"], CurrentOAuthAccessToken = extraData["accesstoken"], OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55), LastLoginTime = DateTime.Now });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
