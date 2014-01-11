@@ -736,6 +736,7 @@ tr.pager td {
 .gmailPreview {
     font-size: 0.8em;
     padding-left: 40px;
+    font-weight: normal;
 }
 
 .gmailDivider {
