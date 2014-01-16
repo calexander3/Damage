@@ -9,7 +9,7 @@
     }
     catch (Exception ex)
     {
-        GlobalConfig.Log.Error("Gadget Error", ex);
+        GlobalConfig.Log.Error("Gadget Error: " + Model.Title, ex);
     }
     timer.Stop();
     var time = timer.ElapsedMilliseconds;

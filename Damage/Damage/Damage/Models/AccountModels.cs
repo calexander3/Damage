@@ -26,6 +26,7 @@ namespace Damage.Models
         public DateTime OAuthAccessTokenExpiration { get; set; }
         public DateTime LastLoginTime { get; set; }
         public string EmailAddress { get; set; }
+        public int LayoutId { get; set; }
     }
 
     public class RegisterExternalLoginModel

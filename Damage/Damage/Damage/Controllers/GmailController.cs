@@ -94,7 +94,7 @@ namespace Damage.Controllers
                             }
 
                             //Get messages and organize into threads
-                            var messages = imap.SearchMessages(searchCondition, !showPreview, false).OrderByDescending(m => m.Value.Date).Take(100).ToList();
+                            var messages = imap.SearchMessages(searchCondition, !showPreview, false).OrderByDescending(m => m.Value.Date).ToList();
                             var threads = new Dictionary<long, AE.Net.Mail.MailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
