@@ -18,6 +18,7 @@ namespace Damage.Controllers
         {
             var hasLinkedGoogleAccount = false;
             var activeGadgets = new List<IGadget>();
+            var layout = 0;
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
@@ -30,6 +31,7 @@ namespace Damage.Controllers
                     //refresh oauth access token if needed
                     if (gadgetsForUser.Count > 0)
                     {
+                        layout = gadgetsForUser.First().User.LayoutId;
                         if (OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 0)
                         {
                             hasLinkedGoogleAccount = true;
@@ -45,6 +47,23 @@ namespace Damage.Controllers
                 else
                 {
                     gadgetsForUser = uow.GadgetRepository.GetDefaultGadgets();
+                }
+
+                switch (layout)
+                {
+                    case 0:
+                        ViewBag.ColumnCount = 3;
+                        ViewBag.ColumnCss = "Layout0.css";
+                        break;
+                    case 1:
+                        ViewBag.ColumnCount = 3;
+                        ViewBag.ColumnCss = "Layout1.css";
+                        break;
+                    case 2:
+                        ViewBag.ColumnCount = 2;
+                        ViewBag.ColumnCss = "Layout2.css";
+                        break;
+
                 }
 
                 foreach (var g in gadgetsForUser)

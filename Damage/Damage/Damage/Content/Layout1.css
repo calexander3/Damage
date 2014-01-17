@@ -1,0 +1,34 @@
+﻿.GadgetColumn {
+    float: left;
+    min-height: 200px;
+}
+
+#displayColumn1 {
+    width: 25%;
+}
+
+#displayColumn2 {
+    width: 50%;
+}
+
+#displayColumn3 {
+    width: 25%;
+}
+
+
+@media only screen and (max-width: 650px) {
+    #displayColumn1 {
+        width: 100%;
+        min-height: 200px;
+    }
+
+    #displayColumn2 {
+        width: 100%;
+        min-height: 200px;
+    }
+
+    #displayColumn3 {
+        width: 100%;
+        min-height: 200px;
+    }
+}

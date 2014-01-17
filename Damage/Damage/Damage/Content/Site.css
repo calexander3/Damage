@@ -620,12 +620,6 @@ tr.pager td {
     overflow-x: auto;
 }
 
-.GadgetColumn {
-    width: 33%;
-    float: left;
-    min-height: 200px;
-}
-
 .gadgetPreview {
     float: left;
     margin-bottom: 5px;
@@ -825,12 +819,6 @@ tr.pager td {
             margin: 0;
             padding: 0;
         }
-
-
-    .GadgetColumn {
-        width: 100%;
-        min-height: 200px;
-    }
 
     /* main layout
     ----------------------------------------------------------*/

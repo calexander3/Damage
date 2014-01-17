@@ -244,6 +244,8 @@
     <Compile Include="ShortGuid.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Layout2.css" />
+    <Content Include="Content\Layout1.css" />
     <Content Include="Content\Images\AjaxLoader.gif" />
     <Content Include="Content\Images\CollapseArrow.png" />
     <Content Include="Content\Images\ExpandArrow.png" />
@@ -269,6 +271,7 @@
     <Content Include="Content\Images\logo.PNG" />
     <Content Include="Content\Images\searchBackground.jpg" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\Layout0.css" />
     <Content Include="error.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

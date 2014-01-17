@@ -1,0 +1,13 @@
+﻿.GadgetColumn {
+    width: 33%;
+    float: left;
+    min-height: 200px;
+}
+
+
+@media only screen and (max-width: 650px) {
+    .GadgetColumn {
+        width: 100%;
+        min-height: 200px;
+    }
+}

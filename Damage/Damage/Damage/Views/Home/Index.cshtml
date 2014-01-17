@@ -7,6 +7,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="~/Scripts/Gadget.js"></script>
+    <link href="/Content/@(ViewBag.ColumnCss)" rel="stylesheet">
 }
 
 @if (!Request.IsAuthenticated) {
@@ -23,13 +24,30 @@ else
     <div>You currently do not have any gadgets. Use the @Html.ActionLink("Add Gadget", "AddGadget", "Home") page to add new gadgets to your dashboard.</div>
 }
 
-@for (int column = 1; column <= 3; column ++)
+@for (int column = 1; column <= ViewBag.ColumnCount; column ++)
 {
     <div class="GadgetColumn droppable" id="displayColumn@(column)">
         <div class="columnPerserver"></div>
-        @foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == column).OrderBy(m => m.UserGadget.DisplayOrdinal))
-        {
-            <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+        
+        @{
+            int icolumn = column;
+            foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn).OrderBy(m => m.UserGadget.DisplayOrdinal))
+            {
+                <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+            }
+
+            if (icolumn == ViewBag.ColumnCount)
+            {
+                var maxColumn = Model.Max(m => m.UserGadget.DisplayColumn);
+                for (var j = 1; j <= (maxColumn - icolumn); j++)
+                {
+                    foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn + j).OrderBy(m => m.UserGadget.DisplayOrdinal))
+                    {
+                        <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+                    }
+                }
+
+            }
         }
     </div>
 }
@@ -50,7 +68,7 @@ else
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         setupDragAndDrop();
     });
 </script>
