@@ -174,7 +174,7 @@ function OpenSettingsDialog() {
                     data: { layoutId: $("input:radio[name ='layout']:checked").val() },
                     type: 'POST',
                     success: function () {
-                        window.location.reload();
+                        location.reload();
                     }
                 });
             },
