@@ -168,7 +168,15 @@ function OpenSettingsDialog() {
         modal: true,
         buttons: {
             Save: function () {
-                $(this).dialog("close");
+
+                $.ajax({
+                    url: "/home/UpdateSettings",
+                    data: { layoutId: $("input:radio[name ='layout']:checked").val() },
+                    type: 'POST',
+                    success: function () {
+                        window.location.reload();
+                    }
+                });
             },
             Cancel: function () {
                 $(this).dialog("close");

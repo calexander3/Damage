@@ -124,5 +124,22 @@ namespace Damage.Controllers
             }
             return View(gadgets);
         }
+
+        [HttpPost]
+        public void UpdateSettings(int? layoutId)
+        {
+            if (layoutId != null && Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    if (user != null)
+                    {
+                        user.LayoutId = layoutId.Value;
+                        uow.UserRepository.Save(user);
+                    }
+                }
+            }
+        }
     }
 }
