@@ -234,6 +234,7 @@
     <Compile Include="ShortGuid.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\Gadgets\Dilbert.png" />
     <Content Include="Content\Layout5.css" />
     <Content Include="Content\Layout4.css" />
     <Content Include="Content\Layout3.css" />
