@@ -52,22 +52,20 @@ namespace Damage.Controllers
                 switch (layout)
                 {
                     case 0:
-                        ViewBag.ColumnCount = 3;
-                        ViewBag.ColumnCss = "Layout0.css";
-                        ViewBag.LayoutId = 0;
-                        break;
                     case 1:
                         ViewBag.ColumnCount = 3;
-                        ViewBag.ColumnCss = "Layout1.css";
-                        ViewBag.LayoutId = 1;
                         break;
                     case 2:
+                    case 3:
+                    case 4:
                         ViewBag.ColumnCount = 2;
-                        ViewBag.ColumnCss = "Layout2.css";
-                        ViewBag.LayoutId = 2;
                         break;
-
+                    case 5:
+                        ViewBag.ColumnCount = 1;
+                        break;
                 }
+                ViewBag.ColumnCss = "Layout" + layout + ".css";
+                ViewBag.LayoutId = layout;
 
                 foreach (var g in gadgetsForUser)
                 {
