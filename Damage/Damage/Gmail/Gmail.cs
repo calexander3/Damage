@@ -55,7 +55,7 @@ namespace Gmail
 
                                 $.ajax({
                                 url: '/gmail/DeleteMail',
-                                data: JSON.stringify( { 'MessageIds': messageIds}),
+                                data: JSON.stringify( { 'MessageIds': messageIds, folderName : '" + settings.FolderName + @"'}),
                                 type: 'POST',
                                 contentType: 'application/json',
                                 dataType: 'json',
@@ -85,7 +85,7 @@ namespace Gmail
 
                                 $.ajax({
                                 url: '/gmail/ArchiveMail',
-                                data: JSON.stringify( { 'MessageIds': messageIds}),
+                                data: JSON.stringify( { 'MessageIds': messageIds, folderName : '" + settings.FolderName + @"'}),
                                 type: 'POST',
                                 contentType: 'application/json',
                                 dataType: 'json',
