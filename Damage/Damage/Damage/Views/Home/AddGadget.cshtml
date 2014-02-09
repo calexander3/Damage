@@ -17,7 +17,7 @@
 
     foreach(var gadget in Model)
     {
-        <div style="width:100%;max-width:500px;clear:both;">
+        <div class="gadgetPreviewContainer">
             <div class="gadgetPreview"><img src="~/Content/Images/Gadgets/@(gadget.GadgetName).png" /></div>
             <div class="gadgetPreviewTitle">@gadget.GadgetTitle</div>
             <div class="gadgetPreviewDescription">@Html.Raw(gadget.GadgetDescription)</div>

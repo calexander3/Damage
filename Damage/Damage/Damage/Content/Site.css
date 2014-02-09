@@ -620,6 +620,15 @@ tr.pager td {
     overflow-x: auto;
 }
 
+.gadgetPreviewContainer {
+    width: 100%;
+    max-width: 450px;
+    float:left;
+    background-color: #eaeaea;
+    padding:5px;
+    margin:20px;
+}
+
 .gadgetPreview {
     float: left;
     margin-bottom: 5px;

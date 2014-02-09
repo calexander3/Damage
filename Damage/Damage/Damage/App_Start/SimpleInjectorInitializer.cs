@@ -9,20 +9,15 @@ using System.Reflection;
 public static class SimpleInjectorInitializer
 {
     /// <summary>Initialize the container and register it as MVC Dependency Resolver.</summary>
-    public static void InitializeInjector()
+    public static void InitializeInjector(Container container)
     {
-        var container = new Container();
-
         InitializeContainer(container);
 
-        //container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+        container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
-        //container.RegisterMvcAttributeFilterProvider();
+        container.RegisterMvcAttributeFilterProvider();
 
         //container.Verify();
-
-        //DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-        GlobalConfig.DependencyResolver = container;
     }
 
     private static void InitializeContainer(Container container)

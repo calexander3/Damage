@@ -9,6 +9,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using SimpleInjector;
+using SimpleInjector.Integration.Web.Mvc;
 
 namespace Damage
 {
@@ -25,7 +27,10 @@ namespace Damage
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-            SimpleInjectorInitializer.InitializeInjector();
+
+            var container = new Container();
+            SimpleInjectorInitializer.InitializeInjector(container);
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
 
             GlobalConfig.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Type>();
@@ -35,7 +40,8 @@ namespace Damage
 
         private void LoadGadgets()
         {
-            var gadgetInstances = GlobalConfig.DependencyResolver.GetAllInstances<IGadget>();
+
+            var gadgetInstances = ((SimpleInjectorDependencyResolver)DependencyResolver.Current).Container.GetAllInstances<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {

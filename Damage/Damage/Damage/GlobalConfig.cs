@@ -22,8 +22,6 @@ namespace Damage
         /// </value>
         public static ConcurrentDictionary<string,Type> GadgetTypes { get; set; }
 
-        public static Container DependencyResolver { get; set; }
-
         public static log4net.ILog Log { get; set; }
     }
 }
