@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dilbert")]
+[assembly: AssemblyTitle("EmbedObject")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Innovation Interactive")]
-[assembly: AssemblyProduct("Dilbert")]
-[assembly: AssemblyCopyright("Copyright © Innovation Interactive 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("EmbedObject")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dea3fee2-7a92-4689-b85a-d7da32b09e24")]
+[assembly: Guid("72474dce-2999-452c-b52e-45dad7780e6f")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traffic", "Traffic\Traffic.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleVoice", "GoogleVoice\GoogleVoice.csproj", "{F2B73B76-4E2F-4753-886A-B631251EFF55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dilbert", "Dilbert\Dilbert.csproj", "{0033113B-508B-4C60-BD81-E654438BCF77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedObject", "EmbedObject\EmbedObject.csproj", "{A7074D45-310A-4BB7-A38A-7A9392DAAF61}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -92,10 +92,10 @@ Global
 		SccProjectTopLevelParentUniqueName13 = Damage.sln
 		SccProjectName13 = GoogleVoice
 		SccLocalPath13 = GoogleVoice
-		SccProjectUniqueName14 = Dilbert\\Dilbert.csproj
+		SccProjectUniqueName14 = EmbedObject\\EmbedObject.csproj
 		SccProjectTopLevelParentUniqueName14 = Damage.sln
-		SccProjectName14 = Dilbert
-		SccLocalPath14 = Dilbert
+		SccProjectName14 = EmbedObject
+		SccLocalPath14 = EmbedObject
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,10 +156,10 @@ Global
 		{F2B73B76-4E2F-4753-886A-B631251EFF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2B73B76-4E2F-4753-886A-B631251EFF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2B73B76-4E2F-4753-886A-B631251EFF55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0033113B-508B-4C60-BD81-E654438BCF77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0033113B-508B-4C60-BD81-E654438BCF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0033113B-508B-4C60-BD81-E654438BCF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0033113B-508B-4C60-BD81-E654438BCF77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7074D45-310A-4BB7-A38A-7A9392DAAF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7074D45-310A-4BB7-A38A-7A9392DAAF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7074D45-310A-4BB7-A38A-7A9392DAAF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7074D45-310A-4BB7-A38A-7A9392DAAF61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +174,6 @@ Global
 		{A83E06B6-3EF6-4005-89EC-4C280AFFEC8D} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{F5846D06-D067-48A6-8D67-C980E53D7322} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{F2B73B76-4E2F-4753-886A-B631251EFF55} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
-		{0033113B-508B-4C60-BD81-E654438BCF77} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
+		{A7074D45-310A-4BB7-A38A-7A9392DAAF61} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 	EndGlobalSection
 EndGlobal

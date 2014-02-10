@@ -24,7 +24,8 @@ namespace Damage.Gadget
         Telephone = 10,
         Time = 11,
         Url = 12,
-        Week = 13
+        Week = 13,
+        TextArea = 14
     }
 
     [Flags]

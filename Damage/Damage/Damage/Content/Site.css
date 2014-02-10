@@ -636,7 +636,7 @@ tr.pager td {
 
 .gadgetPreviewTitle {
     padding-left: 140px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .gadgetPreviewDescription {

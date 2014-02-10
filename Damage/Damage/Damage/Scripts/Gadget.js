@@ -23,10 +23,16 @@
             for (var x = 0; x < settingsSchema.length; x++) {
                 var dataType = getSettingInputType(settingsSchema[x].DataType);
                 if (dataType == "radio") {
-                    settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='radios' type = '" + dataType + "' /></td></div>";
+                    settingsFormHTML += "<tr><td style='vertical-align:top'>" + settingsSchema[x].DisplayName + "</td><td><input style='margin:0px;' id='" + settingsSchema[x].FieldName + "' name='radios' type = '" + dataType + "' /></td></div>";
+                }
+                else if (dataType == "textarea") {
+                    settingsFormHTML += "<tr><td style='vertical-align:top'>" + settingsSchema[x].DisplayName + "</td><td><textarea style='margin:0px;' rows='15' id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "'></textarea></td></div>";
+                    if (settingsSchema[x].Validators > 0) {
+                        validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
+                    }
                 }
                 else {
-                    settingsFormHTML += "<tr><td>" + settingsSchema[x].DisplayName + "</td><td><input id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + dataType + "' /></td></div>";
+                    settingsFormHTML += "<tr><td style='vertical-align:top'>" + settingsSchema[x].DisplayName + "</td><td><input style='margin:0px;' id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + dataType + "' /></td></div>";
                     if (settingsSchema[x].Validators > 0) {
                         validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
                     }
@@ -76,6 +82,10 @@
                                 }
                             }
 
+                            var textAreas = $("#settingTable").find("textarea");
+                            for (x = 0; x < textAreas.length; x++) {
+                                 newSettings[textAreas[x].id] = $(textAreas[x]).val();
+                            }
 
                             $.ajax({
                                 url: "/gadget/UpdateGadgetSettings",
@@ -158,6 +168,8 @@ function getSettingInputType(type) {
             return "url";
         case 13:
             return "week";
+        case 14:
+            return "textarea";
     }
     return "text";
 }
