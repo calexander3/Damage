@@ -45,9 +45,9 @@ namespace GoogleCalendar
                     sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'>" + eventDate + "</div>");
                     previousDate = eventDate;
                 }
-                sb.Append("<div style='margin-left:10px;white-space:nowrap;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") +
+                sb.Append("<div style='margin-left:10px;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") +
                     System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary ?? "") +
-                    "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;white-space:nowrap;'>" +
+                    "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;'>" +
                     (calItem.start.dateTime != null ? System.DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
                     (calItem.end.dateTime != null ? " - " + System.DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
                     "</div></div>");
