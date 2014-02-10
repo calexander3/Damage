@@ -1,4 +1,3 @@
-using Damage;
 using Damage.Gadget;
 using SimpleInjector;
 using System;

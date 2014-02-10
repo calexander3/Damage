@@ -1,6 +1,6 @@
-﻿using Damage.Gadget;
+﻿using Damage;
+using Damage.Gadget;
 using System.Collections.Generic;
-using Damage;
 
 
 namespace GoogleVoice

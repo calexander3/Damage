@@ -1,16 +1,16 @@
-﻿using System;
-using System.IO;
-using Damage.DataAccess;
+﻿using Damage.DataAccess;
 using Damage.Gadget;
 using Newtonsoft.Json;
+using SimpleInjector;
+using SimpleInjector.Integration.Web.Mvc;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using SimpleInjector;
-using SimpleInjector.Integration.Web.Mvc;
 
 namespace Damage
 {

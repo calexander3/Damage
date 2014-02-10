@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using Damage.DataAccessEF.Models;
+﻿using Damage.DataAccessEF.Models;
+using System.Data.Entity;
 
 namespace Damage.DataAccessEF.Contexts
 {
