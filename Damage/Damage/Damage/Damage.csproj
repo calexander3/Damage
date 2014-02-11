@@ -237,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Gadgets\EmbedObject.png" />
+    <Content Include="Content\Images\gmailFolder.png" />
     <Content Include="Content\Layout5.css" />
     <Content Include="Content\Layout4.css" />
     <Content Include="Content\Layout3.css" />

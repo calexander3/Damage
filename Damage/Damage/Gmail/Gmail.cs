@@ -18,7 +18,7 @@ namespace Gmail
             var showPreview = settings.ShowPreview ?? false;
 
             var id = ShortGuid.NewGuid().ToString();
-            var sb = new StringBuilder("<div style='position: relative;' id='" + id + "' ><div class='gmailContainer'><div class='gmailHeader'></div></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' onclick='archiveMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' onclick='deleteMail" + id + @"()' /></div></div></div>");
+            var sb = new StringBuilder("<div style='position: relative;' id='" + id + "' ><div class='gmailContainer'><div class='gmailHeader'></div></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' title='Archive' onclick='archiveMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' title='Delete' onclick='deleteMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailFolder.png' alt='Move To Folder' title='Move To Folder' onclick='openMoveToFolderDialog" + id + @"()' /></div></div><div id=""" + id + @"gmailFolderSelector"" class=""gmailFolderSelector""></div></div>");
             sb.Append("<script type='text/javascript' >");
 
             sb.Append(@"function openToolbox" + id + @"()
@@ -32,6 +32,46 @@ namespace Gmail
                             {
                                 container.children('.gmailToolbox').slideUp('fast');
                             }
+                        }");
+
+            sb.Append(@"function initiateMoveToFolder" + id + @"(folderName)
+                        {
+                            $('#" + id + @"gmailFolderSelector').dialog(""close"");
+
+                            var container = $('#" + id + @"').children('.gmailContainer');
+                            var inputs = container.find('input:checked');
+                            if(inputs.length > 0)
+                            {
+                                var messageIds = [];
+                                $.each(inputs, function(index, input) {
+                                    var internalMessageIds = $(input).attr('data-messageids').split(',');
+                                    messageIds = $.merge(messageIds,internalMessageIds);
+                                    $(input).parent().parent().remove();
+                                    openToolbox" + id + @"();
+                                });
+
+                                $.ajax({
+                                url: '/gmail/MoveMail',
+                                data: JSON.stringify( { 'MessageIds': messageIds, originalFolderName : '" + settings.FolderName + @"', FolderName : folderName}),
+                                type: 'POST',
+                                contentType: 'application/json',
+                                dataType: 'json',
+                                success: function (resultSet) {
+                                    if(!resultSet.Result)
+                                    {
+                                        dialog('Error','There was a problem moving your mail messages. Please refresh and try again.');
+                                    }
+                                }
+                                });
+                            }
+                        }");
+
+            sb.Append(@"function openMoveToFolderDialog" + id + @"()
+                        {
+                            $('#" + id + @"gmailFolderSelector').dialog({
+                              title: 'Choose Folder',
+                              modal: true
+                            });
                         }");
 
             sb.Append(@"function makeRead" + id + @"(element)
@@ -118,6 +158,10 @@ namespace Gmail
                 $.each(resultSet.Data, function(index, message) {
                     var unreadCss = (message.Unread ? '' : 'gmailread ');
                     container.append('<div class=""' + unreadCss + 'gmailItem""><div style=""" + (showPreview ? "margin-top: 20px;" : "margin-top: 10px;") + @""" class=""gmailCheckBox""><input type=""checkbox"" data-messageids=""' + message.ThreadMessageIds + '"" onclick=""openToolbox" + id + @"()"" /></div><div class=""gmailDate"">' + message.Date + '</div><div class=""' + unreadCss + 'gmailFrom""><a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.From + '</a></div><div class=""gmailSubject"">' + (message.Important ? '<img src=""/content/images/gmailImportant.png"">' : '') + '<a href=""https://mail.google.com/mail/u/0/#inbox/' + message.ThreadIdHex + '"" target=""_blank"" onclick=""makeRead" + id + @"(this)"" >' + message.Subject + '</a></div><div class=""gmailPreview"">' + message.Preview + '</div><div class=""gmailDivider""></div></div>');
+                });
+
+                $.each(resultSet.Folders, function(index, folder) {
+                    $('#" + id + @"gmailFolderSelector').append('<div class=""gmailFolderSelectorFolder"" onclick=""initiateMoveToFolder" + id + @"(\'' + folder + '\')"">' + folder + '</div>');
                 });
             }
             else

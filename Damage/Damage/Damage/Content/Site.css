@@ -661,7 +661,7 @@ tr.pager td {
     margin-bottom: 5px;
 }
 
-.garbage {
+#garbage {
     width: 400px;
     height: 70px;
     position: fixed;
@@ -766,6 +766,24 @@ tr.pager td {
 .gmailread {
     color: #999;
     font-weight: 400;
+}
+
+.gmailFolderSelector{
+    display:none;
+}
+
+.gmailFolderSelectorFolder{
+    cursor:pointer;
+    width:90%;
+    margin:3px;
+    padding:5px;
+    border: 1px solid black;
+    border-radius: 3px;
+    font-weight:bolder;
+}
+
+.gmailFolderSelectorFolder:hover {
+    background-color:Highlight;
 }
 
 

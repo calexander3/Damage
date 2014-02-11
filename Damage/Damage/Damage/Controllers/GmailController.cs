@@ -16,6 +16,7 @@ namespace Damage.Controllers
             var successful = false;
             var output = new List<GmailMessage>();
             var unreadCount = 0;
+            var folders = new List<string>();
 
             if (Request.IsAuthenticated)
             {
@@ -28,6 +29,18 @@ namespace Damage.Controllers
                         using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
                         {
                             imap.SelectMailbox(folderName);
+
+                            var listMailboxes = imap.ListMailboxes(string.Empty, "*");
+
+                            foreach (var listMailbox in listMailboxes)
+                            {
+                                if (!listMailbox.Name.StartsWith("[Gmail]") && listMailbox.Name.ToLower().CompareTo(folderName.ToLower()) != 0)
+                                {
+                                    folders.Add(listMailbox.Name);
+                                }
+                            }
+
+
                             var searchCondition = SearchCondition.Undeleted();
                             if (showUnreadOnly)
                             {
@@ -87,14 +100,39 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new { Result = successful, Data = output, UnreadCount = unreadCount }, JsonRequestBehavior.AllowGet);
+            return Json(new { Result = successful, Data = output, UnreadCount = unreadCount, Folders = folders.ToArray() }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult MoveMail(string[] MessageIds, string originalFolderName, string FolderName)
+        {
+            var successful = false;
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+
+                    if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
+                    {
+                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        {
+                            imap.SelectMailbox(originalFolderName);
+                            foreach (var messageId in MessageIds)
+                            {
+                                imap.MoveMessage(messageId, FolderName);
+                            }
+                            successful = true;
+                        }
+                    }
+                }
+            }
+            return Json(new { Result = successful });
         }
 
         [HttpPost]
         public JsonResult DeleteMail(string[] MessageIds, string folderName)
         {
-            var t = new System.Diagnostics.Stopwatch();
-            t.Start();
             var successful = false;
             if (Request.IsAuthenticated)
             {
