@@ -18,7 +18,7 @@ namespace Gmail
             var showPreview = settings.ShowPreview ?? false;
 
             var id = ShortGuid.NewGuid().ToString();
-            var sb = new StringBuilder("<div style='position: relative;' id='" + id + "' ><div class='gmailContainer'><div class='gmailHeader'></div></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' title='Archive' onclick='archiveMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' title='Delete' onclick='deleteMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailFolder.png' alt='Move To Folder' title='Move To Folder' onclick='openMoveToFolderDialog" + id + @"()' /></div></div><div id=""" + id + @"gmailFolderSelector"" class=""gmailFolderSelector""></div></div>");
+            var sb = new StringBuilder("<div style='position: relative;' id='" + id + "' ><div class='gmailContainer'><div class='gmailHeader'></div></div><div class='gmailToolbox'><div class='gmailToolboxItem'><img src='/content/images/gmailArchive.png' alt='Archive' title='Archive' onclick='archiveMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailSpam.png' alt='Report As Spam' title='Report As Spam' onclick='reportAsSpam" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailGarbage.png' alt='Delete' title='Delete' onclick='deleteMail" + id + @"()' /></div><div class='gmailToolboxItem'><img src='/content/images/gmailFolder.png' alt='Move To Folder' title='Move To Folder' onclick='openMoveToFolderDialog" + id + @"()' /></div></div><div id=""" + id + @"gmailFolderSelector"" class=""gmailFolderSelector""></div></div>");
             sb.Append("<script type='text/javascript' >");
 
             sb.Append(@"function openToolbox" + id + @"()
@@ -102,7 +102,37 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem with deleting your mail messages. Please refresh and try again.');
+                                        dialog('Error','There was a problem deleting your mail messages. Please refresh and try again.');
+                                    }
+                                }
+                                });
+                            }
+                        }");
+
+            sb.Append(@"function reportAsSpam" + id + @"()
+                        {
+                            var container = $('#" + id + @"').children('.gmailContainer');
+                            var inputs = container.find('input:checked');
+                            if(inputs.length > 0)
+                            {
+                                var messageIds = [];
+                                $.each(inputs, function(index, input) {
+                                    var internalMessageIds = $(input).attr('data-messageids').split(',');
+                                    messageIds = $.merge(messageIds,internalMessageIds);
+                                    $(input).parent().parent().remove();
+                                    openToolbox" + id + @"();
+                                });
+
+                                $.ajax({
+                                url: '/gmail/ReportAsSpam',
+                                data: JSON.stringify( { 'MessageIds': messageIds, folderName : '" + settings.FolderName + @"'}),
+                                type: 'POST',
+                                contentType: 'application/json',
+                                dataType: 'json',
+                                success: function (resultSet) {
+                                    if(!resultSet.Result)
+                                    {
+                                        dialog('Error','There was a problem marking your mail messages as spam. Please refresh and try again.');
                                     }
                                 }
                                 });
@@ -132,7 +162,7 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem with archiving your mail messages. Please refresh and try again.');
+                                        dialog('Error','There was a problem archiving your mail messages. Please refresh and try again.');
                                     }
                                 }
                                 });

@@ -197,7 +197,44 @@ namespace Damage.Controllers
             return Json(new { Result = successful });
         }
 
-        static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled | RegexOptions.Singleline);
+        [HttpPost]
+        public JsonResult ReportAsSpam(string[] MessageIds, string folderName)
+        {
+            var successful = false;
+            if (Request.IsAuthenticated)
+            {
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                {
+                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+
+                    if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
+                    {
+                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        {
+                            imap.SelectMailbox(folderName);
+                            foreach (var messageId in MessageIds)
+                            {
+                                try
+                                {
+                                    imap.MoveMessage(messageId, "[Gmail]/Spam");
+                                }
+                                catch (Exception) //Deleting always throws excptions
+                                {
+                                }
+                                finally
+                                {
+                                    imap.Expunge();
+                                }
+                            }
+                            successful = true;
+                        }
+                    }
+                }
+            }
+
+            return Json(new { Result = successful });
+        }
+
 
         private string getPreview(string body)
         {
