@@ -1,4 +1,6 @@
-﻿using Damage.Gadget;
+﻿using System.Linq;
+using Damage.Gadget;
+using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -12,7 +14,22 @@ namespace EmbedObject
         {
             var settings = JsonConvert.DeserializeObject<EmbedObjectOptions>(UserGadget.GadgetSettings);
             _title = settings.Title;
-            _html = settings.Markup;
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(settings.Markup);
+            var errors = htmlDoc.ParseErrors.ToList();
+            if (errors.Any())
+            {
+                var errorHtml = new System.Text.StringBuilder("<div>Errors were present in your markup:</div>");
+                foreach (var error in errors)
+                {
+                    errorHtml.Append("<div>" + System.Web.HttpUtility.HtmlEncode(error.Code)+ ": " + System.Web.HttpUtility.HtmlEncode(error.Reason) + "</div>");
+                }
+                _html = errorHtml.ToString();
+            }
+            else
+            {
+                _html = settings.Markup;
+            }
         }
 
         public string HTML
