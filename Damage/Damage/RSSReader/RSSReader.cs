@@ -1,4 +1,5 @@
-﻿using Damage;
+﻿using System.Net;
+using Damage;
 using Damage.Gadget;
 using Newtonsoft.Json;
 using System;
@@ -37,13 +38,19 @@ namespace RSSReader
                     }
                     else
                     {
-                        reader = XmlReader.Create(settings.FeedURL);
+                        WebRequest request = WebRequest.Create(settings.FeedURL);
+                        request.Timeout = 2000;
+
+                        using (WebResponse response = request.GetResponse())
+                        {
+                        reader = XmlReader.Create(response.GetResponseStream());
                         var document = new XmlDocument();
                         document.Load(reader);
                         HttpContext.Current.Cache.Insert(settings.FeedURL, document.InnerXml, null, DateTime.Now.AddMinutes(30), System.Web.Caching.Cache.NoSlidingExpiration);
                         reader.Close();
                         reader.Dispose();
                         reader = XmlReader.Create(new StringReader(document.InnerXml));
+                        }
                     }
 
                     SyndicationFeed feed = SyndicationFeed.Load(reader);
