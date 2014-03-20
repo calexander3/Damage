@@ -85,13 +85,13 @@ namespace Damage.DataAccess.Repositories
                 GadgetSettings = @"{""FeedURL"":""http://hypercritical.co/feeds/main"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
             });
 
-            defaultGadgets.Add(new UserGadget()
-            {
-                DisplayColumn = 1,
-                DisplayOrdinal = 1,
-                Gadget = rssGadget,
-                GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
-            });
+            //defaultGadgets.Add(new UserGadget()
+            //{
+            //    DisplayColumn = 1,
+            //    DisplayOrdinal = 1,
+            //    Gadget = rssGadget,
+            //    GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
+            //});
 
 
             defaultGadgets.Add(new UserGadget()

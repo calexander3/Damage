@@ -39,7 +39,7 @@ namespace RSSReader
                     else
                     {
                         WebRequest request = WebRequest.Create(settings.FeedURL);
-                        request.Timeout = 2000;
+                        request.Timeout = 1500;
 
                         using (WebResponse response = request.GetResponse())
                         {
