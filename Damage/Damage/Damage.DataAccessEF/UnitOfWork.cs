@@ -61,6 +61,9 @@ namespace Damage.DataAccessEF
             {
                 if (disposing)
                 {
+                    _gadgetsContext.Dispose();
+                    _userGadgetsContext.Dispose();
+                    _usersContext.Dispose();
                     //Set contexts to null
                     _gadgetsContext = null;
                     _userGadgetsContext = null;
