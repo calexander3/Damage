@@ -42,7 +42,8 @@ else
                 var maxColumn = Model.Max(m => m.UserGadget.DisplayColumn);
                 for (var j = 1; j <= (maxColumn - icolumn); j++)
                 {
-                    foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn + j).OrderBy(m => m.UserGadget.DisplayOrdinal))
+                    int j1 = j;
+                    foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn + j1).OrderBy(m => m.UserGadget.DisplayOrdinal))
                     {
                         <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
                     }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 
 namespace Damage.DataAccess.Models {
@@ -17,7 +18,7 @@ namespace Damage.DataAccess.Models {
 
         public override string CompositeKey
         {
-            get { return (UserGadgetId.ToString()); }
+            get { return (UserGadgetId.ToString(CultureInfo.InvariantCulture)); }
         }
     }
 }

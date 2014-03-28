@@ -25,7 +25,7 @@ namespace GoogleDrive
 
             if (settings.DisplayRecentFiles && settings.FilesToDisplay > 0)
             {
-                FileList fileList = null;
+                FileList fileList;
 
                 if (HttpContext.Current.Cache[UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay] != null)
                 {
@@ -33,7 +33,7 @@ namespace GoogleDrive
                 }
                 else
                 {
-                    var recentFilesRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/files?maxResults=" + (settings.FilesToDisplay + 1).ToString() + "&q=mimeType!%3D%27application/vnd.google-apps.folder%27and%20trashed=false");
+                    var recentFilesRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/drive/v2/files?maxResults=" + (settings.FilesToDisplay + 1) + "&q=mimeType!%3D%27application/vnd.google-apps.folder%27and%20trashed=false");
                     recentFilesRequest.Headers["Authorization"] = string.Format("Bearer {0}", UserGadget.User.CurrentOAuthAccessToken);
                     using (var recentFilesResponse = recentFilesRequest.GetResponse())
                     {
@@ -52,7 +52,7 @@ namespace GoogleDrive
             }
 
 
-            UsageInfo usageInfo = null;
+            UsageInfo usageInfo;
 
             if (HttpContext.Current.Cache[UserGadget.User.UserId + "_usage"] != null)
             {
@@ -99,22 +99,22 @@ namespace GoogleDrive
 
         public string DefaultSettings
         {
-            get { return JsonConvert.SerializeObject(new GoogleDriveOptions() { DisplayRecentFiles = true, FilesToDisplay = 5 }); }
+            get { return JsonConvert.SerializeObject(new GoogleDriveOptions { DisplayRecentFiles = true, FilesToDisplay = 5 }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
         {
             get
             {
-                return new List<GadgetSettingField>() 
+                return new List<GadgetSettingField> 
                 { 
-                    new GadgetSettingField() {
+                    new GadgetSettingField {
                         DisplayName="Display Recent Files", 
                         FieldName="DisplayRecentFiles", 
                         DataType= SettingDataTypes.Checkbox, 
                         Validators= Validators.None
                     },
-                    new GadgetSettingField() {
+                    new GadgetSettingField {
                         DisplayName="Recent Files to Display", 
                         FieldName="FilesToDisplay", 
                         DataType= SettingDataTypes.Number, 

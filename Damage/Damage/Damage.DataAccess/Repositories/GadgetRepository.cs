@@ -22,7 +22,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<Gadget> GetAllGadgets()
         {
-            return m_Session.QueryOver<Gadget>().List<Gadget>();
+            return Session.QueryOver<Gadget>().List<Gadget>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<Gadget> GetAllAvailableGadgets()
         {
-            return m_Session.QueryOver<Gadget>()
+            return Session.QueryOver<Gadget>()
                 .Where(g => g.AssemblyPresent)
                 .OrderBy(g => g.InBeta).Asc
                 .OrderBy(g => g.RequiresValidGoogleAccessToken).Desc
@@ -46,7 +46,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public Gadget GetGadgetById(int gadgetId)
         {
-            return m_Session.QueryOver<Gadget>()
+            return Session.QueryOver<Gadget>()
                 .Where(g => g.AssemblyPresent)
                 .And(g => g.GadgetId == gadgetId)
                 .SingleOrDefault();

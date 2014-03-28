@@ -102,7 +102,7 @@
                         dialogWindow.dialog("close");
                     }
                 },
-                close: function (event, ui) { dialogWindow.html(""); }
+                close: function () { dialogWindow.html(""); }
             });
         }
     });
@@ -198,9 +198,9 @@ function OpenSettingsDialog() {
 }
 
 function setupDragAndDrop() {
-    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
-    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
-    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function (event, ui) { $("#garbage").css("display", "block"); }, stop: function (event, ui) { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn1").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function () { $("#garbage").css("display", "block"); }, stop: function () { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn2").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function () { $("#garbage").css("display", "block"); }, stop: function () { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
+    $("#displayColumn3").sortable({ handle: ".GadgetHeader", forcePlaceholderSize: true, placeholder: "sortable-placeholder", connectWith: ".droppable", start: function () { $("#garbage").css("display", "block"); }, stop: function () { updateGadgetPositions(); $("#garbage").css("display", "none"); }, over: function (event, ui) { $(ui.placeholder).css("display", "block"); } });
     $("#garbage").sortable({
         over: function (event, ui) {
             $(ui.placeholder).css("display", "none");

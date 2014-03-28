@@ -34,7 +34,7 @@
                             $(this).dialog("close");
                         }
                     },
-                    close: function(event, ui) { dialogWindow.html(""); }
+                    close: function() { dialogWindow.html(""); }
                 });
             }
 
@@ -47,7 +47,7 @@
                     cache: false,
                     traditional: true,
                     type: "POST",
-                    error: function(request, status, error) {
+                    error: function(request) {
                         dialog("Error", "An error has occurred: (" + request.status + ") " + request.statusText);
                     }
                 });
@@ -71,7 +71,7 @@
                     },
                     minLength: 2,
                     select: function(event, ui) {
-                        Search(ui.item.value)
+                        Search(ui.item.value);
                     }
                 });
 

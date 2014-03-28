@@ -31,17 +31,17 @@ namespace RSSReader
                 {
                     var output = new System.Text.StringBuilder();
 
-                    XmlReader reader = null;
+                    XmlReader reader;
                     if (HttpContext.Current.Cache[settings.FeedURL] != null)
                     {
                         reader = XmlReader.Create(new StringReader((string)HttpContext.Current.Cache[settings.FeedURL]));
                     }
                     else
                     {
-                        WebRequest request = WebRequest.Create(settings.FeedURL);
+                        var request = WebRequest.Create(settings.FeedURL);
                         request.Timeout = 1500;
 
-                        using (WebResponse response = request.GetResponse())
+                        using (var response = request.GetResponse())
                         {
                         reader = XmlReader.Create(response.GetResponseStream());
                         var document = new XmlDocument();
@@ -53,13 +53,13 @@ namespace RSSReader
                         }
                     }
 
-                    SyndicationFeed feed = SyndicationFeed.Load(reader);
+                    var feed = SyndicationFeed.Load(reader);
                     reader.Close();
                     reader.Dispose();
 
                     if (feed.Links.Count > 0)
                     {
-                        _title = "<a href = '" + feed.Links[0].Uri.ToString() + "' target='_blank' >" + feed.Title.Text + "</a>";
+                        _title = "<a href = '" + feed.Links[0].Uri + "' target='_blank' >" + feed.Title.Text + "</a>";
                     }
                     else
                     {
@@ -67,19 +67,19 @@ namespace RSSReader
                     }
 
                     var counter = 0;
-                    foreach (SyndicationItem item in feed.Items)
+                    foreach (var item in feed.Items)
                     {
-                        ShortGuid sg = ShortGuid.NewGuid();
+                        var sg = ShortGuid.NewGuid();
                         output.Append(@"<div style='background-repeat:no-repeat;background-position:center;background-image:url(/Content/Images/" + (settings.ExpandItemsByDefault ? "CollapseArrow" : "ExpandArrow") + @".png); width:10px;height:12px;float:left;position:relative;top:7px;left:4px;cursor:pointer;' onclick='if($(""#" + sg.ToString() + @""").css(""display"") == ""none"") {$(""#" + sg.ToString() + @""").css(""display"",""block""); $(this).css(""background-image"",""url(/Content/Images/CollapseArrow.png)"");}else{$(""#" + sg.ToString() + @""").css(""display"",""none""); $(this).css(""background-image"",""url(/Content/Images/ExpandArrow.png)"");}' ></div>");
 
-                        output.Append("<div style='margin-left:15px;margin-bottom:2px;margin-top:3px;'><a style='padding:0px;' href='" + item.Links[0].Uri.ToString() + "' target='_blank' >" + item.Title.Text + "</a></div>");
+                        output.Append("<div style='margin-left:15px;margin-bottom:2px;margin-top:3px;'><a style='padding:0px;' href='" + item.Links[0].Uri + "' target='_blank' >" + item.Title.Text + "</a></div>");
                         if (item.Content != null)
                         {
-                            output.Append("<div id='" + sg.ToString() + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + ((TextSyndicationContent)item.Content).Text + "</div>");
+                            output.Append("<div id='" + sg + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + ((TextSyndicationContent)item.Content).Text + "</div>");
                         }
                         else if (item.Summary != null)
                         {
-                            output.Append("<div id='" + sg.ToString() + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + item.Summary.Text + "</div>");
+                            output.Append("<div id='" + sg + "' style='margin-left:14px;display:" + (settings.ExpandItemsByDefault ? "block" : "none") + @"'>" + item.Summary.Text + "</div>");
                         }
                         counter++;
                         if (counter >= settings.ItemsToDisplay)
@@ -109,7 +109,7 @@ namespace RSSReader
         {
             get
             {
-                var defaults = new RSSOptions()
+                var defaults = new RSSOptions
                 {
                     ItemsToDisplay = 3,
                     ExpandItemsByDefault = false,
@@ -131,11 +131,11 @@ namespace RSSReader
         {
             get
             {
-                return new List<GadgetSettingField>()
+                return new List<GadgetSettingField>
                     {
-                        new GadgetSettingField(){FieldName="FeedURL", DisplayName="Feed Url", DataType= SettingDataTypes.Url, Validators = Validators.Required | Validators.Url },
-                        new GadgetSettingField(){FieldName="ItemsToDisplay", DisplayName="Items To Display", DataType= SettingDataTypes.Number,  Validators = Validators.Required | Validators.Integer },
-                        new GadgetSettingField(){FieldName="ExpandItemsByDefault", DisplayName="Expand Items By Default", DataType= SettingDataTypes.Checkbox }
+                        new GadgetSettingField{FieldName="FeedURL", DisplayName="Feed Url", DataType= SettingDataTypes.Url, Validators = Validators.Required | Validators.Url },
+                        new GadgetSettingField{FieldName="ItemsToDisplay", DisplayName="Items To Display", DataType= SettingDataTypes.Number,  Validators = Validators.Required | Validators.Integer },
+                        new GadgetSettingField{FieldName="ExpandItemsByDefault", DisplayName="Expand Items By Default", DataType= SettingDataTypes.Checkbox }
                     };
             }
         }

@@ -36,7 +36,7 @@ namespace Damage
 
             GlobalConfig.ConnectionString =
                 System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, System.Type>();
+            GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
 
             LoadGadgets();
         }
@@ -49,13 +49,12 @@ namespace Damage
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
                 var currentGadgets = uow.GadgetRepository.GetAllGadgets();
-                var newGadgets = new List<Damage.DataAccess.Models.Gadget>();
+                var newGadgets = new List<DataAccess.Models.Gadget>();
 
                 foreach (var currentGadget in currentGadgets)
                 {
                     currentGadget.AssemblyPresent = false;
                 }
-                ;
 
                 foreach (var gadget in gadgetInstances)
                 {
@@ -74,7 +73,7 @@ namespace Damage
                     else
                     {
                         newGadgets.Add(
-                            new DataAccess.Models.Gadget()
+                            new DataAccess.Models.Gadget
                             {
                                 GadgetName = gadget.GetType().Name,
                                 AssemblyPresent = true,

@@ -112,7 +112,7 @@ namespace Damage.Controllers
 
                     if (gadget != null)
                     {
-                        var userGadget = new UserGadget()
+                        var userGadget = new UserGadget
                         {
                             User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
                             Gadget = gadget,

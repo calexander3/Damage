@@ -22,7 +22,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<UserGadget> GetAllUserGadgetsForUser(string username)
         {
-            return m_Session.QueryOver<UserGadget>()
+            return Session.QueryOver<UserGadget>()
                 .Fetch(ug => ug.User).Eager
                 .Fetch(ug => ug.Gadget).Eager
                 .JoinQueryOver(x => x.User)
@@ -38,7 +38,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<UserGadget> GetUserGadgetsForUserByColumn(int userId, int displayColumn)
         {
-            return m_Session.QueryOver<UserGadget>()
+            return Session.QueryOver<UserGadget>()
                 .Where(ug => ug.User.UserId == userId)
                 .And(ug => ug.DisplayColumn == displayColumn)
                 .Fetch(ug => ug.User).Eager
@@ -54,7 +54,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public UserGadget GetUserGadgetById(int userGadgetId)
         {
-            return m_Session.QueryOver<UserGadget>()
+            return Session.QueryOver<UserGadget>()
                 .Where(ug => ug.UserGadgetId == userGadgetId)
                 .Fetch(ug => ug.User).Eager
                 .Fetch(ug => ug.Gadget).Eager
@@ -70,12 +70,12 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public int GetNextOrdinal(int userId, int displayColumnId)
         {
-            int? currentMaxDisplayOrdinal = m_Session.QueryOver<UserGadget>()
+            var currentMaxDisplayOrdinal = Session.QueryOver<UserGadget>()
                              .Where(ug => ug.User.UserId == userId)
                              .And(ug => ug.DisplayColumn == displayColumnId)
                             .SelectList(x => x.SelectMax(y => y.DisplayOrdinal))
                             .Take(1)
-                            .SingleOrDefault<int>();
+                            .SingleOrDefault<int?>();
 
             if (!currentMaxDisplayOrdinal.HasValue)
             {

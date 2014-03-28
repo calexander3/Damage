@@ -8,44 +8,44 @@ namespace Damage.DataAccess.Repositories
     /// Contains basic repository functionality
     /// </summary>
     /// <typeparam name="T">Model Type. Must inherit from <see cref="BaseModel"/></typeparam>
-    public abstract class BaseRepository<T> where T : Damage.DataAccess.Models.BaseModel
+    public abstract class BaseRepository<T> where T : BaseModel
     {
 
-        protected ISession m_Session = null;
+        protected ISession Session = null;
 
         protected BaseRepository(ISession session)
         {
-            m_Session = session;
+            Session = session;
         }
 
         /// <summary>
         /// Removes the specified entity from the NHibernate session.
         /// </summary>
-        /// <param name="Entity">The entity.</param>
-        public void StopTracking(T Entity)
+        /// <param name="entity">The entity.</param>
+        public void StopTracking(T entity)
         {
-            m_Session.Evict(Entity);
+            Session.Evict(entity);
         }
 
         /// <summary>
         /// Saves the specified entity.
         /// </summary>
-        /// <param name="Entity">The entity.</param>
-        /// <param name="OperationType">The type of save operation.</param>
-        public virtual void Save(T Entity, SaveOperation OperationType = SaveOperation.Unknown)
+        /// <param name="entity">The entity.</param>
+        /// <param name="operationType">The type of save operation.</param>
+        public virtual void Save(T entity, SaveOperation operationType = SaveOperation.Unknown)
         {
-            using (var tran = m_Session.BeginTransaction())
+            using (var tran = Session.BeginTransaction())
             {
-                switch (OperationType)
+                switch (operationType)
                 {
                     case SaveOperation.SaveNew:
-                        m_Session.Save(Entity);
+                        Session.Save(entity);
                         break;
                     case SaveOperation.Update:
-                        m_Session.Update(Entity);
+                        Session.Update(entity);
                         break;
                     case SaveOperation.Unknown:
-                        m_Session.SaveOrUpdate(Entity);
+                        Session.SaveOrUpdate(entity);
                         break;
                 }
                 tran.Commit();
@@ -55,24 +55,24 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Saves the specified entity set.
         /// </summary>
-        /// <param name="EntitySet">The entity set.</param>
-        /// <param name="OperationType">The type of save operation.</param>
-        public virtual void Save(IList<T> EntitySet, SaveOperation OperationType = SaveOperation.Unknown)
+        /// <param name="entitySet">The entity set.</param>
+        /// <param name="operationType">The type of save operation.</param>
+        public virtual void Save(IList<T> entitySet, SaveOperation operationType = SaveOperation.Unknown)
         {
-            using (var tran = m_Session.BeginTransaction())
+            using (var tran = Session.BeginTransaction())
             {
-                foreach (T Entity in EntitySet)
+                foreach (T entity in entitySet)
                 {
-                    switch (OperationType)
+                    switch (operationType)
                     {
                         case SaveOperation.SaveNew:
-                            m_Session.Save(Entity);
+                            Session.Save(entity);
                             break;
                         case SaveOperation.Update:
-                            m_Session.Update(Entity);
+                            Session.Update(entity);
                             break;
                         case SaveOperation.Unknown:
-                            m_Session.SaveOrUpdate(Entity);
+                            Session.SaveOrUpdate(entity);
                             break;
                     }
                 }
@@ -83,12 +83,12 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
-        /// <param name="Entity">The entity.</param>
-        public virtual void Delete(T Entity)
+        /// <param name="entity">The entity.</param>
+        public virtual void Delete(T entity)
         {
-            using (var tran = m_Session.BeginTransaction())
+            using (var tran = Session.BeginTransaction())
             {
-                m_Session.Delete(Entity);
+                Session.Delete(entity);
                 tran.Commit();
             }
         }
@@ -96,14 +96,14 @@ namespace Damage.DataAccess.Repositories
         /// <summary>
         /// Deletes the specified entity set.
         /// </summary>
-        /// <param name="EntitySet">The entity set.</param>
-        public virtual void Delete(List<T> EntitySet)
+        /// <param name="entitySet">The entity set.</param>
+        public virtual void Delete(List<T> entitySet)
         {
-            using (var tran = m_Session.BeginTransaction())
+            using (var tran = Session.BeginTransaction())
             {
-                foreach (T Entity in EntitySet)
+                foreach (T entity in entitySet)
                 {
-                    m_Session.Delete(Entity);
+                    Session.Delete(entity);
                 }
                 tran.Commit();
             }

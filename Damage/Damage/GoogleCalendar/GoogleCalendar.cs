@@ -17,7 +17,7 @@ namespace GoogleCalendar
             var settings = JsonConvert.DeserializeObject<GoogleCalendarOptions>(UserGadget.GadgetSettings);
 
             var sb = new System.Text.StringBuilder("<div style='max-height:400px;overflow-y:auto;margin-left:5px;margin-right:5px;margin-top:2px;margin-bottom:2px;'>");
-            Calendar calendar = null;
+            Calendar calendar;
 
             if (HttpContext.Current.Cache[UserGadget.User.UserId + "_cal"] != null)
             {
@@ -39,7 +39,7 @@ namespace GoogleCalendar
             var previousDate = "";
             foreach (var calItem in calendar.items)
             {
-                var eventDate = System.DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
+                var eventDate = DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
                 if (previousDate != eventDate)
                 {
                     sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'>" + eventDate + "</div>");
@@ -48,8 +48,8 @@ namespace GoogleCalendar
                 sb.Append("<div style='margin-left:10px;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") +
                     System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary ?? "") +
                     "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;'>" +
-                    (calItem.start.dateTime != null ? System.DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
-                    (calItem.end.dateTime != null ? " - " + System.DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
+                    (calItem.start.dateTime != null ? DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
+                    (calItem.end.dateTime != null ? " - " + DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
                     "</div></div>");
             }
 
@@ -74,16 +74,16 @@ namespace GoogleCalendar
 
         public string DefaultSettings
         {
-            get { return JsonConvert.SerializeObject(new GoogleCalendarOptions() { MonthsToDisplay = 6 }); }
+            get { return JsonConvert.SerializeObject(new GoogleCalendarOptions { MonthsToDisplay = 6 }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
         {
             get
             {
-                return new List<GadgetSettingField>() 
+                return new List<GadgetSettingField>
                 { 
-                    new GadgetSettingField() {
+                    new GadgetSettingField {
                         DisplayName="Months to Display", 
                         FieldName="MonthsToDisplay", 
                         DataType= SettingDataTypes.Number, 

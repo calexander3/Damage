@@ -14,7 +14,7 @@ namespace StockTicker
         {
             var htmlBuilder = new System.Text.StringBuilder("<div style='margin:3px;'><table style='margin:0px;'>");
             var settings = JsonConvert.DeserializeObject<StockTickerOptions>(UserGadget.GadgetSettings);
-            string tickerData = null;
+            string tickerData;
             if (HttpContext.Current.Cache[settings.StockSymbols.Trim()] != null)
             {
                 tickerData = (string)HttpContext.Current.Cache[settings.StockSymbols];
@@ -62,12 +62,12 @@ namespace StockTicker
 
         public string DefaultSettings
         {
-            get { return JsonConvert.SerializeObject(new StockTickerOptions() { StockSymbols = "GOOG,MSFT,AAPL,YHOO" }); }
+            get { return JsonConvert.SerializeObject(new StockTickerOptions { StockSymbols = "GOOG,MSFT,AAPL,YHOO" }); }
         }
 
         public List<GadgetSettingField> SettingsSchema
         {
-            get { return new List<GadgetSettingField>() { new GadgetSettingField() { FieldName = "StockSymbols", DisplayName = "Stock Symbols (Comma-Separated)", DataType = SettingDataTypes.Text, Validators = Validators.Required } }; }
+            get { return new List<GadgetSettingField> { new GadgetSettingField { FieldName = "StockSymbols", DisplayName = "Stock Symbols (Comma-Separated)", DataType = SettingDataTypes.Text, Validators = Validators.Required } }; }
         }
 
         public Damage.DataAccess.Models.UserGadget UserGadget { get; set; }

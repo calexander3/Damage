@@ -208,7 +208,6 @@ namespace Damage
         /// <returns></returns>
         public static bool operator ==(ShortGuid x, ShortGuid y)
         {
-            if ((object) x == null) return (object) y == null;
             return x._guid == y._guid;
         }
 

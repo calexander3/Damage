@@ -35,7 +35,7 @@
 
 <section class="social" id="socialLoginForm">
     <h2>Use another service to register.</h2>
-    @Html.Action("ExternalLoginsList", new {ReturnUrl = ViewBag.ReturnUrl})
+    @Html.Action("ExternalLoginsList", new {ViewBag.ReturnUrl})
 </section>
 
 <div class="registration-account-warning">If you are planning on using any gadgets that rely on Google services, it is recommended that you register via Google.</div>

@@ -20,7 +20,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public User GetUserById(int userId)
         {
-            return m_Session.QueryOver<User>().Where(u => u.UserId == userId).SingleOrDefault();
+            return Session.QueryOver<User>().Where(u => u.UserId == userId).SingleOrDefault();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public User GetUserByUsername(string username)
         {
-            return m_Session.QueryOver<User>().Where(u => u.UserName == username).SingleOrDefault();
+            return Session.QueryOver<User>().Where(u => u.UserName == username).SingleOrDefault();
         }
     }
 }

@@ -26,8 +26,8 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         using (
-                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                            var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
@@ -37,7 +37,7 @@ namespace Damage.Controllers
                             foreach (var listMailbox in listMailboxes)
                             {
                                 if (!listMailbox.Name.StartsWith("[Gmail]") &&
-                                    listMailbox.Name.ToLower().CompareTo(folderName.ToLower()) != 0)
+                                    String.Compare(listMailbox.Name, folderName, StringComparison.OrdinalIgnoreCase) != 0)
                                 {
                                     folders.Add(listMailbox.Name);
                                 }
@@ -52,10 +52,10 @@ namespace Damage.Controllers
 
                             //Get messages and organize into threads
                             var messages =
-                                imap.SearchMessages(searchCondition, !showPreview, false)
+                                imap.SearchMessages(searchCondition, !showPreview)
                                     .OrderByDescending(m => m.Value.Date)
                                     .ToList();
-                            var threads = new Dictionary<long, AE.Net.Mail.MailMessage>();
+                            var threads = new Dictionary<long, MailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
                             foreach (var m in messages)
@@ -68,7 +68,7 @@ namespace Damage.Controllers
                                 {
                                     threads.Add(gmailThreadId, m.Value);
                                     threadCounts.Add(gmailThreadId, 1);
-                                    threadMessages.Add(gmailThreadId, new List<long>() {messageId});
+                                    threadMessages.Add(gmailThreadId, new List<long> {messageId});
                                 }
                                 else
                                 {
@@ -94,7 +94,7 @@ namespace Damage.Controllers
                                 {
                                     unreadCount++;
                                 }
-                                output.Add(new GmailMessage()
+                                output.Add(new GmailMessage
                                 {
                                     Subject = thread.Value.Subject,
                                     From =
@@ -124,7 +124,7 @@ namespace Damage.Controllers
         }
 
         [HttpPost]
-        public JsonResult MoveMail(string[] MessageIds, string originalFolderName, string FolderName)
+        public JsonResult MoveMail(string[] messageIds, string originalFolderName, string folderName)
         {
             var successful = false;
             if (Request.IsAuthenticated)
@@ -136,14 +136,14 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         using (
-                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                            var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(originalFolderName);
-                            foreach (var messageId in MessageIds)
+                            foreach (var messageId in messageIds)
                             {
-                                imap.MoveMessage(messageId, FolderName);
+                                imap.MoveMessage(messageId, folderName);
                             }
                             successful = true;
                         }
@@ -154,7 +154,7 @@ namespace Damage.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteMail(string[] MessageIds, string folderName)
+        public JsonResult DeleteMail(string[] messageIds, string folderName)
         {
             var successful = false;
             if (Request.IsAuthenticated)
@@ -166,17 +166,18 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         using (
-                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                            var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
-                            foreach (var messageId in MessageIds)
+                            foreach (var messageId in messageIds)
                             {
                                 try
                                 {
                                     imap.MoveMessage(messageId, "[Gmail]/Trash");
                                 }
+                                // ReSharper disable once EmptyGeneralCatchClause
                                 catch (Exception) //Deleting always throws excptions
                                 {
                                 }
@@ -195,7 +196,7 @@ namespace Damage.Controllers
         }
 
         [HttpPost]
-        public JsonResult ArchiveMail(string[] MessageIds, string folderName)
+        public JsonResult ArchiveMail(string[] messageIds, string folderName)
         {
             var successful = false;
             if (Request.IsAuthenticated)
@@ -207,12 +208,12 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         using (
-                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                            var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
-                            foreach (var messageId in MessageIds)
+                            foreach (var messageId in messageIds)
                             {
                                 imap.MoveMessage(messageId, "[Gmail]/All Mail");
                             }
@@ -227,7 +228,7 @@ namespace Damage.Controllers
         }
 
         [HttpPost]
-        public JsonResult ReportAsSpam(string[] MessageIds, string folderName)
+        public JsonResult ReportAsSpam(string[] messageIds, string folderName)
         {
             var successful = false;
             if (Request.IsAuthenticated)
@@ -239,17 +240,18 @@ namespace Damage.Controllers
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
                         using (
-                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                            var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
-                            foreach (var messageId in MessageIds)
+                            foreach (var messageId in messageIds)
                             {
                                 try
                                 {
                                     imap.MoveMessage(messageId, "[Gmail]/Spam");
                                 }
+                                // ReSharper disable once EmptyGeneralCatchClause
                                 catch (Exception) //Deleting always throws excptions
                                 {
                                 }
@@ -275,6 +277,7 @@ namespace Damage.Controllers
 
         private class GmailMessage
         {
+            // ReSharper disable UnusedAutoPropertyAccessor.Local
             public string From { get; set; }
             public string Preview { get; set; }
             public string Subject { get; set; }
@@ -284,6 +287,7 @@ namespace Damage.Controllers
             public string Date { get; set; }
             public bool Unread { get; set; }
             public bool Important { get; set; }
+            // ReSharper restore UnusedAutoPropertyAccessor.Local
         }
     }
 }

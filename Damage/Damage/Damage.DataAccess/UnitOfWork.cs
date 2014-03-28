@@ -11,85 +11,86 @@ namespace Damage.DataAccess
     {
 
 
-        protected ISessionFactory m_SessionFactory = null;
+        protected ISessionFactory SessionFactory = null;
 
-        protected ISession m_Session = null;
+        protected ISession Session = null;
 
         #region "Repositories"
-        private UserGadgetRepository m_UserGadgetRepository = null;
+        private UserGadgetRepository _userGadgetRepository;
         public UserGadgetRepository UserGadgetRepository
         {
             get
             {
-                if (m_UserGadgetRepository == null)
+                if (_userGadgetRepository == null)
                 {
-                    m_UserGadgetRepository = new UserGadgetRepository(m_Session);
+                    _userGadgetRepository = new UserGadgetRepository(Session);
                 }
-                return m_UserGadgetRepository;
+                return _userGadgetRepository;
             }
         }
 
-        private GadgetRepository m_GadgetRepository = null;
+        private GadgetRepository _gadgetRepository;
         public GadgetRepository GadgetRepository
         {
             get
             {
-                if (m_GadgetRepository == null)
+                if (_gadgetRepository == null)
                 {
-                    m_GadgetRepository = new GadgetRepository(m_Session);
+                    _gadgetRepository = new GadgetRepository(Session);
                 }
-                return m_GadgetRepository;
+                return _gadgetRepository;
             }
         }
 
-        private UserRepository m_UserRepository = null;
+        private UserRepository _userRepository;
         public UserRepository UserRepository
         {
             get
             {
-                if (m_UserRepository == null)
+                if (_userRepository == null)
                 {
-                    m_UserRepository = new UserRepository(m_Session);
+                    _userRepository = new UserRepository(Session);
                 }
-                return m_UserRepository;
+                return _userRepository;
             }
         }
 
         #endregion
 
-        public UnitOfWork(string ConnectionString)
+        public UnitOfWork(string connectionString)
         {
             //Configure a new NHivebernate Session
-            m_SessionFactory = ConfigureNHibernate(ConnectionString);
-            m_Session = m_SessionFactory.OpenSession();
-            m_Session.FlushMode = FlushMode.Commit;
+            SessionFactory = ConfigureNHibernate(connectionString);
+            Session = SessionFactory.OpenSession();
+            Session.FlushMode = FlushMode.Commit;
         }
 
-        private ISessionFactory ConfigureNHibernate(string ConnectionString)
+        private ISessionFactory ConfigureNHibernate(string connectionString)
         {
             //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
-            return Fluently.Configure().Database(new SqlServerConfiguration(ConnectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).ExposeConfiguration(cfg => cfg.SetProperty("hbm2ddl.keywords", "none")).BuildSessionFactory();
+            return Fluently.Configure().Database(new SqlServerConfiguration(connectionString)).Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseModel>()).ExposeConfiguration(cfg => cfg.SetProperty("hbm2ddl.keywords", "none")).BuildSessionFactory();
         }
 
         #region "IDisposable Support"
         // To detect redundant calls
-        private bool disposedValue;
+        private bool _disposedValue;
 
         // IDisposable
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     //Set repositories to null
-                    m_UserGadgetRepository = null;
-                    m_GadgetRepository = null;
-                    m_Session.Dispose();
-                    m_SessionFactory.Dispose();
+                    _userGadgetRepository = null;
+                    _userGadgetRepository = null;
+                    _gadgetRepository = null;
+                    Session.Dispose();
+                    SessionFactory.Dispose();
                 }
             }
-            this.disposedValue = true;
+            _disposedValue = true;
         }
 
 

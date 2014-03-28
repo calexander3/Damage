@@ -66,7 +66,7 @@ namespace Damage.Gadget
         /// <value>
         ///     The user gadget.
         /// </value>
-        Damage.DataAccess.Models.UserGadget UserGadget { get; set; }
+        DataAccess.Models.UserGadget UserGadget { get; set; }
 
         /// <summary>
         ///     Creates the html/javascript for the gadget to send to the browser.

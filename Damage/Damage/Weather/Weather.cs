@@ -1,4 +1,5 @@
-﻿using Damage;
+﻿using System.Globalization;
+using Damage;
 using Damage.Gadget;
 using Newtonsoft.Json;
 using System;
@@ -51,7 +52,7 @@ namespace Weather
                                 location = HttpUtility.HtmlEncode(addresses.results[0].formatted_address);
                                 lat = double.Parse(addresses.results[0].geometry.location.lat);
                                 lng = double.Parse(addresses.results[0].geometry.location.lng);
-                                HttpContext.Current.Cache.Insert(settings.CityName, new string[] { lat.ToString(), lng.ToString(), location }, null,
+                                HttpContext.Current.Cache.Insert(settings.CityName, new [] { lat.ToString(CultureInfo.InvariantCulture), lng.ToString(CultureInfo.InvariantCulture), location }, null,
                                                                  System.Web.Caching.Cache.NoAbsoluteExpiration,
                                                                  new TimeSpan(365, 0, 0, 0));
                             }
@@ -60,9 +61,9 @@ namespace Weather
                 }
 
 
-                if (lat != 0 && lng != 0)
+                if (Math.Abs(lat) > 0 && Math.Abs(lng) > 0)
                 {
-                    _output = "<iframe id='forecast_embed" + ShortGuid.NewGuid().ToString() + "' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
+                    _output = "<iframe id='forecast_embed" + ShortGuid.NewGuid() + "' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + lat + "&lon=" + lng + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
                 }
                 else
                 {
@@ -71,7 +72,7 @@ namespace Weather
             }
             else if (settings.Latitude.HasValue && settings.Longitude.HasValue)
             {
-                var location = HttpUtility.HtmlEncode(settings.Latitude.Value.ToString() + " by " + settings.Longitude.Value.ToString());
+                var location = HttpUtility.HtmlEncode(settings.Latitude.Value + " by " + settings.Longitude.Value);
                 _output = "<iframe id='forecast_embed' type='text/html' frameborder='0' height='245' width='99%' src='https://forecast.io/embed/#lat=" + settings.Latitude.Value + "&lon=" + settings.Longitude.Value + "&name=" + location + "&font=Segoe%20UI&units=" + units + "'> </iframe>";
             }
             else
@@ -99,7 +100,7 @@ namespace Weather
         {
             get
             {
-                var defaults = new WeatherOptions()
+                var defaults = new WeatherOptions
                 {
                     CityName = "Atlanta, GA",
                     Latitude = null,
@@ -116,13 +117,13 @@ namespace Weather
         {
             get
             {
-                return new List<GadgetSettingField>()
+                return new List<GadgetSettingField>
                     {
-                        new GadgetSettingField(){FieldName="CityName", DisplayName="City Name, State", DataType= SettingDataTypes.Text },
-                        new GadgetSettingField(){FieldName="Latitude", DisplayName="Latitude", DataType= SettingDataTypes.Number, Validators = Validators.Number },
-                        new GadgetSettingField(){FieldName="Longitude", DisplayName="Longitude", DataType= SettingDataTypes.Number, Validators = Validators.Number},
-                        new GadgetSettingField(){FieldName="USUnits", DisplayName="Fahrenheit", DataType= SettingDataTypes.Radio},
-                        new GadgetSettingField(){FieldName="UKUnits", DisplayName="Celsius", DataType= SettingDataTypes.Radio}
+                        new GadgetSettingField{FieldName="CityName", DisplayName="City Name, State", DataType= SettingDataTypes.Text },
+                        new GadgetSettingField{FieldName="Latitude", DisplayName="Latitude", DataType= SettingDataTypes.Number, Validators = Validators.Number },
+                        new GadgetSettingField{FieldName="Longitude", DisplayName="Longitude", DataType= SettingDataTypes.Number, Validators = Validators.Number},
+                        new GadgetSettingField{FieldName="USUnits", DisplayName="Fahrenheit", DataType= SettingDataTypes.Radio},
+                        new GadgetSettingField{FieldName="UKUnits", DisplayName="Celsius", DataType= SettingDataTypes.Radio}
                     };
             }
         }

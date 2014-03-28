@@ -69,6 +69,7 @@ namespace Damage.DataAccess.Models
         {
             if (CompositeKey == null)
             {
+                // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
                 return base.GetHashCode();
             }
             return CompositeKey.GetHashCode();

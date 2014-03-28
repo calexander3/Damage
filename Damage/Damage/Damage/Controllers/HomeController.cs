@@ -21,7 +21,7 @@ namespace Damage.Controllers
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
-                IList<UserGadget> gadgetsForUser = null;
+                IList<UserGadget> gadgetsForUser;
 
                 if (Request.IsAuthenticated)
                 {
@@ -38,7 +38,7 @@ namespace Damage.Controllers
                                 0 &&
                                 gadgetsForUser.Any(g => g.Gadget.RequiresValidGoogleAccessToken))
                             {
-                                return new Damage.Controllers.AccountController.ExternalLoginResult("google",
+                                return new AccountController.ExternalLoginResult("google",
                                     Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = ""}));
                             }
                         }
@@ -71,22 +71,20 @@ namespace Damage.Controllers
                 {
                     if (g.Gadget.RequiresValidGoogleAccessToken && !hasLinkedGoogleAccount)
                     {
-                        activeGadgets.Add(new RequiresOAuthGadget()
+                        activeGadgets.Add(new RequiresOAuthGadget
                         {
                             UserGadget = g
                         });
                     }
                     else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
-                        var newGadget =
-                            DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as
-                                IGadget;
+                        var newGadget = DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
                         newGadget.UserGadget = g;
                         activeGadgets.Add(newGadget);
                     }
                     else
                     {
-                        activeGadgets.Add(new NotAvailableGadget()
+                        activeGadgets.Add(new NotAvailableGadget
                         {
                             UserGadget = g
                         });
@@ -97,7 +95,7 @@ namespace Damage.Controllers
             return View(activeGadgets);
         }
 
-        public string healthCheck()
+        public string HealthCheck()
         {
             return "ok";
         }
@@ -114,7 +112,7 @@ namespace Damage.Controllers
 
         public ActionResult AddGadget()
         {
-            IList<DataAccess.Models.Gadget> gadgets = new List<Damage.DataAccess.Models.Gadget>();
+            IList<DataAccess.Models.Gadget> gadgets = new List<DataAccess.Models.Gadget>();
             if (Request.IsAuthenticated)
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
