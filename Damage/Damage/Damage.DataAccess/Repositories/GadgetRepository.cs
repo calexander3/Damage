@@ -59,7 +59,7 @@ namespace Damage.DataAccess.Repositories
             var defaultGadgets = new List<UserGadget>();
 
             var weatherGadget = gadgets.Single(g => g.GadgetName == "Weather");
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
                 {
                     DisplayColumn = 3,
                     DisplayOrdinal = 0,
@@ -68,7 +68,7 @@ namespace Damage.DataAccess.Repositories
                 });
 
             var historyGadget = gadgets.Single(g => g.GadgetName == "TodayInHistory");
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 3,
                 DisplayOrdinal = 1,
@@ -77,7 +77,7 @@ namespace Damage.DataAccess.Repositories
             });
 
             var rssGadget = gadgets.Single(g => g.GadgetName == "RSSReader");
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 1,
                 DisplayOrdinal = 0,
@@ -85,16 +85,16 @@ namespace Damage.DataAccess.Repositories
                 GadgetSettings = @"{""FeedURL"":""http://hypercritical.co/feeds/main"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
             });
 
-            //defaultGadgets.Add(new UserGadget()
-            //{
-            //    DisplayColumn = 1,
-            //    DisplayOrdinal = 1,
-            //    Gadget = rssGadget,
-            //    GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
-            //});
+            defaultGadgets.Add(new UserGadget
+            {
+                DisplayColumn = 1,
+                DisplayOrdinal = 1,
+                Gadget = rssGadget,
+                GadgetSettings = @"{""FeedURL"":""http://feeds.theonion.com/theonion/daily"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
+            });
 
 
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 1,
                 DisplayOrdinal = 2,
@@ -102,7 +102,7 @@ namespace Damage.DataAccess.Repositories
                 GadgetSettings = @"{""FeedURL"":""http://feeds.feedburner.com/codinghorror?format=xml"",""ItemsToDisplay"":""5"",""ExpandItemsByDefault"":false}"
             });
 
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 2,
                 DisplayOrdinal = 0,
@@ -110,7 +110,7 @@ namespace Damage.DataAccess.Repositories
                 GadgetSettings = @"{""FeedURL"":""https://news.google.com/news/feeds?pz=1&cf=all&ned=us&hl=en&topic=t&output=rss"",""ItemsToDisplay"":""10"",""ExpandItemsByDefault"":false}"
             });
 
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 2,
                 DisplayOrdinal = 1,
@@ -119,7 +119,7 @@ namespace Damage.DataAccess.Repositories
             });
 
             var stockGadget = gadgets.Single(g => g.GadgetName == "StockTicker");
-            defaultGadgets.Add(new UserGadget()
+            defaultGadgets.Add(new UserGadget
             {
                 DisplayColumn = 1,
                 DisplayOrdinal = 3,
