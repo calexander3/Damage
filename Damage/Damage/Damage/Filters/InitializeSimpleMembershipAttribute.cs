@@ -1,9 +1,9 @@
-﻿using Damage.Models;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
+using Damage.Models;
 using WebMatrix.WebData;
 
 namespace Damage.Filters
@@ -32,11 +32,12 @@ namespace Damage.Filters
                     if (!context.Database.Exists())
                     {
                         // Create the SimpleMembership database without Entity Framework migration schema
-                        ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
+                        ((IObjectContextAdapter) context).ObjectContext.CreateDatabase();
                     }
                 }
 
-                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "Users", "UserId", "UserName", autoCreateTables: false);
+                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "Users", "UserId", "UserName",
+                    autoCreateTables: false);
             }
         }
     }

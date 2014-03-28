@@ -14,10 +14,7 @@ namespace Damage.Gadget
 
         public string Title
         {
-            get
-            { 
-                return UserGadget.Gadget.GadgetTitle; 
-            }
+            get { return UserGadget.Gadget.GadgetTitle; }
         }
 
 

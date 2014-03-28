@@ -183,7 +183,7 @@ function OpenSettingsDialog() {
 
                 $.ajax({
                     url: "/home/UpdateSettings",
-                    data: { layoutId: $("input:radio[name ='layout']:checked").val() },
+                    data: { layoutId: $("input:radio[name='layout']:checked").val() },
                     type: 'POST',
                     success: function () {
                         location.reload();

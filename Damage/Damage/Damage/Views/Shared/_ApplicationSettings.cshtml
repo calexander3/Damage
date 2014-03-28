@@ -1,86 +1,92 @@
 ﻿<div>Choose Layout</div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optThreeColumnLayout"><img src="~/Content/Images/Layouts/ThreeColumnLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optThreeColumnLayout"><img src="~/Content/Images/Layouts/ThreeColumnLayout.png"/></label></div>
     <div> 
-    @{
-        if(ViewBag.LayoutId==0){
-        <input type="radio" name="layout" value="0" id="optThreeColumnLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="0" id="optThreeColumnLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optThreeColumnLayout">Three Column</label>
+        @{
+            if (ViewBag.LayoutId == 0)
+            {
+                <input type="radio" name="layout" value="0" id="optThreeColumnLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="0" id="optThreeColumnLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optThreeColumnLayout">Three Column</label>
     </div>
 </div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optThreeColumnWideLayout"><img src="~/Content/Images/Layouts/ThreeColumnWideLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optThreeColumnWideLayout"><img src="~/Content/Images/Layouts/ThreeColumnWideLayout.png"/></label></div>
     <div>
-    @{
-        if(ViewBag.LayoutId==1){
-        <input type="radio" name="layout" value="1" id="optThreeColumnWideLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="1" id="optThreeColumnWideLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optThreeColumnWideLayout">Center Focus</label>
+        @{
+            if (ViewBag.LayoutId == 1)
+            {
+                <input type="radio" name="layout" value="1" id="optThreeColumnWideLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="1" id="optThreeColumnWideLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optThreeColumnWideLayout">Center Focus</label>
     </div>
 </div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optTwoColumnLayout"><img src="~/Content/Images/Layouts/TwoColumnLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optTwoColumnLayout"><img src="~/Content/Images/Layouts/TwoColumnLayout.png"/></label></div>
     <div>
-    @{
-        if(ViewBag.LayoutId==2){
-        <input type="radio" name="layout" value="2" id="optTwoColumnLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="2" id="optTwoColumnLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optTwoColumnLayout">Two Column</label>
+        @{
+            if (ViewBag.LayoutId == 2)
+            {
+                <input type="radio" name="layout" value="2" id="optTwoColumnLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="2" id="optTwoColumnLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optTwoColumnLayout">Two Column</label>
     </div>
 </div>
-<div style="clear:both;height:20px;"></div>
+<div style="clear: both; height: 20px;"></div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optTwoColumnRightLayout"><img src="~/Content/Images/Layouts/TwoColumnRightLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optTwoColumnRightLayout"><img src="~/Content/Images/Layouts/TwoColumnRightLayout.png"/></label></div>
     <div> 
-    @{
-        if(ViewBag.LayoutId==3){
-        <input type="radio" name="layout" value="3" id="optTwoColumnRightLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="3" id="optTwoColumnRightLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optTwoColumnRightLayout">Right Focus</label>
+        @{
+            if (ViewBag.LayoutId == 3)
+            {
+                <input type="radio" name="layout" value="3" id="optTwoColumnRightLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="3" id="optTwoColumnRightLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optTwoColumnRightLayout">Right Focus</label>
     </div>
 </div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optTwoColumnLeftLayout"><img src="~/Content/Images/Layouts/TwoColumnLeftLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optTwoColumnLeftLayout"><img src="~/Content/Images/Layouts/TwoColumnLeftLayout.png"/></label></div>
     <div>
-    @{
-        if(ViewBag.LayoutId==4){
-        <input type="radio" name="layout" value="4" id="optTwoColumnLeftLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="4" id="optTwoColumnLeftLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optTwoColumnLeftLayout">Left Focus</label>
+        @{
+            if (ViewBag.LayoutId == 4)
+            {
+                <input type="radio" name="layout" value="4" id="optTwoColumnLeftLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="4" id="optTwoColumnLeftLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optTwoColumnLeftLayout">Left Focus</label>
     </div>
 </div>
 <div class="layout-choice">
-    <div><label style="display:inline;" for="optSingleColumnLayout"><img src="~/Content/Images/Layouts/OneColumnLayout.png"/></label></div>
+    <div><label style="display: inline;" for="optSingleColumnLayout"><img src="~/Content/Images/Layouts/OneColumnLayout.png"/></label></div>
     <div>
-    @{
-        if(ViewBag.LayoutId==5){
-        <input type="radio" name="layout" value="5" id="optSingleColumnLayout" checked="checked"  />
-        }
-        else
-        {
-        <input type="radio" name="layout" value="5" id="optSingleColumnLayout" />
-        }
-    }<label style="display:inline;font-size:1em;font-weight:normal;" for="optSingleColumnLayout">Single Column</label>
+        @{
+            if (ViewBag.LayoutId == 5)
+            {
+                <input type="radio" name="layout" value="5" id="optSingleColumnLayout" checked="checked"  />
+            }
+            else
+            {
+                <input type="radio" name="layout" value="5" id="optSingleColumnLayout" />
+            }
+        }<label style="display: inline; font-size: 1em; font-weight: normal;" for="optSingleColumnLayout">Single Column</label>
     </div>
 </div>

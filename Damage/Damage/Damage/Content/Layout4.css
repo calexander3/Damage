@@ -3,24 +3,20 @@
     min-height: 200px;
 }
 
-#displayColumn1 {
-    width: 67%;
-}
+#displayColumn1 { width: 67%; }
 
-#displayColumn2 {
-    width: 33%;
-}
+#displayColumn2 { width: 33%; }
 
 
 
 @media only screen and (max-width: 650px) {
     #displayColumn1 {
-        width: 100%;
         min-height: 200px;
+        width: 100%;
     }
 
     #displayColumn2 {
-        width: 100%;
         min-height: 200px;
+        width: 100%;
     }
 }

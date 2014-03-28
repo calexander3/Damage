@@ -1,11 +1,10 @@
-﻿using AE.Net.Mail;
-using Damage.DataAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using AE.Net.Mail;
+using Damage.DataAccess;
 
 namespace Damage.Controllers
 {
@@ -26,7 +25,10 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        using (
+                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                true))
                         {
                             imap.SelectMailbox(folderName);
 
@@ -34,7 +36,8 @@ namespace Damage.Controllers
 
                             foreach (var listMailbox in listMailboxes)
                             {
-                                if (!listMailbox.Name.StartsWith("[Gmail]") && listMailbox.Name.ToLower().CompareTo(folderName.ToLower()) != 0)
+                                if (!listMailbox.Name.StartsWith("[Gmail]") &&
+                                    listMailbox.Name.ToLower().CompareTo(folderName.ToLower()) != 0)
                                 {
                                     folders.Add(listMailbox.Name);
                                 }
@@ -48,7 +51,10 @@ namespace Damage.Controllers
                             }
 
                             //Get messages and organize into threads
-                            var messages = imap.SearchMessages(searchCondition, !showPreview, false).OrderByDescending(m => m.Value.Date).ToList();
+                            var messages =
+                                imap.SearchMessages(searchCondition, !showPreview, false)
+                                    .OrderByDescending(m => m.Value.Date)
+                                    .ToList();
                             var threads = new Dictionary<long, AE.Net.Mail.MailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
@@ -62,7 +68,7 @@ namespace Damage.Controllers
                                 {
                                     threads.Add(gmailThreadId, m.Value);
                                     threadCounts.Add(gmailThreadId, 1);
-                                    threadMessages.Add(gmailThreadId, new List<long>() { messageId });
+                                    threadMessages.Add(gmailThreadId, new List<long>() {messageId});
                                 }
                                 else
                                 {
@@ -75,8 +81,14 @@ namespace Damage.Controllers
                             //Bundle threads
                             foreach (var thread in threads)
                             {
-                                var messageDate = (thread.Value.Date.Ticks > 0 ? (timezoneOffset.HasValue ? thread.Value.Date.AddMinutes(timezoneOffset.Value) : thread.Value.Date) : new DateTime(1900, 1, 1));
-                                var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0 ? messageDate.ToShortTimeString() : messageDate.ToShortDateString());
+                                var messageDate = (thread.Value.Date.Ticks > 0
+                                    ? (timezoneOffset.HasValue
+                                        ? thread.Value.Date.AddMinutes(timezoneOffset.Value)
+                                        : thread.Value.Date)
+                                    : new DateTime(1900, 1, 1));
+                                var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0
+                                    ? messageDate.ToShortTimeString()
+                                    : messageDate.ToShortDateString());
                                 var unread = !(thread.Value.Flags.HasFlag(Flags.Seen));
                                 if (unread)
                                 {
@@ -85,14 +97,20 @@ namespace Damage.Controllers
                                 output.Add(new GmailMessage()
                                 {
                                     Subject = thread.Value.Subject,
-                                    From = (thread.Value.From.DisplayName.Length > 0 ? thread.Value.From.DisplayName : thread.Value.From.Address.Split("@".ToCharArray())[0]) + (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
+                                    From =
+                                        (thread.Value.From.DisplayName.Length > 0
+                                            ? thread.Value.From.DisplayName
+                                            : thread.Value.From.Address.Split("@".ToCharArray())[0]) +
+                                        (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
                                     ThreadIdHex = thread.Key.ToString("X").ToLower(),
                                     ThreadId = thread.Key,
                                     ThreadMessageIds = string.Join(",", threadMessages[thread.Key].ToArray()),
                                     Date = messageDateString,
                                     Preview = (showPreview ? getPreview(thread.Value.Body) : ""),
                                     Unread = unread,
-                                    Important = (thread.Value.Headers.ContainsKey("X-GM-LABELS") && thread.Value.Headers["X-GM-LABELS"].Value.Equals("\"\\\\Important\""))
+                                    Important =
+                                        (thread.Value.Headers.ContainsKey("X-GM-LABELS") &&
+                                         thread.Value.Headers["X-GM-LABELS"].Value.Equals("\"\\\\Important\""))
                                 });
                             }
                             successful = true;
@@ -100,7 +118,9 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new { Result = successful, Data = output, UnreadCount = unreadCount, Folders = folders.ToArray() }, JsonRequestBehavior.AllowGet);
+            return Json(
+                new {Result = successful, Data = output, UnreadCount = unreadCount, Folders = folders.ToArray()},
+                JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -115,7 +135,10 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        using (
+                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                true))
                         {
                             imap.SelectMailbox(originalFolderName);
                             foreach (var messageId in MessageIds)
@@ -127,7 +150,7 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new { Result = successful });
+            return Json(new {Result = successful});
         }
 
         [HttpPost]
@@ -142,7 +165,10 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        using (
+                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                true))
                         {
                             imap.SelectMailbox(folderName);
                             foreach (var messageId in MessageIds)
@@ -165,7 +191,7 @@ namespace Damage.Controllers
                 }
             }
 
-            return Json(new { Result = successful });
+            return Json(new {Result = successful});
         }
 
         [HttpPost]
@@ -180,7 +206,10 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        using (
+                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                true))
                         {
                             imap.SelectMailbox(folderName);
                             foreach (var messageId in MessageIds)
@@ -194,7 +223,7 @@ namespace Damage.Controllers
                 }
             }
 
-            return Json(new { Result = successful });
+            return Json(new {Result = successful});
         }
 
         [HttpPost]
@@ -209,7 +238,10 @@ namespace Damage.Controllers
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
-                        using (var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress, user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true, true))
+                        using (
+                            var imap = new AE.Net.Mail.ImapClient("imap.gmail.com", user.EmailAddress,
+                                user.CurrentOAuthAccessToken, AE.Net.Mail.ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                true))
                         {
                             imap.SelectMailbox(folderName);
                             foreach (var messageId in MessageIds)
@@ -232,7 +264,7 @@ namespace Damage.Controllers
                 }
             }
 
-            return Json(new { Result = successful });
+            return Json(new {Result = successful});
         }
 
 

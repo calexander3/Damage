@@ -3,32 +3,26 @@
     min-height: 200px;
 }
 
-#displayColumn1 {
-    width: 25%;
-}
+#displayColumn1 { width: 25%; }
 
-#displayColumn2 {
-    width: 50%;
-}
+#displayColumn2 { width: 50%; }
 
-#displayColumn3 {
-    width: 25%;
-}
+#displayColumn3 { width: 25%; }
 
 
 @media only screen and (max-width: 650px) {
     #displayColumn1 {
-        width: 100%;
         min-height: 200px;
+        width: 100%;
     }
 
     #displayColumn2 {
-        width: 100%;
         min-height: 200px;
+        width: 100%;
     }
 
     #displayColumn3 {
-        width: 100%;
         min-height: 200px;
+        width: 100%;
     }
 }

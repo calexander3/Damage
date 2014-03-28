@@ -1,29 +1,28 @@
-﻿
-namespace Damage.Gadget
+﻿namespace Damage.Gadget
 {
     public class GadgetPosition
     {
         /// <summary>
-        /// Gets or sets the user gadget unique identifier.
+        ///     Gets or sets the user gadget unique identifier.
         /// </summary>
         /// <value>
-        /// The user gadget unique identifier.
+        ///     The user gadget unique identifier.
         /// </value>
         public int UserGadgetId { get; set; }
 
         /// <summary>
-        /// Gets or sets the display column.
+        ///     Gets or sets the display column.
         /// </summary>
         /// <value>
-        /// The display column.
+        ///     The display column.
         /// </value>
         public int DisplayColumn { get; set; }
 
         /// <summary>
-        /// Gets or sets the display ordinal.
+        ///     Gets or sets the display ordinal.
         /// </summary>
         /// <value>
-        /// The display ordinal.
+        ///     The display ordinal.
         /// </value>
         public int DisplayOrdinal { get; set; }
     }

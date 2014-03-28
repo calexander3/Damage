@@ -1,20 +1,19 @@
-﻿using Damage.DataAccess;
-using Damage.DataAccess.Models;
-using Damage.Filters;
-using Damage.Gadget;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using Damage.DataAccess;
+using Damage.DataAccess.Models;
+using Damage.Filters;
+using Damage.Gadget;
 
 namespace Damage.Controllers
 {
     [InitializeSimpleMembership]
     public class GadgetController : BaseController
     {
-
         /// <summary>
-        /// Gets the settings for the instance of a users gadget.
+        ///     Gets the settings for the instance of a users gadget.
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <returns></returns>
@@ -30,7 +29,7 @@ namespace Damage.Controllers
                     var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
 
                     settingSchema = userGadget.Gadget.SettingsSchema;
-                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
                         if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
                         {
@@ -43,11 +42,12 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new { GadgetSettings = gadgetSettings, SettingsSchema = settingSchema }, JsonRequestBehavior.AllowGet);
+            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema},
+                JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
-        /// Updates the gadget settings.
+        ///     Updates the gadget settings.
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         /// <param name="newSettings">The new settings.</param>
@@ -59,17 +59,18 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
                         userGadget.GadgetSettings = newSettings;
-                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
+                        uow.UserGadgetRepository.Save(userGadget,
+                            DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Updates the gadget position.
+        ///     Updates the gadget position.
         /// </summary>
         [HttpPost]
         public void UpdateGadgetPositions(List<GadgetPosition> gadgetPositions)
@@ -82,20 +83,22 @@ namespace Damage.Controllers
                     {
                         var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(User.Identity.Name);
 
-                        foreach(var gadgetPosition in gadgetPositions)
+                        foreach (var gadgetPosition in gadgetPositions)
                         {
-                            var userGadgetToUpdate = userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
+                            var userGadgetToUpdate =
+                                userGadgets.Single(g => g.UserGadgetId == gadgetPosition.UserGadgetId);
                             userGadgetToUpdate.DisplayColumn = gadgetPosition.DisplayColumn;
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                         }
-                        uow.UserGadgetRepository.Save(userGadgets, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
+                        uow.UserGadgetRepository.Save(userGadgets,
+                            DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.Update);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Adds the new gadget.
+        ///     Adds the new gadget.
         /// </summary>
         /// <param name="gadgetId">The gadget unique identifier.</param>
         [HttpPost]
@@ -109,17 +112,18 @@ namespace Damage.Controllers
 
                     if (gadget != null)
                     {
-
                         var userGadget = new UserGadget()
-                            {
-                                User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
-                                Gadget = gadget,
-                                GadgetSettings = gadget.DefaultSettings,
-                                DisplayColumn = 1
-                            };
-                        userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
+                        {
+                            User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
+                            Gadget = gadget,
+                            GadgetSettings = gadget.DefaultSettings,
+                            DisplayColumn = 1
+                        };
+                        userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId,
+                            userGadget.DisplayColumn);
 
-                        uow.UserGadgetRepository.Save(userGadget, DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.SaveNew);
+                        uow.UserGadgetRepository.Save(userGadget,
+                            DataAccess.Repositories.BaseRepository<UserGadget>.SaveOperation.SaveNew);
                         return Json(true);
                     }
                 }
@@ -128,7 +132,7 @@ namespace Damage.Controllers
         }
 
         /// <summary>
-        /// Deletes the gadget.
+        ///     Deletes the gadget.
         /// </summary>
         /// <param name="userGadgetId">The user gadget identifier.</param>
         [HttpPost]
@@ -139,7 +143,7 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
                         uow.UserGadgetRepository.Delete(userGadget);
                     }

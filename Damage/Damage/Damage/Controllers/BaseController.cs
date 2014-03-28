@@ -6,11 +6,13 @@ namespace Damage.Controllers
 {
     public abstract class BaseController : Controller
 
-    {   //Handle pages that are not found
+    {
+        //Handle pages that are not found
         public ActionResult NotFound()
         {
             return View("NotFound");
         }
+
         protected override void HandleUnknownAction(string actionName)
         {
             View("NotFound").ExecuteResult(ControllerContext);
@@ -34,7 +36,7 @@ namespace Damage.Controllers
         }
 
         /// <summary>
-        /// Executes the action but limits the execution to the given timespan.
+        ///     Executes the action but limits the execution to the given timespan.
         /// </summary>
         /// <param name="timeSpan">The time span.</param>
         /// <param name="codeBlock">The code block.</param>
@@ -43,7 +45,7 @@ namespace Damage.Controllers
         {
             try
             {
-                Task task = Task.Factory.StartNew(() => codeBlock());
+                var task = Task.Factory.StartNew(() => codeBlock());
                 task.Wait(timeSpan);
                 return task.IsCompleted;
             }

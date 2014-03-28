@@ -1,13 +1,12 @@
-﻿using Damage.DataAccess;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Damage.DataAccess;
 using Damage.DataAccess.Models;
 using Damage.Filters;
 using Damage.Gadget;
 using Microsoft.Web.WebPages.OAuth;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace Damage.Controllers
 {
@@ -35,14 +34,15 @@ namespace Damage.Controllers
                         if (OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 0)
                         {
                             hasLinkedGoogleAccount = true;
-                            if (DateTime.Compare(DateTime.Now, gadgetsForUser.First().User.OAuthAccessTokenExpiration) > 0 &&
+                            if (DateTime.Compare(DateTime.Now, gadgetsForUser.First().User.OAuthAccessTokenExpiration) >
+                                0 &&
                                 gadgetsForUser.Any(g => g.Gadget.RequiresValidGoogleAccessToken))
                             {
-                                return new Damage.Controllers.AccountController.ExternalLoginResult("google", Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = "" }));
+                                return new Damage.Controllers.AccountController.ExternalLoginResult("google",
+                                    Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = ""}));
                             }
                         }
                     }
-
                 }
                 else
                 {
@@ -78,7 +78,9 @@ namespace Damage.Controllers
                     }
                     else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
-                        var newGadget = DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
+                        var newGadget =
+                            DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as
+                                IGadget;
                         newGadget.UserGadget = g;
                         activeGadgets.Add(newGadget);
                     }

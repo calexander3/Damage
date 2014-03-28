@@ -1,9 +1,9 @@
-using Damage.Gadget;
-using SimpleInjector;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Damage.Gadget;
+using SimpleInjector;
 
 public static class SimpleInjectorInitializer
 {
@@ -21,7 +21,7 @@ public static class SimpleInjectorInitializer
 
     private static void InitializeContainer(Container container)
     {
-        string pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bin\Gadgets");
+        var pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bin\Gadgets");
 
         var pluginAssemblies =
             from file in new DirectoryInfo(pluginDirectory).GetFiles()
@@ -31,7 +31,7 @@ public static class SimpleInjectorInitializer
         var pluginTypes =
             from dll in pluginAssemblies
             from type in dll.GetExportedTypes()
-            where typeof(IGadget).IsAssignableFrom(type)
+            where typeof (IGadget).IsAssignableFrom(type)
             where !type.IsAbstract
             where !type.IsGenericTypeDefinition
             select type;

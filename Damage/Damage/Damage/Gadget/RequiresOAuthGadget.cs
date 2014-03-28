@@ -6,7 +6,11 @@ namespace Damage.Gadget
     {
         public string HTML
         {
-            get { return @"<div>This gadget requires a linked Google account. You can link your Google account to your Damage account <a href='/Account/Manage' >here</a>.</div>"; }
+            get
+            {
+                return
+                    @"<div>This gadget requires a linked Google account. You can link your Google account to your Damage account <a href='/Account/Manage' >here</a>.</div>";
+            }
         }
 
         public DataAccess.Models.UserGadget UserGadget { get; set; }
@@ -14,10 +18,7 @@ namespace Damage.Gadget
 
         public string Title
         {
-            get
-            {
-                return UserGadget.Gadget.GadgetTitle;
-            }
+            get { return UserGadget.Gadget.GadgetTitle; }
         }
 
 

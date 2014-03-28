@@ -10,27 +10,28 @@
     <link href="/Content/@(ViewBag.ColumnCss)" rel="stylesheet">
 }
 
-@if (!Request.IsAuthenticated) {
+@if (!Request.IsAuthenticated)
+{
     <div class="add-gadget-button"><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
-    <div class="sign-in-request">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "subLoginLink" })to customize your gadgets.</div>
+    <div class="sign-in-request">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new {id = "subLoginLink"})to customize your gadgets.</div>
 }
 else
 {
-    <div class="add-gadget-button"><span>@Html.ActionLink("Add Gadget", "AddGadget", "Home")</span><span><a href="#" onclick="OpenSettingsDialog()">Layouts</a></span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
+    <div class="add-gadget-button"><span>@Html.ActionLink("Add Gadget", "AddGadget", "Home")</span><span><a href="#" onclick=" OpenSettingsDialog() ">Layouts</a></span><span>@Html.ActionLink("Contact", "Contact", "Home")</span></div>
 }
 
-@if(Model.Count == 0)
+@if (Model.Count == 0)
 {
     <div>You currently do not have any gadgets. Use the @Html.ActionLink("Add Gadget", "AddGadget", "Home") page to add new gadgets to your dashboard.</div>
 }
 
-@for (int column = 1; column <= ViewBag.ColumnCount; column ++)
+@for (var column = 1; column <= ViewBag.ColumnCount; column ++)
 {
     <div class="GadgetColumn droppable" id="displayColumn@(column)">
         <div class="columnPerserver"></div>
         
         @{
-            int icolumn = column;
+            var icolumn = column;
             foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn).OrderBy(m => m.UserGadget.DisplayOrdinal))
             {
                 <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
@@ -46,7 +47,6 @@ else
                         <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
                     }
                 }
-
             }
         }
     </div>
@@ -55,20 +55,21 @@ else
 @*<div style="clear: both"></div>*@
 
 @section footer {
-    @if (Request.IsAuthenticated) {
+    @if (Request.IsAuthenticated)
+    {
         <div class="droppable" id="garbage"></div>
     }
 }
 
-<div id="settingsDialog" title="Settings" style="display:none;">
-@Html.Partial("_ApplicationSettings")
+<div id="settingsDialog" title="Settings" style="display: none;">
+    @Html.Partial("_ApplicationSettings")
 </div>
 
-<div id="gadgetSettingsDialog" title="Settings" style="display:none;">
+<div id="gadgetSettingsDialog" title="Settings" style="display: none;">
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         setupDragAndDrop();
     });
 </script>

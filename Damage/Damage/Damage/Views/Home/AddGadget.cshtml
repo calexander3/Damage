@@ -13,18 +13,18 @@
 <h2>Add New Gadget</h2>
 <br />
 <br />
-@if (Request.IsAuthenticated) {
-
-    foreach(var gadget in Model)
+@if (Request.IsAuthenticated)
+{
+    foreach (var gadget in Model)
     {
         <div class="gadgetPreviewContainer">
             <div class="gadgetPreview"><img src="~/Content/Images/Gadgets/@(gadget.GadgetName).png" /></div>
             <div class="gadgetPreviewTitle">@gadget.GadgetTitle</div>
             <div class="gadgetPreviewDescription">@Html.Raw(gadget.GadgetDescription)</div>
             <div class="gadgetAddButton">
-                @if(!gadget.InBeta)
+                @if (!gadget.InBeta)
                 {
-                    <button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button>
+                    <button onclick=" addNewGadget(@(gadget.GadgetId)) ">Add Gadget</button>
                 }
                 else
                 {

@@ -2,7 +2,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (!Request.IsAuthenticated) {
+@if (!Request.IsAuthenticated)
+{
     <div class="add-gadget-button"><span>@Html.ActionLink("Home", "Index", "Home")</span></div>
 }
 else
@@ -11,30 +12,40 @@ else
 }
 
 <div class="contact-content">
-<p><h3>Damage.IO</h3>
-When Google sunset the iGoogle homepage, I was unable to consume the web content in the manner that I had for so many years. None of the replacements I tried suited my needs. If you are here, I assume the same is true for you. Damage can help.</p>
+    <p><h3>Damage.IO</h3>
+        When Google sunset the iGoogle homepage, I was unable to consume the web content in the manner that I had for so many years. None of the replacements I tried suited my needs. If you are here, I assume the same is true for you. Damage can help.</p>
 
-<p>
-<h3>Why are there so few gadgets?</h3>
-I have only been working on this project for a few months in my spare time. I would like to eventually create a way for developers to submit gadgets to me. However, the platform needs quite a bit of work before that can happen.
-</p>
+    <p>
+        <h3>Why are there so few gadgets?</h3>
+        I have only been working on this project for a few months in my spare time. I would like to eventually create a way for developers to submit gadgets to me. However, the platform needs quite a bit of work before that can happen.
+    </p>
 
-<p>
-<h3>Why does Damage.IO ask for so much access to my Google account?</h3>
-Currently, I have to ask for all permissions that any of the gadgets need, even if you aren’t using those particular gadgets.
-</p>
+    <p>
+        <h3>Why does Damage.IO ask for so much access to my Google account?</h3>
+        Currently, I have to ask for all permissions that any of the gadgets need, even if you aren’t using those particular gadgets.
+    </p>
 
-<p>
-<h3>Something is broken!</h3>
-Please send any issues to <a href="mailto:support@damage.io">support@damage.io</a> along with instructions on how to reproduce the problem. Please keep in mind that I am only one person developing this project in my spare time.
-</p>
+    <p>
+        <h3>Something is broken!</h3>
+        Please send any issues to <a href="mailto:support@damage.io">support@damage.io</a> along with instructions on how to reproduce the problem. Please keep in mind that I am only one person developing this project in my spare time.
+    </p>
 
-<p>
-For news on upcoming features and bug fixes, follow Damage.IO on twitter.  <a href="https://twitter.com/DamageIO" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</p>
+    <p>
+        For news on upcoming features and bug fixes, follow Damage.IO on twitter.  <a href="https://twitter.com/DamageIO" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow</a>
+        <script>
+            !function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = p + '://platform.twitter.com/widgets.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'twitter-wjs');
+        </script>
+    </p>
 
-<p>
-If you like what I've done so far and want to encourage future development, click the donate button on the bottom right of the site. It is always much appreciated!
-</p>
+    <p>
+        If you like what I've done so far and want to encourage future development, click the donate button on the bottom right of the site. It is always much appreciated!
+    </p>
 </div>
