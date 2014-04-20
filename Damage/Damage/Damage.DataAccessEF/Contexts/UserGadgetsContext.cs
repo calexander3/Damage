@@ -1,4 +1,5 @@
-﻿using Damage.DataAccessEF.Models;
+﻿using System;
+using Damage.DataAccessEF.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,18 +8,19 @@ namespace Damage.DataAccessEF.Contexts
 {
     public class UserGadgetsContext : DbContext
     {
-        public UserGadgetsContext(string connectionString) : base(connectionString)
+        public UserGadgetsContext(string connectionString)
+            : base(connectionString)
         {
         }
 
-        private DbSet<UserGadget> UserGadgets { get; set; }
+        public DbSet<UserGadget> UserGadgets { get; set; }
 
         /// <summary>
         /// Gets all gadgets for a user.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
-        public ICollection<UserGadget> GetAllUserGadgetsForUser(string username)
+        public IList<UserGadget> GetAllUserGadgetsForUser(string username)
         {
             return (from ug in UserGadgets.Include(ug => ug.User).Include(ug => ug.Gadget)
                     where ug.User.UserName.ToLower() == username.ToLower()
@@ -31,12 +33,12 @@ namespace Damage.DataAccessEF.Contexts
         /// <param name="userId">The user unique identifier.</param>
         /// <param name="displayColumn">The display column.</param>
         /// <returns></returns>
-        public ICollection<UserGadget> GetUserGadgetsForUserByColumn(int userId, int displayColumn)
+        public IList<UserGadget> GetUserGadgetsForUserByColumn(int userId, int displayColumn)
         {
             return (from ug in UserGadgets.Include(ug => ug.User).Include(ug => ug.Gadget)
                     where ug.User.UserId == userId &&
                     ug.DisplayColumn == displayColumn
-                    select ug). OrderBy(ug => ug.DisplayOrdinal).ToList();
+                    select ug).OrderBy(ug => ug.DisplayOrdinal).ToList();
         }
 
         /// <summary>
@@ -57,22 +59,17 @@ namespace Damage.DataAccessEF.Contexts
         /// <param name="userId">The user identifier.</param>
         /// <param name="displayColumnId">The display column identifier.</param>
         /// <returns></returns>
-        //public int GetNextOrdinal(int userId, int displayColumnId)
-        //{
-        //    int? currentMaxDisplayOrdinal = m_Session.QueryOver<UserGadget>()
-        //                     .Where(ug => ug.User.UserId == userId)
-        //                     .And(ug => ug.DisplayColumn == displayColumnId)
-        //                    .SelectList(x => x.SelectMax(y => y.DisplayOrdinal))
-        //                    .Take(1)
-        //                    .SingleOrDefault<int>();
-
-        //    if (!currentMaxDisplayOrdinal.HasValue)
-        //    {
-        //        currentMaxDisplayOrdinal = 0;
-        //    }
-
-        //    return currentMaxDisplayOrdinal.Value + 1;
-        //}
-
+        public int GetNextOrdinal(int userId, int displayColumnId)
+        {
+            var bottomUserGadget =
+                UserGadgets.Where(ug => ug.User.UserId == userId && ug.DisplayColumn == displayColumnId)
+                    .OrderByDescending(ug => ug.DisplayOrdinal)
+                    .FirstOrDefault();
+            if (bottomUserGadget != null)
+            {
+                return bottomUserGadget.DisplayOrdinal + 1;
+            }
+            return 1;
+        }
     }
 }

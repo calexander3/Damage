@@ -5,49 +5,28 @@ namespace Damage.DataAccessEF
 {
     public class UnitOfWork : IDisposable
     {
-        private string _connectionString = "DefaultConnection";
-        public UnitOfWork(string ConnectionString)
+        private readonly string _connectionString = "DefaultConnection";
+        public UnitOfWork(string connectionString)
         {
-            _connectionString = ConnectionString;
+            _connectionString = connectionString;
         }
 
-        private UserGadgetsContext _userGadgetsContext = null;
+        private UserGadgetsContext _userGadgetsContext;
         public UserGadgetsContext UserGadgetsContext
         {
-            get
-            {
-                if (_userGadgetsContext == null)
-                {
-                    _userGadgetsContext = new UserGadgetsContext(_connectionString);
-                }
-                return _userGadgetsContext;
-            }
+            get { return _userGadgetsContext ?? (_userGadgetsContext = new UserGadgetsContext(_connectionString)); }
         }
 
-        private GadgetsContext _gadgetsContext = null;
+        private GadgetsContext _gadgetsContext;
         public GadgetsContext GadgetsContext
         {
-            get
-            {
-                if (_gadgetsContext == null)
-                {
-                    _gadgetsContext = new GadgetsContext(_connectionString);
-                }
-                return _gadgetsContext;
-            }
+            get { return _gadgetsContext ?? (_gadgetsContext = new GadgetsContext(_connectionString)); }
         }
 
-        private UsersContext _usersContext = null;
+        private UsersContext _usersContext;
         public UsersContext UsersContext
         {
-            get
-            {
-                if (_usersContext == null)
-                {
-                    _usersContext = new UsersContext(_connectionString);
-                }
-                return _usersContext;
-            }
+            get { return _usersContext ?? (_usersContext = new UsersContext(_connectionString)); }
         }
 
         #region "IDisposable Support"
@@ -61,13 +40,22 @@ namespace Damage.DataAccessEF
             {
                 if (disposing)
                 {
-                    _gadgetsContext.Dispose();
-                    _userGadgetsContext.Dispose();
-                    _usersContext.Dispose();
                     //Set contexts to null
-                    _gadgetsContext = null;
-                    _userGadgetsContext = null;
-                    _usersContext = null;
+                    if (_gadgetsContext != null)
+                    {
+                        _gadgetsContext.Dispose();
+                        _gadgetsContext = null;
+                    }
+                    if (_userGadgetsContext != null)
+                    {
+                        _userGadgetsContext.Dispose();
+                        _userGadgetsContext = null;
+                    }
+                    if (_usersContext != null)
+                    {
+                        _usersContext.Dispose();
+                        _usersContext = null;
+                    }
                 }
             }
             _disposedValue = true;
