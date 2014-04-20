@@ -92,7 +92,7 @@ namespace Damage.Controllers
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                         }
 
-                        uow.UserGadgetRepository.SaveChangesAsync();
+                        uow.UserGadgetRepository.SaveChanges();
                     }
                 }
             }
@@ -125,7 +125,7 @@ namespace Damage.Controllers
 
                         uow.UserGadgetRepository.UserGadgets.Add(userGadget);
 
-                        uow.UserGadgetRepository.SaveChangesAsync();
+                        uow.UserGadgetRepository.SaveChanges();
                         return Json(true);
                     }
                 }
@@ -148,7 +148,7 @@ namespace Damage.Controllers
                     if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
                         uow.UserGadgetRepository.UserGadgets.Remove(userGadget);
-                        uow.UserGadgetRepository.SaveChangesAsync();
+                        uow.UserGadgetRepository.SaveChanges();
                     }
                 }
             }

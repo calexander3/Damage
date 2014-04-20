@@ -15,10 +15,5 @@ namespace Damage.DataAccess.Repositories
         {
             Context.SaveChanges();
         }
-
-        public void SaveChangesAsync()
-        {
-            Context.SaveChangesAsync();
-        }
     }
 }
