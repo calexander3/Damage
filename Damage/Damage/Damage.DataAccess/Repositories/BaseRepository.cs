@@ -1,13 +1,12 @@
-﻿using System;
-using Damage.DataAccess.Models;
+﻿using Damage.DataAccess.Models;
 
-namespace Damage.DataAccess.Contexts
+namespace Damage.DataAccess.Repositories
 {
-    public abstract class BaseContext
+    public abstract class BaseRepository
     {
         internal readonly Entities Context;
 
-        internal BaseContext(Entities context)
+        internal BaseRepository(Entities context)
         {
             Context = context;
         }

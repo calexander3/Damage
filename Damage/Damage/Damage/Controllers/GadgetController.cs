@@ -28,7 +28,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var userGadget = uow.UserGadgetsContext.GetUserGadgetById(userGadgetId);
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
 
                     settingSchema = userGadget.Gadget.SettingsSchema;
                     if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
@@ -60,11 +60,11 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var userGadget = uow.UserGadgetsContext.GetUserGadgetById(userGadgetId);
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
                     if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
                         userGadget.GadgetSettings = newSettings;
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetRepository.SaveChanges();
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace Damage.Controllers
                 {
                     using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                     {
-                        var userGadgets = uow.UserGadgetsContext.GetAllUserGadgetsForUser(User.Identity.Name);
+                        var userGadgets = uow.UserGadgetRepository.GetAllUserGadgetsForUser(User.Identity.Name);
 
                         foreach (var gadgetPosition in gadgetPositions)
                         {
@@ -92,7 +92,7 @@ namespace Damage.Controllers
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                         }
 
-                        uow.UserGadgetsContext.SaveChangesAsync();
+                        uow.UserGadgetRepository.SaveChangesAsync();
                     }
                 }
             }
@@ -109,23 +109,23 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var gadget = uow.GadgetsContext.GetGadgetById(gadgetId);
+                    var gadget = uow.GadgetRepository.GetGadgetById(gadgetId);
 
                     if (gadget != null)
                     {
                         var userGadget = new UserGadget
                         {
-                            User = uow.UsersContext.GetUserById((int) Membership.GetUser().ProviderUserKey),
+                            User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
                             Gadget = gadget,
                             GadgetSettings = gadget.DefaultSettings,
                             DisplayColumn = 1
                         };
 
-                        userGadget.DisplayOrdinal = uow.UserGadgetsContext.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
+                        userGadget.DisplayOrdinal = uow.UserGadgetRepository.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
 
-                        uow.UserGadgetsContext.UserGadgets.Add(userGadget);
+                        uow.UserGadgetRepository.UserGadgets.Add(userGadget);
 
-                        uow.UserGadgetsContext.SaveChangesAsync();
+                        uow.UserGadgetRepository.SaveChangesAsync();
                         return Json(true);
                     }
                 }
@@ -144,11 +144,11 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var userGadget = uow.UserGadgetsContext.GetUserGadgetById(userGadgetId);
+                    var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
                     if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
-                        uow.UserGadgetsContext.UserGadgets.Remove(userGadget);
-                        uow.UserGadgetsContext.SaveChangesAsync();
+                        uow.UserGadgetRepository.UserGadgets.Remove(userGadget);
+                        uow.UserGadgetRepository.SaveChangesAsync();
                     }
                 }
             }

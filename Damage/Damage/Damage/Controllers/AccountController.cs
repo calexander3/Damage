@@ -39,11 +39,11 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UsersContext.GetUserByUsername(model.UserName);
+                    var user = uow.UserRepository.GetUserByUsername(model.UserName);
                     if (user != null)
                     {
                         user.LastLoginTime = DateTime.Now;
-                        uow.UsersContext.SaveChanges();
+                        uow.UserRepository.SaveChanges();
                     }
                 }
                 return RedirectToLocal(returnUrl);
@@ -92,14 +92,14 @@ namespace Damage.Controllers
                     WebSecurity.Login(model.UserName, model.Password);
                     using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                     {
-                        var gadgets = uow.GadgetsContext.GetDefaultGadgets();
-                        var user = uow.UsersContext.GetUserByUsername(model.UserName);
+                        var gadgets = uow.GadgetRepository.GetDefaultGadgets();
+                        var user = uow.UserRepository.GetUserByUsername(model.UserName);
                         foreach (var gadget in gadgets)
                         {
                             gadget.User = user;
-                            uow.UserGadgetsContext.UserGadgets.Add(gadget);
+                            uow.UserGadgetRepository.UserGadgets.Add(gadget);
                         }
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetRepository.SaveChanges();
                     }
                     return RedirectToAction("Index", "Home");
                 }
@@ -257,13 +257,13 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var email = result.ExtraData["email"];
-                    var user = uow.UsersContext.GetUserByEmailAddress(email);
+                    var user = uow.UserRepository.GetUserByEmailAddress(email);
                     if (user != null)
                     {
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         user.LastLoginTime = DateTime.Now;
-                        uow.UsersContext.SaveChanges();
+                        uow.UserRepository.SaveChanges();
                     }
                     else
                     {
@@ -290,14 +290,14 @@ namespace Damage.Controllers
 
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
                     if (user != null)
                     {
                         user.EmailAddress = result.ExtraData["email"];
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         user.LastLoginTime = DateTime.Now;
-                        uow.UsersContext.SaveChanges();
+                        uow.UserRepository.SaveChanges();
                     }
                 }
 
@@ -342,14 +342,14 @@ namespace Damage.Controllers
                 // Insert a new user into the database
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UsersContext.GetUserByUsername(model.UserName);
+                    var user = uow.UserRepository.GetUserByUsername(model.UserName);
                     // Check if user already exists
                     if (user == null)
                     {
                         var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
 
                         // Insert name into the profile table
-                        uow.UsersContext.Users.Add(new User
+                        uow.UserRepository.Users.Add(new User
                         {
                             UserName = model.UserName,
                             EmailAddress = extraData["email"],
@@ -358,19 +358,19 @@ namespace Damage.Controllers
                             LastLoginTime = DateTime.Now,
                             LayoutId = 0
                         });
-                        uow.UsersContext.SaveChanges();
+                        uow.UserRepository.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
 
-                        var gadgets = uow.GadgetsContext.GetDefaultGadgets();
-                        var nhUser = uow.UsersContext.GetUserByUsername(model.UserName);
+                        var gadgets = uow.GadgetRepository.GetDefaultGadgets();
+                        var nhUser = uow.UserRepository.GetUserByUsername(model.UserName);
                         foreach (var gadget in gadgets)
                         {
                             gadget.User = nhUser;
-                            uow.UserGadgetsContext.UserGadgets.Add(gadget);
+                            uow.UserGadgetRepository.UserGadgets.Add(gadget);
                         }
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetRepository.SaveChanges();
 
                         return RedirectToLocal(returnUrl);
                     }

@@ -1,35 +1,33 @@
-﻿using Damage.DataAccess.Contexts;
-using System;
+﻿using System;
 using Damage.DataAccess.Models;
+using Damage.DataAccess.Repositories;
 
 namespace Damage.DataAccess
 {
     public class UnitOfWork : IDisposable
     {
-        private readonly string _connectionString = "DefaultConnection";
         private readonly Entities _context;
         public UnitOfWork(string connectionString)
         {
-            _connectionString = connectionString;
-            _context = new Entities(_connectionString);
+            _context = new Entities(connectionString);
         }
 
-        private UserGadgetsContext _userGadgetsContext;
-        public UserGadgetsContext UserGadgetsContext
+        private UserGadgetRepository _userGadgetsRepository;
+        public UserGadgetRepository UserGadgetRepository
         {
-            get { return _userGadgetsContext ?? (_userGadgetsContext = new UserGadgetsContext(_context)); }
+            get { return _userGadgetsRepository ?? (_userGadgetsRepository = new UserGadgetRepository(_context)); }
         }
 
-        private GadgetsContext _gadgetsContext;
-        public GadgetsContext GadgetsContext
+        private GadgetRepository _gadgetsRepository;
+        public GadgetRepository GadgetRepository
         {
-            get { return _gadgetsContext ?? (_gadgetsContext = new GadgetsContext(_context)); }
+            get { return _gadgetsRepository ?? (_gadgetsRepository = new GadgetRepository(_context)); }
         }
 
-        private UsersContext _usersContext;
-        public UsersContext UsersContext
+        private UserRepository _usersRepository;
+        public UserRepository UserRepository
         {
-            get { return _usersContext ?? (_usersContext = new UsersContext(_context)); }
+            get { return _usersRepository ?? (_usersRepository = new UserRepository(_context)); }
         }
 
         #region "IDisposable Support"
@@ -44,9 +42,9 @@ namespace Damage.DataAccess
                 if (disposing)
                 {
                     //Set contexts to null
-                    _userGadgetsContext = null;
-                    _usersContext = null;
-                    _gadgetsContext = null;
+                    _userGadgetsRepository = null;
+                    _usersRepository = null;
+                    _gadgetsRepository = null;
                     if (_context != null)
                     {
                         _context.Dispose(); 

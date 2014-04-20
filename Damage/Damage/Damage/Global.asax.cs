@@ -45,14 +45,14 @@ namespace Damage
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
-                foreach (var currentGadget in uow.GadgetsContext.Gadgets)
+                foreach (var currentGadget in uow.GadgetRepository.Gadgets)
                 {
                     currentGadget.AssemblyPresent = false;
                 }
 
                 foreach (var gadget in gadgetInstances)
                 {
-                    var currentGadget = uow.GadgetsContext.GetGadgetByName(gadget.GetType().Name);
+                    var currentGadget = uow.GadgetRepository.GetGadgetByName(gadget.GetType().Name);
                     if (currentGadget != null)
                     {
                         currentGadget.AssemblyPresent = true;
@@ -66,7 +66,7 @@ namespace Damage
                     }
                     else
                     {
-                        uow.GadgetsContext.Gadgets.Add(
+                        uow.GadgetRepository.Gadgets.Add(
                             new DataAccess.Models.Gadget
                             {
                                 GadgetName = gadget.GetType().Name,
@@ -84,7 +84,7 @@ namespace Damage
                     GlobalConfig.GadgetTypes.TryAdd(gadget.GetType().Name, gadget.GetType());
                 }
 
-                uow.UserGadgetsContext.SaveChanges();
+                uow.UserGadgetRepository.SaveChanges();
 
             }
         }

@@ -9,9 +9,7 @@
 
 namespace Damage.DataAccess.Models
 {
-    using System;
-    using System.Collections.Generic;
-    
+
     public partial class UserGadget
     {
         public int UserGadgetId { get; set; }

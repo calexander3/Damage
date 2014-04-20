@@ -1,15 +1,14 @@
-﻿using System;
-using Damage.DataAccess.Models;
+﻿using Damage.DataAccess.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Damage.DataAccess.Contexts
+namespace Damage.DataAccess.Repositories
 {
-    public class UserGadgetsContext : BaseContext
+    public class UserGadgetRepository : BaseRepository
     {
         public DbSet<UserGadget> UserGadgets { get; set; }
-        public UserGadgetsContext(Entities context): base(context)
+        public UserGadgetRepository(Entities context): base(context)
         {
             UserGadgets = Context.UserGadgets;
         }

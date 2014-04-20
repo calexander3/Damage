@@ -61,10 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexts\BaseContext.cs" />
-    <Compile Include="Contexts\GadgetsContext.cs" />
-    <Compile Include="Contexts\UserGadgetsContext.cs" />
-    <Compile Include="Contexts\UsersContext.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\GadgetRepository.cs" />
+    <Compile Include="Repositories\UserGadgetRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Damage.Context.cs">
       <AutoGen>True</AutoGen>

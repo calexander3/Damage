@@ -9,7 +9,6 @@
 
 namespace Damage.DataAccess.Models
 {
-    using System;
     using System.Collections.Generic;
     
     public partial class User
