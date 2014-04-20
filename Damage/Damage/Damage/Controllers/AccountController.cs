@@ -39,13 +39,13 @@ namespace Damage.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                using (var db = new UsersContext(GlobalConfig.ConnectionString))
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    var user = uow.UsersContext.GetUserByUsername(model.UserName);
                     if (user != null)
                     {
                         user.LastLoginTime = DateTime.Now;
-                        db.SaveChanges();
+                        uow.UsersContext.SaveChanges();
                     }
                 }
                 return RedirectToLocal(returnUrl);
@@ -131,7 +131,7 @@ namespace Damage.Controllers
                 // Use a transaction to prevent the user from deleting their last login credential
                 using (
                     var scope = new TransactionScope(TransactionScopeOption.Required,
-                        new TransactionOptions {IsolationLevel = IsolationLevel.Serializable}))
+                        new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
                 {
                     var hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
                     if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
@@ -143,7 +143,7 @@ namespace Damage.Controllers
                 }
             }
 
-            return RedirectToAction("Manage", new {Message = message});
+            return RedirectToAction("Manage", new { Message = message });
         }
 
         //
@@ -192,7 +192,7 @@ namespace Damage.Controllers
 
                     if (changePasswordSucceeded)
                     {
-                        return RedirectToAction("Manage", new {Message = ManageMessageId.ChangePasswordSuccess});
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                     ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
                 }
@@ -212,7 +212,7 @@ namespace Damage.Controllers
                     try
                     {
                         WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new {Message = ManageMessageId.SetPasswordSuccess});
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
                     catch (Exception)
                     {
@@ -236,7 +236,7 @@ namespace Damage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new {ReturnUrl = returnUrl}));
+            return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -247,7 +247,7 @@ namespace Damage.Controllers
         {
             GoogleOAuth2Client.RewriteRequest();
             var result =
-                OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new {ReturnUrl = returnUrl}));
+                OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
             if (!result.IsSuccessful)
             {
                 return RedirectToAction("ExternalLoginFailure");
@@ -256,16 +256,16 @@ namespace Damage.Controllers
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: true))
             {
                 //update oauth token
-                using (var db = new UsersContext(GlobalConfig.ConnectionString))
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var email = result.ExtraData["email"];
-                    var user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == email.ToLower());
+                    var user = uow.UsersContext.GetUserByEmailAddress(email);
                     if (user != null)
                     {
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         user.LastLoginTime = DateTime.Now;
-                        db.SaveChanges();
+                        uow.UsersContext.SaveChanges();
                     }
                     else
                     {
@@ -290,16 +290,16 @@ namespace Damage.Controllers
                 // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
 
-                using (var db = new UsersContext(GlobalConfig.ConnectionString))
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
                     if (user != null)
                     {
                         user.EmailAddress = result.ExtraData["email"];
                         user.CurrentOAuthAccessToken = result.ExtraData["accesstoken"];
                         user.OAuthAccessTokenExpiration = DateTime.Now.AddMinutes(55);
                         user.LastLoginTime = DateTime.Now;
-                        db.SaveChanges();
+                        uow.UsersContext.SaveChanges();
                     }
                 }
 
@@ -341,16 +341,16 @@ namespace Damage.Controllers
             if (ModelState.IsValid)
             {
                 // Insert a new user into the database
-                using (var db = new UsersContext(GlobalConfig.ConnectionString))
+                using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    var user = uow.UsersContext.GetUserByUsername(model.UserName);
                     // Check if user already exists
                     if (user == null)
                     {
                         var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
 
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile
+                        uow.UsersContext.UserProfiles.Add(new UserProfile
                         {
                             UserName = model.UserName,
                             EmailAddress = extraData["email"],
@@ -359,22 +359,19 @@ namespace Damage.Controllers
                             LastLoginTime = DateTime.Now,
                             LayoutId = 0
                         });
-                        db.SaveChanges();
+                        uow.UsersContext.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: true);
 
-                        using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
+                        var gadgets = uow.GadgetsContext.GetDefaultGadgets();
+                        var nhUser = uow.UsersContext.GetUserByUsername(model.UserName);
+                        foreach (var gadget in gadgets)
                         {
-                            var gadgets = uow.GadgetsContext.GetDefaultGadgets();
-                            var nhUser = uow.UsersContext.GetUserByUsername(model.UserName);
-                            foreach (var gadget in gadgets)
-                            {
-                                gadget.User = nhUser;
-                                uow.UserGadgetsContext.UserGadgets.Add(gadget);
-                            }
-                            uow.UserGadgetsContext.SaveChanges();
+                            gadget.User = nhUser;
+                            uow.UserGadgetsContext.UserGadgets.Add(gadget);
                         }
+                        uow.UserGadgetsContext.SaveChanges();
 
                         return RedirectToLocal(returnUrl);
                     }

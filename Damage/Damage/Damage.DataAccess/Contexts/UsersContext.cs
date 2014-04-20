@@ -30,7 +30,17 @@ namespace Damage.DataAccess.Contexts
         /// <returns></returns>
         public UserProfile GetUserByUsername(string username)
         {
-            return UserProfiles.SingleOrDefault(u => u.UserName == username);
+            return UserProfiles.SingleOrDefault(u => u.UserName.ToLower() == username.ToLower());
+        }
+
+        /// <summary>
+        /// Gets the user by emailAddress.
+        /// </summary>
+        /// <param name="emailAddress">The email address.</param>
+        /// <returns></returns>
+        public UserProfile GetUserByEmailAddress(string emailAddress)
+        {
+            return UserProfiles.SingleOrDefault(u => u.EmailAddress.ToLower() == emailAddress.ToLower());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
