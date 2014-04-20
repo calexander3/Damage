@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Damage.DataAccessEF.Models;
+﻿using Damage.DataAccessEF.Models;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Damage.DataAccessEF.Contexts
 {

@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using Damage.DataAccessEF.Models;
 using System.Collections.Generic;
-using System.Linq;
-using Damage.DataAccessEF.Models;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Damage.DataAccessEF.Contexts
 {

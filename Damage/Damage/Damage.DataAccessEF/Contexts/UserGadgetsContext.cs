@@ -1,5 +1,4 @@
-﻿using System;
-using Damage.DataAccessEF.Models;
+﻿using Damage.DataAccessEF.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
