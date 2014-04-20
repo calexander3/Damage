@@ -31,21 +31,24 @@ else
         <div class="columnPerserver"></div>
         
         @{
-            var icolumn = column;
-            foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn).OrderBy(m => m.UserGadget.DisplayOrdinal))
+            if (Model.Any())
             {
-                <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
-            }
-
-            if (icolumn == ViewBag.ColumnCount)
-            {
-                var maxColumn = Model.Max(m => m.UserGadget.DisplayColumn);
-                for (var j = 1; j <= (maxColumn - icolumn); j++)
+                var icolumn = column;
+                foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn).OrderBy(m => m.UserGadget.DisplayOrdinal))
                 {
-                    int j1 = j;
-                    foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn + j1).OrderBy(m => m.UserGadget.DisplayOrdinal))
+                    <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+                }
+
+                if (icolumn == ViewBag.ColumnCount)
+                {
+                    var maxColumn = Model.Max(m => m.UserGadget.DisplayColumn);
+                    for (var j = 1; j <= (maxColumn - icolumn); j++)
                     {
-                        <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+                        int j1 = j;
+                        foreach (var gadget in Model.Where(m => m.UserGadget.DisplayColumn == icolumn + j1).OrderBy(m => m.UserGadget.DisplayOrdinal))
+                        {
+                            <div class="draggable" data-usergadgetid ="@gadget.UserGadget.UserGadgetId">@Html.Partial("_GadgetFramePartial", gadget)</div>
+                        }
                     }
                 }
             }

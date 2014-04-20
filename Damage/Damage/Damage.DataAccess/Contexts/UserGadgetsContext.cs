@@ -1,18 +1,18 @@
-﻿using Damage.DataAccess.Models;
+﻿using System;
+using Damage.DataAccess.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
 namespace Damage.DataAccess.Contexts
 {
-    public class UserGadgetsContext : DbContext
+    public class UserGadgetsContext : BaseContext
     {
-        public UserGadgetsContext(string connectionString)
-            : base(connectionString)
-        {
-        }
-
         public DbSet<UserGadget> UserGadgets { get; set; }
+        public UserGadgetsContext(Entities context): base(context)
+        {
+            UserGadgets = Context.UserGadgets;
+        }
 
         /// <summary>
         /// Gets all gadgets for a user.
@@ -62,8 +62,9 @@ namespace Damage.DataAccess.Contexts
         {
             var bottomUserGadget =
                 UserGadgets.Where(ug => ug.User.UserId == userId && ug.DisplayColumn == displayColumnId)
-                    .OrderByDescending(ug => ug.DisplayOrdinal)
-                    .FirstOrDefault();
+                            .OrderByDescending(ug => ug.DisplayOrdinal)
+                            .FirstOrDefault();
+
             if (bottomUserGadget != null)
             {
                 return bottomUserGadget.DisplayOrdinal + 1;

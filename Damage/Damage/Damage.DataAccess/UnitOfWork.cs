@@ -1,32 +1,35 @@
 ﻿using Damage.DataAccess.Contexts;
 using System;
+using Damage.DataAccess.Models;
 
 namespace Damage.DataAccess
 {
     public class UnitOfWork : IDisposable
     {
         private readonly string _connectionString = "DefaultConnection";
+        private readonly Entities _context;
         public UnitOfWork(string connectionString)
         {
             _connectionString = connectionString;
+            _context = new Entities(_connectionString);
         }
 
         private UserGadgetsContext _userGadgetsContext;
         public UserGadgetsContext UserGadgetsContext
         {
-            get { return _userGadgetsContext ?? (_userGadgetsContext = new UserGadgetsContext(_connectionString)); }
+            get { return _userGadgetsContext ?? (_userGadgetsContext = new UserGadgetsContext(_context)); }
         }
 
         private GadgetsContext _gadgetsContext;
         public GadgetsContext GadgetsContext
         {
-            get { return _gadgetsContext ?? (_gadgetsContext = new GadgetsContext(_connectionString)); }
+            get { return _gadgetsContext ?? (_gadgetsContext = new GadgetsContext(_context)); }
         }
 
         private UsersContext _usersContext;
         public UsersContext UsersContext
         {
-            get { return _usersContext ?? (_usersContext = new UsersContext(_connectionString)); }
+            get { return _usersContext ?? (_usersContext = new UsersContext(_context)); }
         }
 
         #region "IDisposable Support"
@@ -41,20 +44,12 @@ namespace Damage.DataAccess
                 if (disposing)
                 {
                     //Set contexts to null
-                    if (_gadgetsContext != null)
+                    _userGadgetsContext = null;
+                    _usersContext = null;
+                    _gadgetsContext = null;
+                    if (_context != null)
                     {
-                        _gadgetsContext.Dispose();
-                        _gadgetsContext = null;
-                    }
-                    if (_userGadgetsContext != null)
-                    {
-                        _userGadgetsContext.Dispose();
-                        _userGadgetsContext = null;
-                    }
-                    if (_usersContext != null)
-                    {
-                        _usersContext.Dispose();
-                        _usersContext = null;
+                        _context.Dispose(); 
                     }
                 }
             }

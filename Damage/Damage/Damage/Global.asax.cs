@@ -5,7 +5,6 @@ using SimpleInjector;
 using SimpleInjector.Integration.Web.Mvc;
 using System;
 using System.IO;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -17,10 +16,10 @@ namespace Damage
     {
         protected void Application_Start()
         {
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(
-                new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
-            GlobalConfig.Log =
-                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
+            GlobalConfig.Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -33,8 +32,7 @@ namespace Damage
             SimpleInjectorInitializer.InitializeInjector(container);
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
 
-            GlobalConfig.ConnectionString =
-                System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            GlobalConfig.ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
 
             LoadGadgets();
@@ -54,7 +52,7 @@ namespace Damage
 
                 foreach (var gadget in gadgetInstances)
                 {
-                    var currentGadget = uow.GadgetsContext.Gadgets.FirstOrDefault(g => g.GadgetName == gadget.GetType().Name);
+                    var currentGadget = uow.GadgetsContext.GetGadgetByName(gadget.GetType().Name);
                     if (currentGadget != null)
                     {
                         currentGadget.AssemblyPresent = true;

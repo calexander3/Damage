@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DamageModels.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="DamageModelsStoreContainer">
+          <EntitySet Name="Gadgets" EntityType="DamageModels.Store.Gadgets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserGadgets" EntityType="DamageModels.Store.UserGadgets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="DamageModels.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_UserGadgets_Gadgets" Association="DamageModels.Store.FK_UserGadgets_Gadgets">
+            <End Role="Gadgets" EntitySet="Gadgets" />
+            <End Role="UserGadgets" EntitySet="UserGadgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGadgets_Users" Association="DamageModels.Store.FK_UserGadgets_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserGadgets" EntitySet="UserGadgets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Gadgets">
+          <Key>
+            <PropertyRef Name="GadgetId" />
+          </Key>
+          <Property Name="GadgetId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GadgetName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="GadgetTitle" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="GadgetDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="GadgetVersion" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="RequiresValidGoogleAccessToken" Type="bit" Nullable="false" />
+          <Property Name="InBeta" Type="bit" Nullable="false" />
+          <Property Name="AssemblyPresent" Type="bit" Nullable="false" />
+          <Property Name="DefaultSettings" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SettingsSchema" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserGadgets">
+          <Key>
+            <PropertyRef Name="UserGadgetId" />
+          </Key>
+          <Property Name="UserGadgetId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="GadgetId" Type="int" Nullable="false" />
+          <Property Name="GadgetSettings" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DisplayColumn" Type="int" Nullable="false" />
+          <Property Name="DisplayOrdinal" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="56" />
+          <Property Name="CurrentOAuthAccessToken" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="OAuthAccessTokenExpiration" Type="datetime2" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="LastLoginTime" Type="datetime2" Nullable="false" />
+          <Property Name="LayoutId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserGadgets_Gadgets">
+          <End Role="Gadgets" Type="DamageModels.Store.Gadgets" Multiplicity="1" />
+          <End Role="UserGadgets" Type="DamageModels.Store.UserGadgets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gadgets">
+              <PropertyRef Name="GadgetId" />
+            </Principal>
+            <Dependent Role="UserGadgets">
+              <PropertyRef Name="GadgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGadgets_Users">
+          <End Role="Users" Type="DamageModels.Store.Users" Multiplicity="1" />
+          <End Role="UserGadgets" Type="DamageModels.Store.UserGadgets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserGadgets">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DamageModels" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <EntitySet Name="Gadgets" EntityType="DamageModels.Gadget" />
+          <EntitySet Name="UserGadgets" EntityType="DamageModels.UserGadget" />
+          <EntitySet Name="Users" EntityType="DamageModels.User" />
+          <AssociationSet Name="FK_UserGadgets_Gadgets" Association="DamageModels.FK_UserGadgets_Gadgets">
+            <End Role="Gadgets" EntitySet="Gadgets" />
+            <End Role="UserGadgets" EntitySet="UserGadgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGadgets_Users" Association="DamageModels.FK_UserGadgets_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserGadgets" EntitySet="UserGadgets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Gadget">
+          <Key>
+            <PropertyRef Name="GadgetId" />
+          </Key>
+          <Property Name="GadgetId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="GadgetName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="GadgetTitle" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="GadgetDescription" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="GadgetVersion" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="RequiresValidGoogleAccessToken" Type="Boolean" Nullable="false" />
+          <Property Name="InBeta" Type="Boolean" Nullable="false" />
+          <Property Name="AssemblyPresent" Type="Boolean" Nullable="false" />
+          <Property Name="DefaultSettings" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SettingsSchema" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="UserGadgets" Relationship="DamageModels.FK_UserGadgets_Gadgets" FromRole="Gadgets" ToRole="UserGadgets" />
+        </EntityType>
+        <EntityType Name="UserGadget">
+          <Key>
+            <PropertyRef Name="UserGadgetId" />
+          </Key>
+          <Property Name="UserGadgetId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="GadgetId" Type="Int32" Nullable="false" />
+          <Property Name="GadgetSettings" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayColumn" Type="Int32" Nullable="false" />
+          <Property Name="DisplayOrdinal" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gadget" Relationship="DamageModels.FK_UserGadgets_Gadgets" FromRole="UserGadgets" ToRole="Gadgets" />
+          <NavigationProperty Name="User" Relationship="DamageModels.FK_UserGadgets_Users" FromRole="UserGadgets" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" Unicode="true" FixedLength="false" />
+          <Property Name="CurrentOAuthAccessToken" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="OAuthAccessTokenExpiration" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="LastLoginTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LayoutId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserGadgets" Relationship="DamageModels.FK_UserGadgets_Users" FromRole="Users" ToRole="UserGadgets" />
+        </EntityType>
+        <Association Name="FK_UserGadgets_Gadgets">
+          <End Role="Gadgets" Type="DamageModels.Gadget" Multiplicity="1" />
+          <End Role="UserGadgets" Type="DamageModels.UserGadget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gadgets">
+              <PropertyRef Name="GadgetId" />
+            </Principal>
+            <Dependent Role="UserGadgets">
+              <PropertyRef Name="GadgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGadgets_Users">
+          <End Role="Users" Type="DamageModels.User" Multiplicity="1" />
+          <End Role="UserGadgets" Type="DamageModels.UserGadget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserGadgets">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DamageModelsStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Gadgets">
+            <EntityTypeMapping TypeName="DamageModels.Gadget">
+              <MappingFragment StoreEntitySet="Gadgets">
+                <ScalarProperty Name="GadgetId" ColumnName="GadgetId" />
+                <ScalarProperty Name="GadgetName" ColumnName="GadgetName" />
+                <ScalarProperty Name="GadgetTitle" ColumnName="GadgetTitle" />
+                <ScalarProperty Name="GadgetDescription" ColumnName="GadgetDescription" />
+                <ScalarProperty Name="GadgetVersion" ColumnName="GadgetVersion" />
+                <ScalarProperty Name="RequiresValidGoogleAccessToken" ColumnName="RequiresValidGoogleAccessToken" />
+                <ScalarProperty Name="InBeta" ColumnName="InBeta" />
+                <ScalarProperty Name="AssemblyPresent" ColumnName="AssemblyPresent" />
+                <ScalarProperty Name="DefaultSettings" ColumnName="DefaultSettings" />
+                <ScalarProperty Name="SettingsSchema" ColumnName="SettingsSchema" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserGadgets">
+            <EntityTypeMapping TypeName="DamageModels.UserGadget">
+              <MappingFragment StoreEntitySet="UserGadgets">
+                <ScalarProperty Name="UserGadgetId" ColumnName="UserGadgetId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GadgetId" ColumnName="GadgetId" />
+                <ScalarProperty Name="GadgetSettings" ColumnName="GadgetSettings" />
+                <ScalarProperty Name="DisplayColumn" ColumnName="DisplayColumn" />
+                <ScalarProperty Name="DisplayOrdinal" ColumnName="DisplayOrdinal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DamageModels.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CurrentOAuthAccessToken" ColumnName="CurrentOAuthAccessToken" />
+                <ScalarProperty Name="OAuthAccessTokenExpiration" ColumnName="OAuthAccessTokenExpiration" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+                <ScalarProperty Name="LayoutId" ColumnName="LayoutId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

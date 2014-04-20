@@ -12,16 +12,21 @@ namespace Damage.DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class UserGadget
+    public partial class User
     {
-        public int UserGadgetId { get; set; }
-        public int UserId { get; set; }
-        public int GadgetId { get; set; }
-        public string GadgetSettings { get; set; }
-        public int DisplayColumn { get; set; }
-        public int DisplayOrdinal { get; set; }
+        public User()
+        {
+            this.UserGadgets = new HashSet<UserGadget>();
+        }
     
-        public virtual Gadget Gadget { get; set; }
-        public virtual User User { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string CurrentOAuthAccessToken { get; set; }
+        public System.DateTime OAuthAccessTokenExpiration { get; set; }
+        public string EmailAddress { get; set; }
+        public System.DateTime LastLoginTime { get; set; }
+        public int LayoutId { get; set; }
+    
+        public virtual ICollection<UserGadget> UserGadgets { get; set; }
     }
 }

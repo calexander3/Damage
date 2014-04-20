@@ -1,4 +1,5 @@
-﻿using Damage.DataAccess;
+﻿using System.Collections.ObjectModel;
+using Damage.DataAccess;
 using Damage.DataAccess.Models;
 using Damage.Filters;
 using Damage.Gadget;
@@ -60,7 +61,7 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var userGadget = uow.UserGadgetsContext.GetUserGadgetById(userGadgetId);
-                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
                         userGadget.GadgetSettings = newSettings;
                         uow.UserGadgetsContext.SaveChanges();
@@ -91,7 +92,7 @@ namespace Damage.Controllers
                             userGadgetToUpdate.DisplayOrdinal = gadgetPosition.DisplayOrdinal;
                         }
 
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetsContext.SaveChangesAsync();
                     }
                 }
             }
@@ -119,12 +120,12 @@ namespace Damage.Controllers
                             GadgetSettings = gadget.DefaultSettings,
                             DisplayColumn = 1
                         };
-                        userGadget.DisplayOrdinal = uow.UserGadgetsContext.GetNextOrdinal(userGadget.User.UserId,
-                            userGadget.DisplayColumn);
+
+                        userGadget.DisplayOrdinal = uow.UserGadgetsContext.GetNextOrdinal(userGadget.User.UserId, userGadget.DisplayColumn);
 
                         uow.UserGadgetsContext.UserGadgets.Add(userGadget);
 
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetsContext.SaveChangesAsync();
                         return Json(true);
                     }
                 }
@@ -147,7 +148,7 @@ namespace Damage.Controllers
                     if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
                     {
                         uow.UserGadgetsContext.UserGadgets.Remove(userGadget);
-                        uow.UserGadgetsContext.SaveChanges();
+                        uow.UserGadgetsContext.SaveChangesAsync();
                     }
                 }
             }

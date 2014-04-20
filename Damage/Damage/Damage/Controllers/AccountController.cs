@@ -349,7 +349,7 @@ namespace Damage.Controllers
                         var extraData = JsonConvert.DeserializeObject<Dictionary<string, string>>(model.ExtraData);
 
                         // Insert name into the profile table
-                        uow.UsersContext.UserProfiles.Add(new UserProfile
+                        uow.UsersContext.Users.Add(new User
                         {
                             UserName = model.UserName,
                             EmailAddress = extraData["email"],

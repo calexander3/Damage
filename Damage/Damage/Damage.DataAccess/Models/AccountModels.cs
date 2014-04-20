@@ -1,25 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Damage.DataAccess.Models
 {
-    [Table("Users")]
-    public class UserProfile
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string CurrentOAuthAccessToken { get; set; }
-        public DateTime OAuthAccessTokenExpiration { get; set; }
-        public DateTime LastLoginTime { get; set; }
-        public string EmailAddress { get; set; }
-        public int LayoutId { get; set; }
-        public virtual ICollection<UserGadget> UserGadgets { get; set; }
-    }
-
     public class RegisterExternalLoginModel
     {
         [Required]

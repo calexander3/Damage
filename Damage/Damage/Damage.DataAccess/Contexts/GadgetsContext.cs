@@ -1,17 +1,19 @@
-﻿using Damage.DataAccess.Models;
+﻿using System;
+using Damage.DataAccess.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
 namespace Damage.DataAccess.Contexts
 {
-    public class GadgetsContext: DbContext
+    public class GadgetsContext : BaseContext
     {
-        public GadgetsContext(string connectionString) : base(connectionString)
-        {
-        }
-
+        
         public DbSet<Gadget> Gadgets { get; set; }
+        public GadgetsContext(Entities context): base(context)
+        {
+            Gadgets = Context.Gadgets;
+        }
 
         /// <summary>
         /// Gets all gadgets registered in database that have a corresponding assembly loaded.
@@ -35,6 +37,17 @@ namespace Damage.DataAccess.Contexts
         public Gadget GetGadgetById(int gadgetId)
         {
             return Gadgets.SingleOrDefault(g => g.AssemblyPresent && g.GadgetId == gadgetId);
+        }
+
+
+        /// <summary>
+        /// Gets the gadget by name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public Gadget GetGadgetByName(string name)
+        {
+            return Gadgets.FirstOrDefault(g => g.GadgetName == name);
         }
 
         public IList<UserGadget> GetDefaultGadgets()
@@ -113,12 +126,6 @@ namespace Damage.DataAccess.Contexts
             });
 
             return defaultGadgets;
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Gadget>().HasMany(u => u.UserGadgets).WithOptional().HasForeignKey(ug => ug.GadgetId);
-            base.OnModelCreating(modelBuilder);
         }
     }
 }
