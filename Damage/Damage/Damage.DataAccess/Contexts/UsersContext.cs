@@ -1,8 +1,8 @@
-﻿using Damage.DataAccessEF.Models;
+﻿using Damage.DataAccess.Models;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Damage.DataAccessEF.Contexts
+namespace Damage.DataAccess.Contexts
 {
     public class UsersContext : DbContext
     {

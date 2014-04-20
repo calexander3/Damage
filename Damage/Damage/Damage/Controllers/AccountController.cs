@@ -5,8 +5,9 @@ using System.Transactions;
 using System.Web.Mvc;
 using System.Web.Security;
 using Damage.DataAccess;
+using Damage.DataAccess.Contexts;
+using Damage.DataAccess.Models;
 using Damage.Filters;
-using Damage.Models;
 using DotNetOpenAuth.GoogleOAuth2;
 using Microsoft.Web.WebPages.OAuth;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace Damage.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                using (var db = new UsersContext())
+                using (var db = new UsersContext(GlobalConfig.ConnectionString))
                 {
                     var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
                     if (user != null)
@@ -93,13 +94,14 @@ namespace Damage.Controllers
                     WebSecurity.Login(model.UserName, model.Password);
                     using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                     {
-                        var gadgets = uow.GadgetRepository.GetDefaultGadgets();
-                        var user = uow.UserRepository.GetUserByUsername(model.UserName);
+                        var gadgets = uow.GadgetsContext.GetDefaultGadgets();
+                        var user = uow.UsersContext.GetUserByUsername(model.UserName);
                         foreach (var gadget in gadgets)
                         {
                             gadget.User = user;
+                            uow.UserGadgetsContext.UserGadgets.Add(gadget);
                         }
-                        uow.UserGadgetRepository.Save(gadgets);
+                        uow.UserGadgetsContext.SaveChanges();
                     }
                     return RedirectToAction("Index", "Home");
                 }
@@ -254,7 +256,7 @@ namespace Damage.Controllers
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: true))
             {
                 //update oauth token
-                using (var db = new UsersContext())
+                using (var db = new UsersContext(GlobalConfig.ConnectionString))
                 {
                     var email = result.ExtraData["email"];
                     var user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == email.ToLower());
@@ -288,7 +290,7 @@ namespace Damage.Controllers
                 // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
 
-                using (var db = new UsersContext())
+                using (var db = new UsersContext(GlobalConfig.ConnectionString))
                 {
                     var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == User.Identity.Name.ToLower());
                     if (user != null)
@@ -339,7 +341,7 @@ namespace Damage.Controllers
             if (ModelState.IsValid)
             {
                 // Insert a new user into the database
-                using (var db = new UsersContext())
+                using (var db = new UsersContext(GlobalConfig.ConnectionString))
                 {
                     var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
                     // Check if user already exists
@@ -364,13 +366,14 @@ namespace Damage.Controllers
 
                         using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                         {
-                            var gadgets = uow.GadgetRepository.GetDefaultGadgets();
-                            var nhUser = uow.UserRepository.GetUserByUsername(model.UserName);
+                            var gadgets = uow.GadgetsContext.GetDefaultGadgets();
+                            var nhUser = uow.UsersContext.GetUserByUsername(model.UserName);
                             foreach (var gadget in gadgets)
                             {
                                 gadget.User = nhUser;
+                                uow.UserGadgetsContext.UserGadgets.Add(gadget);
                             }
-                            uow.UserGadgetRepository.Save(gadgets);
+                            uow.UserGadgetsContext.SaveChanges();
                         }
 
                         return RedirectToLocal(returnUrl);

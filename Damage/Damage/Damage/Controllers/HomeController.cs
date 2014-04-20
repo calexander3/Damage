@@ -25,7 +25,7 @@ namespace Damage.Controllers
 
                 if (Request.IsAuthenticated)
                 {
-                    gadgetsForUser = uow.UserGadgetRepository.GetAllUserGadgetsForUser(User.Identity.Name);
+                    gadgetsForUser = uow.UserGadgetsContext.GetAllUserGadgetsForUser(User.Identity.Name);
 
                     //refresh oauth access token if needed
                     if (gadgetsForUser.Count > 0)
@@ -46,7 +46,7 @@ namespace Damage.Controllers
                 }
                 else
                 {
-                    gadgetsForUser = uow.GadgetRepository.GetDefaultGadgets();
+                    gadgetsForUser = uow.GadgetsContext.GetDefaultGadgets();
                 }
 
                 switch (layout)
@@ -117,7 +117,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    gadgets = uow.GadgetRepository.GetAllAvailableGadgets();
+                    gadgets = uow.GadgetsContext.GetAllAvailableGadgets();
                 }
             }
             return View(gadgets);
@@ -130,11 +130,11 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
                     if (user != null)
                     {
                         user.LayoutId = layoutId.Value;
-                        uow.UserRepository.Save(user);
+                        uow.UsersContext.SaveChanges();
                     }
                 }
             }

@@ -1,29 +1,17 @@
 ﻿using Damage.DataAccess.Models;
-using NHibernate;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
-namespace Damage.DataAccess.Repositories
+namespace Damage.DataAccess.Contexts
 {
-    public class GadgetRepository : BaseRepository<Gadget>
+    public class GadgetsContext: DbContext
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GadgetRepository"/> class.
-        /// </summary>
-        /// <param name="session">The session.</param>
-        public GadgetRepository(ISession session)
-            : base(session)
+        public GadgetsContext(string ConnectionString) : base(ConnectionString)
         {
         }
 
-        /// <summary>
-        /// Gets all gadgets registered in database.
-        /// </summary>
-        /// <returns></returns>
-        public IList<Gadget> GetAllGadgets()
-        {
-            return Session.QueryOver<Gadget>().List<Gadget>();
-        }
+        public DbSet<Gadget> Gadgets { get; set; }
 
         /// <summary>
         /// Gets all gadgets registered in database that have a corresponding assembly loaded.
@@ -31,12 +19,12 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public IList<Gadget> GetAllAvailableGadgets()
         {
-            return Session.QueryOver<Gadget>()
+            return Gadgets
                 .Where(g => g.AssemblyPresent)
-                .OrderBy(g => g.InBeta).Asc
-                .OrderBy(g => g.RequiresValidGoogleAccessToken).Desc
-                .OrderBy(g => g.GadgetName).Asc
-                .List<Gadget>();
+                .OrderBy(g => g.InBeta)
+                .ThenByDescending(g => g.RequiresValidGoogleAccessToken)
+                .ThenBy(g => g.GadgetName)
+                .ToList();
         }
 
         /// <summary>
@@ -46,26 +34,23 @@ namespace Damage.DataAccess.Repositories
         /// <returns></returns>
         public Gadget GetGadgetById(int gadgetId)
         {
-            return Session.QueryOver<Gadget>()
-                .Where(g => g.AssemblyPresent)
-                .And(g => g.GadgetId == gadgetId)
-                .SingleOrDefault();
+            return Gadgets.SingleOrDefault(g => g.AssemblyPresent && g.GadgetId == gadgetId);
         }
 
-
-        public List<UserGadget> GetDefaultGadgets()
+        public IList<UserGadget> GetDefaultGadgets()
         {
             var gadgets = GetAllAvailableGadgets();
+
             var defaultGadgets = new List<UserGadget>();
 
             var weatherGadget = gadgets.Single(g => g.GadgetName == "Weather");
             defaultGadgets.Add(new UserGadget
-                {
-                    DisplayColumn = 3,
-                    DisplayOrdinal = 0,
-                    Gadget = weatherGadget,
-                    GadgetSettings = weatherGadget.DefaultSettings
-                });
+            {
+                DisplayColumn = 3,
+                DisplayOrdinal = 0,
+                Gadget = weatherGadget,
+                GadgetSettings = weatherGadget.DefaultSettings
+            });
 
             var historyGadget = gadgets.Single(g => g.GadgetName == "TodayInHistory");
             defaultGadgets.Add(new UserGadget
@@ -128,6 +113,12 @@ namespace Damage.DataAccess.Repositories
             });
 
             return defaultGadgets;
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Gadget>().HasMany(u => u.UserGadgets).WithOptional().HasForeignKey(ug => ug.GadgetId);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

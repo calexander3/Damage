@@ -44,21 +44,18 @@ namespace Damage
         private void LoadGadgets()
         {
             var gadgetInstances =
-                ((SimpleInjectorDependencyResolver) DependencyResolver.Current).Container.GetAllInstances<IGadget>();
+                ((SimpleInjectorDependencyResolver)DependencyResolver.Current).Container.GetAllInstances<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {
-                var currentGadgets = uow.GadgetRepository.GetAllGadgets();
-                var newGadgets = new List<DataAccess.Models.Gadget>();
-
-                foreach (var currentGadget in currentGadgets)
+                foreach (var currentGadget in uow.GadgetsContext.Gadgets)
                 {
                     currentGadget.AssemblyPresent = false;
                 }
 
                 foreach (var gadget in gadgetInstances)
                 {
-                    var currentGadget = currentGadgets.FirstOrDefault(g => g.GadgetName == gadget.GetType().Name);
+                    var currentGadget = uow.GadgetsContext.Gadgets.FirstOrDefault(g => g.GadgetName == gadget.GetType().Name);
                     if (currentGadget != null)
                     {
                         currentGadget.AssemblyPresent = true;
@@ -72,7 +69,7 @@ namespace Damage
                     }
                     else
                     {
-                        newGadgets.Add(
+                        uow.GadgetsContext.Gadgets.Add(
                             new DataAccess.Models.Gadget
                             {
                                 GadgetName = gadget.GetType().Name,
@@ -84,20 +81,14 @@ namespace Damage
                                 GadgetVersion = gadget.GetType().Assembly.GetName().Version.ToString(),
                                 DefaultSettings = gadget.DefaultSettings,
                                 SettingsSchema = JsonConvert.SerializeObject(gadget.SettingsSchema)
-                            }
-                            );
+                            });
                     }
 
                     GlobalConfig.GadgetTypes.TryAdd(gadget.GetType().Name, gadget.GetType());
                 }
 
-                uow.GadgetRepository.Save(currentGadgets,
-                    DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.Update);
-                if (newGadgets.Count > 0)
-                {
-                    uow.GadgetRepository.Save(newGadgets,
-                        DataAccess.Repositories.BaseRepository<DataAccess.Models.Gadget>.SaveOperation.SaveNew);
-                }
+                uow.UserGadgetsContext.SaveChanges();
+
             }
         }
     }

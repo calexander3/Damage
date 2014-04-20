@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Damage.DataAccessEF.Models {
+namespace Damage.DataAccess.Models {
 
 	[Table("Gadgets")]
 	public class Gadget

@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
-using Damage.Models;
+using Damage.DataAccess.Contexts;
 using WebMatrix.WebData;
 
 namespace Damage.Filters
@@ -27,7 +27,7 @@ namespace Damage.Filters
             {
                 Database.SetInitializer<UsersContext>(null);
 
-                using (var context = new UsersContext())
+                using (var context = new UsersContext(GlobalConfig.ConnectionString))
                 {
                     if (!context.Database.Exists())
                     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Damage.DataAccessEF</RootNamespace>
-    <AssemblyName>Damage.DataAccessEF</AssemblyName>
+    <RootNamespace>Damage.DataAccess</RootNamespace>
+    <AssemblyName>Damage.DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

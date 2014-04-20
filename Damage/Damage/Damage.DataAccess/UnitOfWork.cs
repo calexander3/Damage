@@ -1,7 +1,7 @@
-﻿using Damage.DataAccessEF.Contexts;
+﻿using Damage.DataAccess.Contexts;
 using System;
 
-namespace Damage.DataAccessEF
+namespace Damage.DataAccess
 {
     public class UnitOfWork : IDisposable
     {

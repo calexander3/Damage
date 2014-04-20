@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Damage.DataAccessEF.Models
+namespace Damage.DataAccess.Models
 {
     [Table("Users")]
     public class UserProfile
@@ -16,6 +16,7 @@ namespace Damage.DataAccessEF.Models
         public DateTime OAuthAccessTokenExpiration { get; set; }
         public DateTime LastLoginTime { get; set; }
         public string EmailAddress { get; set; }
+        public int LayoutId { get; set; }
         public virtual ICollection<UserGadget> UserGadgets { get; set; }
     }
 

@@ -21,7 +21,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
@@ -131,7 +131,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
@@ -161,7 +161,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
@@ -203,7 +203,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {
@@ -235,7 +235,7 @@ namespace Damage.Controllers
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
-                    var user = uow.UserRepository.GetUserByUsername(User.Identity.Name);
+                    var user = uow.UsersContext.GetUserByUsername(User.Identity.Name);
 
                     if (DateTime.Compare(DateTime.Now, user.OAuthAccessTokenExpiration) < 0)
                     {

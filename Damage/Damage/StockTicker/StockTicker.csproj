@@ -67,6 +67,10 @@
     <Compile Include="StockTickerOptions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Damage.DataAccess\Damage.DataAccess.csproj">
+      <Project>{6722cdd5-92cf-486d-aaeb-1eb8cf9e66d9}</Project>
+      <Name>Damage.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Damage\Damage.csproj">
       <Project>{3db0e88d-67af-47da-bedc-4c948116273a}</Project>
       <Name>Damage</Name>
