@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using DotNetOpenAuth.GoogleOAuth2;
+﻿using DotNetOpenAuth.GoogleOAuth2;
 using Microsoft.Web.WebPages.OAuth;
+using System.Collections.Generic;
 
 namespace Damage
 {

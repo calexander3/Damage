@@ -6,7 +6,7 @@ namespace Damage.DataAccess.Contexts
 {
     public class UsersContext : DbContext
     {
-        public UsersContext(string ConnectionString) : base(ConnectionString)
+        public UsersContext(string connectionString) : base(connectionString)
         {
         }
 

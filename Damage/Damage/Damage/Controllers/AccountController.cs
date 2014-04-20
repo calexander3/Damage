@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Transactions;
 using System.Web.Mvc;
 using System.Web.Security;
 using Damage.DataAccess;
-using Damage.DataAccess.Contexts;
 using Damage.DataAccess.Models;
 using Damage.Filters;
 using DotNetOpenAuth.GoogleOAuth2;
@@ -305,6 +303,7 @@ namespace Damage.Controllers
 
                 return RedirectToLocal(returnUrl);
             }
+            // ReSharper disable once RedundantIfElseBlock
             else
             {
                 // User is new, ask for their desired membership name

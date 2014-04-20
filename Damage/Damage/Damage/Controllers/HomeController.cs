@@ -79,6 +79,7 @@ namespace Damage.Controllers
                     else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
                         var newGadget = DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
+                        // ReSharper disable once PossibleNullReferenceException
                         newGadget.UserGadget = g;
                         activeGadgets.Add(newGadget);
                     }

@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Damage.DataAccess;
+using Damage.Gadget;
+using Newtonsoft.Json;
+using SimpleInjector;
+using SimpleInjector.Integration.Web.Mvc;
+using System;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Damage.DataAccess;
-using Damage.Gadget;
-using Newtonsoft.Json;
-using SimpleInjector;
-using SimpleInjector.Integration.Web.Mvc;
 
 namespace Damage
 {
@@ -43,8 +42,8 @@ namespace Damage
 
         private void LoadGadgets()
         {
-            var gadgetInstances =
-                ((SimpleInjectorDependencyResolver)DependencyResolver.Current).Container.GetAllInstances<IGadget>();
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var gadgetInstances =((SimpleInjectorDependencyResolver)DependencyResolver.Current).Container.GetAllInstances<IGadget>();
 
             using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
             {

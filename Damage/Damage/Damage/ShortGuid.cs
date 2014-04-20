@@ -20,8 +20,8 @@ namespace Damage
 
         #region Fields
 
-        private Guid _guid;
-        private string _value;
+        private readonly Guid _guid;
+        private readonly string _value;
 
         #endregion
 
@@ -60,14 +60,6 @@ namespace Damage
         public Guid Guid
         {
             get { return _guid; }
-            set
-            {
-                if (value != _guid)
-                {
-                    _guid = value;
-                    _value = Encode(value);
-                }
-            }
         }
 
         /// <summary>
@@ -76,14 +68,6 @@ namespace Damage
         public string Value
         {
             get { return _value; }
-            set
-            {
-                if (value != _value)
-                {
-                    _value = value;
-                    _guid = Decode(value);
-                }
-            }
         }
 
         #endregion
@@ -116,6 +100,7 @@ namespace Damage
             if (obj is Guid)
                 return _guid.Equals((Guid) obj);
             if (obj is string)
+                // ReSharper disable once PossibleInvalidCastException
                 return _guid.Equals(((ShortGuid) obj)._guid);
             return false;
         }

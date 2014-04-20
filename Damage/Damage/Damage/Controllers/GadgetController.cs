@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.Security;
-using Damage.DataAccess;
+﻿using Damage.DataAccess;
 using Damage.DataAccess.Models;
 using Damage.Filters;
 using Damage.Gadget;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Security;
 
+// ReSharper disable PossibleNullReferenceException
 namespace Damage.Controllers
 {
     [InitializeSimpleMembership]
@@ -153,3 +154,4 @@ namespace Damage.Controllers
         }
     }
 }
+// ReSharper restore PossibleNullReferenceException

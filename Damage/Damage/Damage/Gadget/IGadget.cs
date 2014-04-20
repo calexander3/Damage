@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable InconsistentNaming
 namespace Damage.Gadget
 {
     public interface IGadget
@@ -75,3 +76,4 @@ namespace Damage.Gadget
         void Initialize();
     }
 }
+// ReSharper restore InconsistentNaming

@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable InconsistentNaming
 namespace Damage.Gadget
 {
     public class GadgetSettingField
@@ -41,3 +42,4 @@ namespace Damage.Gadget
         Integer = 64
     }
 }
+// ReSharper restore InconsistentNaming
