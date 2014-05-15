@@ -36,9 +36,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedObject", "EmbedObject\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Damage.DataAccess", "Damage.DataAccess\Damage.DataAccess.csproj", "{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartaTrainArrivalInformation", "MartaTrainArrivalInformation\MartaTrainArrivalInformation.csproj", "{81C8BCF6-9813-4435-881D-BD10421A83FE}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 14
+		SccNumberOfProjects = 15
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://calexander3.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -91,6 +93,10 @@ Global
 		SccProjectUniqueName13 = Damage.DataAccess\\Damage.DataAccess.csproj
 		SccProjectName13 = Damage.DataAccess
 		SccLocalPath13 = Damage.DataAccess
+		SccProjectUniqueName14 = MartaTrainArrivalInformation\\MartaTrainArrivalInformation.csproj
+		SccProjectTopLevelParentUniqueName14 = Damage.sln
+		SccProjectName14 = MartaTrainArrivalInformation
+		SccLocalPath14 = MartaTrainArrivalInformation
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +157,10 @@ Global
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6722CDD5-92CF-486D-AAEB-1EB8CF9E66D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81C8BCF6-9813-4435-881D-BD10421A83FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C8BCF6-9813-4435-881D-BD10421A83FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C8BCF6-9813-4435-881D-BD10421A83FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C8BCF6-9813-4435-881D-BD10421A83FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,5 +176,6 @@ Global
 		{F5846D06-D067-48A6-8D67-C980E53D7322} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{F2B73B76-4E2F-4753-886A-B631251EFF55} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 		{A7074D45-310A-4BB7-A38A-7A9392DAAF61} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
+		{81C8BCF6-9813-4435-881D-BD10421A83FE} = {E53DE78E-5C2F-4AE5-9F5A-E9C1600E0C4A}
 	EndGlobalSection
 EndGlobal
