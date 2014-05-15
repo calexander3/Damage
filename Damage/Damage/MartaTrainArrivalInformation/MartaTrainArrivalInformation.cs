@@ -79,25 +79,26 @@ namespace MartaTrainArrivalInformation
             }
 
             var outputBuilder = new StringBuilder("<div style='margin-left:2px;margin-right:2px;margin-top:4px;margin-bottom:1px;overflow:hidden;'><div style='font-weight:bold;font-size:2em;margin-left:4px;'>" + _stationOptions[settings.SelectedStation] + "</div>");
+
             if (scheduleList != null)
             {
                 outputBuilder.Append("<div style='float:left'><table style='margin: 0; border-collapse: separate; border-spacing: 3px;'>");
-                foreach (var schedule in scheduleList.Take(8))
+
+                var counter = 0;
+                foreach (var schedule in scheduleList)
                 {
+                    counter ++;
                     int min;
-                    outputBuilder.Append("<tr><td style='padding:0px 50px 0px 3px;margin:1px 15px 1px 3px;font-weight:bold;background-color:" + GetColor(schedule.ROUTE) + "'>" + schedule.HEAD_SIGN + " " + GetArrow(schedule.DIRECTION) + "</td><td style='padding-left:3px;'>" + (int.TryParse(schedule.WAITING_TIME, out min) ? (schedule.WAITING_TIME + " Minutes") : schedule.WAITING_TIME) + "</td></tr>");
-                }
-                outputBuilder.Append("</table></div>");
-                if (scheduleList.Count > 8)
-                {
-                    outputBuilder.Append("<div style='float:left'><table style='margin: 0; border-collapse: separate; border-spacing: 3px;'>");
-                    foreach (var schedule in scheduleList.Skip(8))
+                    outputBuilder.Append("<tr><td style='padding:0px 0px 0px 3px;min-width:185px;max-width:195px;margin:1px 15px 1px 3px;font-weight:bold;background-color:" + GetColor(schedule.ROUTE) + "'>" + schedule.HEAD_SIGN + " " + GetArrow(schedule.DIRECTION) + "</td><td style='padding-left:3px;'>" + (int.TryParse(schedule.WAITING_TIME, out min) ? (schedule.WAITING_TIME + " Minutes") : schedule.WAITING_TIME) + "</td></tr>");
+
+                    if (counter % 4 == 0)
                     {
-                        int min;
-                        outputBuilder.Append("<tr><td style='padding:0px 50px 0px 3px;margin:1px 15px 1px 3px;font-weight:bold;background-color:" + GetColor(schedule.ROUTE) + "'>" + schedule.HEAD_SIGN + " " + GetArrow(schedule.DIRECTION) + "</td><td style='padding-left:3px;'>" + (int.TryParse(schedule.WAITING_TIME, out min) ? (schedule.WAITING_TIME + " Minutes") : schedule.WAITING_TIME) + "</td></tr>");
+                        outputBuilder.Append("</table></div>");
+                        outputBuilder.Append("<div style='float:left'><table style='margin: 0; border-collapse: separate; border-spacing: 3px;'>");
                     }
-                    outputBuilder.Append("</table></div>");
                 }
+
+                outputBuilder.Append("</table></div>");
             }
 
 
