@@ -31,6 +31,16 @@
                         validationRules[settingsSchema[x].FieldName] = buildValidationRules(settingsSchema[x].Validators);
                     }
                 }
+                else if (dataType == "select") {
+                    settingsFormHTML += "<tr><td style='vertical-align:top'>" + settingsSchema[x].DisplayName + "</td><td><select id='" + settingsSchema[x].FieldName + "'>";
+                    for (var choice in settingsSchema[x].SelectOptions) {
+                        if (settingsSchema[x].SelectOptions.hasOwnProperty(choice)) {
+                            settingsFormHTML += "<option value='" + choice + "'>" + settingsSchema[x].SelectOptions[choice] + "</option>";
+                        }
+                    }
+
+                    settingsFormHTML += "</select></td></div>";
+                }
                 else {
                     settingsFormHTML += "<tr><td style='vertical-align:top'>" + settingsSchema[x].DisplayName + "</td><td><input style='margin:0px;' id='" + settingsSchema[x].FieldName + "' name='" + settingsSchema[x].FieldName + "' type = '" + dataType + "' /></td></div>";
                     if (settingsSchema[x].Validators > 0) {
@@ -85,6 +95,11 @@
                             var textAreas = $("#settingTable").find("textarea");
                             for (x = 0; x < textAreas.length; x++) {
                                  newSettings[textAreas[x].id] = $(textAreas[x]).val();
+                            }
+
+                            var selects = $("#settingTable").find("select");
+                            for (x = 0; x < selects.length; x++) {
+                                newSettings[selects[x].id] = $(selects[x]).val();
                             }
 
                             $.ajax({
@@ -170,6 +185,8 @@ function getSettingInputType(type) {
             return "week";
         case 14:
             return "textarea";
+        case 15:
+            return "select";
     }
     return "text";
 }

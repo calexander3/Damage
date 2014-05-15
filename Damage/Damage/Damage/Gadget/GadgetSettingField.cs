@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 // ReSharper disable InconsistentNaming
 namespace Damage.Gadget
@@ -9,6 +10,7 @@ namespace Damage.Gadget
         public string DisplayName { get; set; }
         public SettingDataTypes DataType { get; set; }
         public Validators Validators { get; set; }
+        public Dictionary<string, string> SelectOptions { get; set; }
     }
 
     public enum SettingDataTypes
@@ -26,7 +28,8 @@ namespace Damage.Gadget
         Time = 11,
         Url = 12,
         Week = 13,
-        TextArea = 14
+        TextArea = 14,
+        Select = 15
     }
 
     [Flags]

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MartaTrainArrivalInformation
 {
-    class MartaOptions
+    internal class MartaOptions
     {
+        public string SelectedStation { get; set; }
     }
 }
