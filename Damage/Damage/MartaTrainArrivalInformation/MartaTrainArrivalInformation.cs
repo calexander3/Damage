@@ -15,29 +15,66 @@ namespace MartaTrainArrivalInformation
 
         private readonly Dictionary<string, string> _stationOptions = new Dictionary<string, string>
         {
+            {"airport","Airport"},
             {"arts%20center","Arts Center"},
-            {"five%20points","Five Points"}
+            {"ashby","Ashby"},
+            {"avondale","Avondale"},
+            {"bankhead","Bankhead"},
+            {"brookhaven","Brookhaven"},
+            {"buckhead","Buckhead"},
+            {"chamblee","Chamblee"},
+            {"civic%20center","Civic Center"},
+            {"college%20park","College Park"},
+            {"decatur","Decatur"},
+            {"dome","Dome"},
+            {"doraville","Doraville"},
+            {"dunwoody","Dunwoody"},
+            {"east%20lake","East Lake"},
+            {"east%20point","East Point"},
+            {"edgewood","Edgewood"},
+            {"five%20points","Five Points"},
+            {"garnett","Garnett"},
+            {"georgia%20state","Georgia State"},
+            {"hamilton","Hamilton"},
+            {"indian%20creek","Indian Creek"},
+            {"inman%20park","Inman Park"},
+            {"kensington","Kensington"},
+            {"king%20memorial","King Memorial"},
+            {"lakewood","Lakewood"},
+            {"lenox","Lenox"},
+            {"lindbergh","Lindbergh"},
+            {"medical%20center","Medical Center"},
+            {"midtown","Midtown"},
+            {"north%20avenue","North Avenue"},
+            {"north%20springs","North Springs"},
+            {"oakland%20city","Oakland City"},
+            {"peachtree%20center","Peachtree Center"},
+            {"sandy%20springs","Sandy Springs"},
+            {"vine%20city","Vine City"},
+            {"west%20end","West End"}
         };
 
 
         public void Initialize()
         {
+            
             var settings = JsonConvert.DeserializeObject<MartaOptions>(UserGadget.GadgetSettings);
+            var cacheKey = settings.SelectedStation + "_martaSchedule";
 
             List<TrainSchedule> scheduleList;
 
-            if (HttpContext.Current.Cache[settings.SelectedStation + "_martaSchedule"] != null)
+            if (HttpContext.Current.Cache[cacheKey] != null)
             {
-                scheduleList = (List<TrainSchedule>)HttpContext.Current.Cache[UserGadget.UserGadgetId + "_martaSchedule"];
+                scheduleList = (List<TrainSchedule>)HttpContext.Current.Cache[cacheKey];
             }
             else
             {
                 var scheduleRequest = (HttpWebRequest)WebRequest.Create("http://developer.itsmarta.com/NextTrainService/RestServiceNextTrain.svc/GetNextTrain/" + settings.SelectedStation);
-
+                scheduleRequest.Timeout = 1500;
                 using (var scheduleResponce = scheduleRequest.GetResponse())
                 {
                     scheduleList = JsonConvert.DeserializeObject<List<TrainSchedule>>(new System.IO.StreamReader(scheduleResponce.GetResponseStream()).ReadToEnd());
-                    HttpContext.Current.Cache.Insert(UserGadget.UserGadgetId + "_martaSchedule", scheduleList, null, DateTime.Now.AddSeconds(60), System.Web.Caching.Cache.NoSlidingExpiration);
+                    HttpContext.Current.Cache.Insert(cacheKey, scheduleList, null, DateTime.Now.AddSeconds(60), System.Web.Caching.Cache.NoSlidingExpiration);
                 }
             }
 
