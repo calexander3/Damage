@@ -1,4 +1,5 @@
-﻿using Damage.Gadget;
+﻿using System.Globalization;
+using Damage.Gadget;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,20 +37,22 @@ namespace GoogleCalendar
                 }
             }
 
-            var previousDate = "";
+            var previousDateKey = "";
             foreach (var calItem in calendar.items)
             {
-                var eventDate = DateTime.Parse(calItem.start.date ?? calItem.start.dateTime).ToShortDateString();
-                if (previousDate != eventDate)
+                var eventDate = DateTime.Parse(calItem.start.date ?? calItem.start.dateTime, new DateTimeFormatInfo(), DateTimeStyles.AdjustToUniversal);
+                var eventDateKey = eventDate.ToShortDateString();
+                var eventDisplayDate = eventDate.ToString(@"MM/dd/yyyy hh:mm tt");
+                if (previousDateKey != eventDateKey)
                 {
-                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'>" + eventDate + "</div>");
-                    previousDate = eventDate;
+                    sb.Append("<div style='white-space:nowrap;clear:both;font-weight:bold;font-size:0.8em;margin-top:4px;'><span class='UTCDate'>" + eventDisplayDate + "</div>");
+                    previousDateKey = eventDateKey;
                 }
                 sb.Append("<div style='margin-left:10px;font-size:0.8em;clear:both'><a target='_blank' title='" + (calItem.location != null ? System.Security.SecurityElement.Escape(calItem.location + Environment.NewLine) : "") +
                     System.Security.SecurityElement.Escape(calItem.description ?? calItem.summary ?? "") +
                     "' href='" + calItem.htmlLink + "' >" + (calItem.summary ?? "No Title") + "</a><div style='float:right;'>" +
-                    (calItem.start.dateTime != null ? DateTime.Parse(calItem.start.dateTime).ToString("hh:mmtt") : "All Day") +
-                    (calItem.end.dateTime != null ? " - " + DateTime.Parse(calItem.end.dateTime).ToString("hh:mmtt") : "") +
+                    (calItem.start.dateTime != null ? "<span class='UTCTime'>" + DateTime.Parse(calItem.start.dateTime, new DateTimeFormatInfo(), DateTimeStyles.AdjustToUniversal).ToString(@"MM/dd/yyyy hh:mm tt") + "</span>" : "All Day") +
+                    (calItem.end.dateTime != null ? " - <span class='UTCTime'>" + DateTime.Parse(calItem.end.dateTime, new DateTimeFormatInfo(), DateTimeStyles.AdjustToUniversal).ToString(@"MM/dd/yyyy hh:mm tt") + "</span>" : "") +
                     "</div></div>");
             }
 

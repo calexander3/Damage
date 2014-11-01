@@ -83,8 +83,8 @@ namespace Damage.Controllers
                             {
                                 var messageDate = (thread.Value.Date.Ticks > 0
                                     ? (timezoneOffset.HasValue
-                                        ? thread.Value.Date.AddMinutes(timezoneOffset.Value)
-                                        : thread.Value.Date)
+                                        ? thread.Value.Date.ToUniversalTime().AddMinutes(timezoneOffset.Value)
+                                        : thread.Value.Date.ToUniversalTime())
                                     : new DateTime(1900, 1, 1));
                                 var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0
                                     ? messageDate.ToShortTimeString()

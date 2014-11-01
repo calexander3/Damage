@@ -80,6 +80,20 @@
                         $("#btnSearch").click();
                     }
                 });
+
+                var datesToConvert = $(".UTCDate");
+                for (var i = 0; i < datesToConvert.length; i++) {
+                    var convertdLocalDate = new Date(datesToConvert[i].innerHTML);
+                    convertdLocalDate.setMinutes(convertdLocalDate.getMinutes() - convertdLocalDate.getTimezoneOffset());
+                    datesToConvert[i].innerHTML = convertdLocalDate.toLocaleDateString();
+                }
+
+                var timesToConvert = $(".UTCTime");
+                for (var i = 0; i < timesToConvert.length; i++) {
+                    var convertdLocalTime = new Date(timesToConvert[i].innerHTML);
+                    convertdLocalTime.setMinutes(convertdLocalTime.getMinutes() - convertdLocalTime.getTimezoneOffset());
+                    timesToConvert[i].innerHTML =  convertdLocalTime.toLocaleTimeString();
+                }
             });
         </script>
         <div id="holder" style="min-height: 100%; position: relative;">
