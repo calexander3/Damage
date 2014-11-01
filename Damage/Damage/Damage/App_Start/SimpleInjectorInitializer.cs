@@ -16,9 +16,11 @@ namespace Damage
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
-            container.RegisterMvcAttributeFilterProvider();
+            container.RegisterMvcIntegratedFilterProvider();
 
-            //container.Verify();
+            #if DEBUG
+            container.Verify();
+            #endif
         }
 
         private static void InitializeContainer(Container container)
@@ -31,14 +33,19 @@ namespace Damage
                 select Assembly.LoadFile(file.FullName);
 
             var pluginTypes =
-                from dll in pluginAssemblies
+                (from dll in pluginAssemblies
                 from type in dll.GetExportedTypes()
                 where typeof (IGadget).IsAssignableFrom(type)
                 where !type.IsAbstract
                 where !type.IsGenericTypeDefinition
-                select type;
+                select type).ToList();
 
             container.RegisterAll<IGadget>(pluginTypes);
+
+            foreach (var pluginType in pluginTypes)
+            {
+                container.Register(pluginType);
+            }
 
             // For instance:
             // container.Register<IUserRepository, SqlUserRepository>();

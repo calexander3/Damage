@@ -7,6 +7,7 @@ using Damage.DataAccess.Models;
 using Damage.Filters;
 using Damage.Gadget;
 using Microsoft.Web.WebPages.OAuth;
+using SimpleInjector.Integration.Web.Mvc;
 
 namespace Damage.Controllers
 {
@@ -78,8 +79,7 @@ namespace Damage.Controllers
                     }
                     else if (g.Gadget.AssemblyPresent && GlobalConfig.GadgetTypes.ContainsKey(g.Gadget.GadgetName))
                     {
-                        var newGadget = DependencyResolver.Current.GetService(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]) as IGadget;
-                        // ReSharper disable once PossibleNullReferenceException
+                        var newGadget = (IGadget)((SimpleInjectorDependencyResolver)DependencyResolver.Current).Container.GetInstance(GlobalConfig.GadgetTypes[g.Gadget.GadgetName]);
                         newGadget.UserGadget = g;
                         activeGadgets.Add(newGadget);
                     }

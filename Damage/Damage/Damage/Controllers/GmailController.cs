@@ -27,7 +27,7 @@ namespace Damage.Controllers
                     {
                         using (
                             var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                user.CurrentOAuthAccessToken, AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
@@ -137,7 +137,7 @@ namespace Damage.Controllers
                     {
                         using (
                             var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                user.CurrentOAuthAccessToken, AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(originalFolderName);
@@ -167,7 +167,7 @@ namespace Damage.Controllers
                     {
                         using (
                             var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                user.CurrentOAuthAccessToken, AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
@@ -209,7 +209,7 @@ namespace Damage.Controllers
                     {
                         using (
                             var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                user.CurrentOAuthAccessToken, AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
@@ -241,7 +241,7 @@ namespace Damage.Controllers
                     {
                         using (
                             var imap = new ImapClient("imap.gmail.com", user.EmailAddress,
-                                user.CurrentOAuthAccessToken, ImapClient.AuthMethods.SaslOAuth, 993, true,
+                                user.CurrentOAuthAccessToken, AuthMethods.SaslOAuth, 993, true,
                                 true))
                         {
                             imap.SelectMailbox(folderName);
