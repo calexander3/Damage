@@ -5,6 +5,7 @@
 }
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="~/Scripts/Gadget.js"></script>
 }
 
@@ -24,7 +25,7 @@
             <div class="gadgetAddButton">
                 @if (!gadget.InBeta)
                 {
-                    <button onclick=" addNewGadget(@(gadget.GadgetId)) ">Add Gadget</button>
+                    <button onclick="addNewGadget(@(gadget.GadgetId))">Add Gadget</button>
                 }
                 else
                 {
@@ -33,6 +34,9 @@
             </div>
         </div>
     }
+
+    <div id="gadgetSettingsDialog" title="Settings" style="display: none;">
+    </div>
 }
 else
 {

@@ -241,6 +241,7 @@
     <Compile Include="ShortGuid.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\Error.png" />
     <Content Include="Content\Images\Gadgets\EmbedObject.png" />
     <Content Include="Content\Images\Gadgets\MartaTrainArrivalInformation.png" />
     <Content Include="Content\Images\gmailFolder.png" />
@@ -362,6 +363,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Layout.js" />
     <Content Include="Scripts\Search.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -404,9 +406,7 @@
       <Name>Damage.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\tset\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

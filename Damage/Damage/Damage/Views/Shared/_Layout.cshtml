@@ -9,6 +9,7 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         <script type="text/javascript" src="~/Scripts/Search.js"></script>
+        <script type="text/javascript" src="~/Scripts/Layout.js"></script>
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")
@@ -20,82 +21,7 @@
     </head>
     <body>
         <input id="timeZoneOffset" type="hidden" />
-        <script type="text/javascript">
-            var offset = new Date();
-            $("#timeZoneOffset").val(-offset.getTimezoneOffset());
 
-            function dialog(title, body) {
-                var dialogWindow = $("#dialog");
-                dialogWindow.prop("title", title);
-                dialogWindow.html(body);
-                dialogWindow.dialog({
-                    buttons: {
-                        Ok: function() {
-                            $(this).dialog("close");
-                        }
-                    },
-                    close: function() { dialogWindow.html(""); }
-                });
-            }
-
-            $(document).ready(function() {
-                $(function() {
-                    $('[autofocus]:not(:focus)').eq(0).focus();
-                });
-
-                $.ajaxSetup({
-                    cache: false,
-                    traditional: true,
-                    type: "POST",
-                    error: function(request) {
-                        dialog("Error", "An error has occurred: (" + request.status + ") " + request.statusText);
-                    }
-                });
-
-
-                $("#txtSearch").autocomplete({
-                    source: function(request, response) {
-                        $.ajax({
-                            url: "https://suggestqueries.google.com/complete/search?client=chrome&q=" + encodeURIComponent($("#txtSearch").val()),
-                            dataType: "jsonp",
-                            success: function(data) {
-                                response($.map(data[1], function(item) {
-                                    return {
-                                        label: item,
-                                        value: item
-                                    };
-                                }));
-                            },
-                            error: function() {}
-                        });
-                    },
-                    minLength: 2,
-                    select: function(event, ui) {
-                        Search(ui.item.value);
-                    }
-                });
-
-                $("#txtSearch").keyup(function(event) {
-                    if (event.keyCode == 13) {
-                        $("#btnSearch").click();
-                    }
-                });
-
-                var datesToConvert = $(".UTCDate");
-                for (var i = 0; i < datesToConvert.length; i++) {
-                    var convertdLocalDate = new Date(datesToConvert[i].innerHTML);
-                    convertdLocalDate.setMinutes(convertdLocalDate.getMinutes() - convertdLocalDate.getTimezoneOffset());
-                    datesToConvert[i].innerHTML = convertdLocalDate.toLocaleDateString();
-                }
-
-                var timesToConvert = $(".UTCTime");
-                for (var i = 0; i < timesToConvert.length; i++) {
-                    var convertdLocalTime = new Date(timesToConvert[i].innerHTML);
-                    convertdLocalTime.setMinutes(convertdLocalTime.getMinutes() - convertdLocalTime.getTimezoneOffset());
-                    timesToConvert[i].innerHTML =  convertdLocalTime.toLocaleTimeString();
-                }
-            });
-        </script>
         <div id="holder" style="min-height: 100%; position: relative;">
             <div id="holder2" style="padding-bottom: 70px">
                 <header>
@@ -148,7 +74,7 @@
                         <p>&copy; @DateTime.Now.Year - Craig Alexander</p>
                     </div>
                     <div class="float-right paypal">
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
                             <input type="hidden" name="cmd" value="_donations">
                             <input type="hidden" name="business" value="6DB3QY8FQQG7Q">
                             <input type="hidden" name="lc" value="US">

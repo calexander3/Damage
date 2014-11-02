@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Damage.DataAccess;
+﻿using Damage.DataAccess;
 using Damage.DataAccess.Models;
 using Damage.Filters;
 using Damage.Gadget;
@@ -24,6 +23,7 @@ namespace Damage.Controllers
         {
             var gadgetSettings = "";
             var settingSchema = "";
+            var gadgetName = "";
             if (Request.IsAuthenticated)
             {
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
@@ -31,8 +31,9 @@ namespace Damage.Controllers
                     var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
 
                     settingSchema = userGadget.Gadget.SettingsSchema;
-                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
+                        gadgetName = userGadget.Gadget.GadgetTitle;
                         if (!string.IsNullOrEmpty(userGadget.GadgetSettings))
                         {
                             gadgetSettings = userGadget.GadgetSettings;
@@ -44,8 +45,7 @@ namespace Damage.Controllers
                     }
                 }
             }
-            return Json(new {GadgetSettings = gadgetSettings, SettingsSchema = settingSchema},
-                JsonRequestBehavior.AllowGet);
+            return Json(new { GadgetSettings = gadgetSettings, SettingsSchema = settingSchema, GadgetName = gadgetName }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Damage.Controllers
                     {
                         var userGadget = new UserGadget
                         {
-                            User = uow.UserRepository.GetUserById((int) Membership.GetUser().ProviderUserKey),
+                            User = uow.UserRepository.GetUserById((int)Membership.GetUser().ProviderUserKey),
                             Gadget = gadget,
                             GadgetSettings = gadget.DefaultSettings,
                             DisplayColumn = 1
@@ -126,11 +126,11 @@ namespace Damage.Controllers
                         uow.UserGadgetRepository.UserGadgets.Add(userGadget);
 
                         uow.UserGadgetRepository.SaveChanges();
-                        return Json(true);
+                        return Json(new { Success = true, UserGadgetId = userGadget.UserGadgetId, HasSettings = (gadget.SettingsSchema.Length > 2) });
                     }
                 }
             }
-            return Json(false);
+            return Json(new { Success = false });
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Damage.Controllers
                 using (var uow = new UnitOfWork(GlobalConfig.ConnectionString))
                 {
                     var userGadget = uow.UserGadgetRepository.GetUserGadgetById(userGadgetId);
-                    if (userGadget.User.UserId == (int) Membership.GetUser().ProviderUserKey)
+                    if (userGadget.User.UserId == (int)Membership.GetUser().ProviderUserKey)
                     {
                         uow.UserGadgetRepository.UserGadgets.Remove(userGadget);
                         uow.UserGadgetRepository.SaveChanges();

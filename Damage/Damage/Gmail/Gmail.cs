@@ -59,7 +59,7 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem moving your mail messages. Please refresh and try again.');
+                                        errorDialog('Error','There was a problem moving your mail messages. Please refresh and try again.');
                                     }
                                 }
                                 });
@@ -102,7 +102,7 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem deleting your mail messages. Please refresh and try again.');
+                                        errorDialog('Error','There was a problem deleting your mail messages. Please refresh and try again.');
                                     }
                                 }
                                 });
@@ -132,7 +132,7 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem marking your mail messages as spam. Please refresh and try again.');
+                                        errorDialog('Error','There was a problem marking your mail messages as spam. Please refresh and try again.');
                                     }
                                 }
                                 });
@@ -162,7 +162,7 @@ namespace Gmail
                                 success: function (resultSet) {
                                     if(!resultSet.Result)
                                     {
-                                        dialog('Error','There was a problem archiving your mail messages. Please refresh and try again.');
+                                        errorDialog('Error','There was a problem archiving your mail messages. Please refresh and try again.');
                                     }
                                 }
                                 });

@@ -16,7 +16,7 @@
 }
 @if (Request.IsAuthenticated && Model.UserGadget.Gadget.SettingsSchema.Length > 2)
 {
-    <div class="GadgetSettings" onclick=" OpenGadgetSettingsDialog(@(Model.UserGadget.UserGadgetId)) "></div>
+    <div class="GadgetSettings" onclick="OpenGadgetSettingsDialog(@(Model.UserGadget.UserGadgetId))"></div>
 }
 @if (Request.IsLocal)
 {

@@ -72,10 +72,10 @@
             form.validate({
                 rules: validationRules
             });
-
             dialogWindow.dialog({
                 modal: true,
                 width: 'auto',
+                title: data.GadgetName + " Settings",
                 buttons: {
                     Save: function () {
 
@@ -274,11 +274,15 @@ function addNewGadget(gadgetId) {
         contentType: 'application/json',
         dataType: 'json',
         success: function (data) {
-            if (data) {
-                dialog("Add Gadget", "Gadget has been added successfully.");
+            if (data.Success) {
+                if (data.HasSettings) {
+                    OpenGadgetSettingsDialog(data.UserGadgetId);
+                } else {
+                    dialog("Add Gadget", "Gadget has been added successfully.");
+                }
             }
             else {
-                dialog("Add Gadget", "There was a problem adding your gadget.");
+                errorDialog("Error Adding Gadget", "There was a problem adding your gadget.");
             }
         }
     });
