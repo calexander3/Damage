@@ -9,10 +9,10 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         <script type="text/javascript" src="~/Scripts/Search.js"></script>
-        <script type="text/javascript" src="~/Scripts/Layout.js"></script>
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")
+        <script type="text/javascript" src="~/Scripts/Layout.js"></script>
         @RenderSection("scripts", required: false)
         @if (!Request.IsLocal)
         {
