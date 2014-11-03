@@ -62,8 +62,6 @@ namespace Damage.Controllers
 
                             var uidCollection = imap.Search(searchCondition);
 
-                            var t = new Stopwatch();
-                            t.Start();
                             var messages = new List<GmailMessage>();
                             foreach (var uid in uidCollection)
                             {
@@ -83,7 +81,6 @@ namespace Damage.Controllers
                                     messages.Add(mailMessage);
                                 }
                             }
-                            t.Stop();
                             var threads = new Dictionary<long, GmailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
