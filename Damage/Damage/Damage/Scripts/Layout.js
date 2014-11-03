@@ -14,7 +14,7 @@
 
 function errorDialog(title, body) {
     var dialogWindow = $("#dialog");
-    dialogWindow.html("<div style='float:left;'><img src='../Content/Images/Error.png' /></div><div>" + body + "</div><div style='clear:both;'></div>");
+    dialogWindow.html("<div style='float:left;margin-right:20px;'><img src='../Content/Images/Error.png' /></div><div>" + body + "</div><div style='clear:both;'></div>");
     dialogWindow.dialog({
         title: title,
         buttons: {

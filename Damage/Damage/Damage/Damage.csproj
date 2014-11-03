@@ -239,6 +239,9 @@
     <Compile Include="Gadget\NotAvailableGadget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShortGuid.cs" />
+    <Compile Include="Utilities\SimpleAES.cs" />
+    <Compile Include="ValueObjects\GmailMessage.cs" />
+    <Compile Include="ValueObjects\GmailThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Error.png" />

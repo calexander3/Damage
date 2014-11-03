@@ -1,5 +1,7 @@
-﻿using Damage.DataAccess;
+﻿using System.Security.Cryptography;
+using Damage.DataAccess;
 using Damage.Gadget;
+using Damage.Utilities;
 using Newtonsoft.Json;
 using SimpleInjector;
 using SimpleInjector.Integration.Web.Mvc;
@@ -36,6 +38,11 @@ namespace Damage
             GlobalConfig.GadgetTypes = new System.Collections.Concurrent.ConcurrentDictionary<string, Type>();
 
             LoadGadgets();
+
+            var aesCsp = new AesCryptoServiceProvider();
+            aesCsp.GenerateKey();
+            aesCsp.GenerateIV();
+            GlobalConfig.Encryptor = new SimpleAES(aesCsp.Key, aesCsp.IV);
         }
 
         private void LoadGadgets()

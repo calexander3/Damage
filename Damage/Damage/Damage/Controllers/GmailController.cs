@@ -1,10 +1,17 @@
-﻿using AE.Net.Mail;
+﻿using System.Diagnostics;
+using System.Net.Mail;
+using System.Runtime.Serialization.Formatters;
+using System.Web.Caching;
+using AE.Net.Mail;
 using Damage.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Damage.Utilities;
+using Damage.ValueObjects;
+using Newtonsoft.Json;
 
 namespace Damage.Controllers
 {
@@ -13,7 +20,7 @@ namespace Damage.Controllers
         public JsonResult GetMail(int? timezoneOffset, bool showUnreadOnly, bool showPreview, string folderName)
         {
             var successful = false;
-            var output = new List<GmailMessage>();
+            var output = new List<GmailThread>();
             var unreadCount = 0;
             var folders = new List<string>();
 
@@ -50,30 +57,51 @@ namespace Damage.Controllers
                                 searchCondition = searchCondition.And(SearchCondition.Unseen());
                             }
 
+
                             //Get messages and organize into threads
-                            var messages =
-                                imap.SearchMessages(searchCondition, !showPreview)
-                                    .OrderByDescending(m => m.Value.Date)
-                                    .ToList();
-                            var threads = new Dictionary<long, MailMessage>();
+
+                            var uidCollection = imap.Search(searchCondition);
+
+                            var t = new Stopwatch();
+                            t.Start();
+                            var messages = new List<GmailMessage>();
+                            foreach (var uid in uidCollection)
+                            {
+                                var cacheKey = "gmail_" + uid + (showPreview ? "_WPrev" : "");
+                                var mailMessageBytes = HttpContext.Cache.Get(cacheKey) as byte[];
+                                if (mailMessageBytes == null)
+                                {
+                                    var mailMessage = new GmailMessage(imap.GetMessage(uid, !showPreview, false));
+                                    var encryptedMessage = GlobalConfig.Encryptor.EncryptString(JsonConvert.SerializeObject(mailMessage));
+                                    HttpContext.Cache.Insert(cacheKey, encryptedMessage);
+                                    messages.Add(mailMessage);
+                                }
+                                else
+                                {
+                                    var decryptedMessage = GlobalConfig.Encryptor.DecryptString(mailMessageBytes);
+                                    var mailMessage = JsonConvert.DeserializeObject<GmailMessage>(decryptedMessage);
+                                    messages.Add(mailMessage);
+                                }
+                            }
+                            t.Stop();
+                            var threads = new Dictionary<long, GmailMessage>();
                             var threadMessages = new Dictionary<long, List<long>>();
                             var threadCounts = new Dictionary<long, int>();
-                            foreach (var m in messages)
+                            foreach (var m in messages.OrderByDescending(m => m.MessageDate))
                             {
-                                var messageId = long.Parse(m.Value.Uid);
-                                var headers = m.Value.Headers;
-                                var gmailThreadId = long.Parse(headers["X-GM-THRID"].Value);
+                                var headers = m.Headers;
+                                var gmailThreadId = long.Parse(headers["X-GM-THRID"]);
 
                                 if (!threads.ContainsKey(gmailThreadId))
                                 {
-                                    threads.Add(gmailThreadId, m.Value);
+                                    threads.Add(gmailThreadId, m);
                                     threadCounts.Add(gmailThreadId, 1);
-                                    threadMessages.Add(gmailThreadId, new List<long> {messageId});
+                                    threadMessages.Add(gmailThreadId, new List<long> {m.Uid});
                                 }
                                 else
                                 {
                                     threadCounts[gmailThreadId] += 1;
-                                    threadMessages[gmailThreadId].Add(messageId);
+                                    threadMessages[gmailThreadId].Add(m.Uid);
                                 }
                             }
 
@@ -81,26 +109,24 @@ namespace Damage.Controllers
                             //Bundle threads
                             foreach (var thread in threads)
                             {
-                                var messageDate = (thread.Value.Date.Ticks > 0
+                                var messageDate = (thread.Value.MessageDate.Ticks > 0
                                     ? (timezoneOffset.HasValue
-                                        ? thread.Value.Date.ToUniversalTime().AddMinutes(timezoneOffset.Value)
-                                        : thread.Value.Date.ToUniversalTime())
+                                        ? thread.Value.MessageDate.ToUniversalTime().AddMinutes(timezoneOffset.Value)
+                                        : thread.Value.MessageDate.ToUniversalTime())
                                     : new DateTime(1900, 1, 1));
                                 var messageDateString = (DateTime.Compare(messageDate.Date, DateTime.Now.Date) == 0
                                     ? messageDate.ToShortTimeString()
                                     : messageDate.ToShortDateString());
-                                var unread = !(thread.Value.Flags.HasFlag(Flags.Seen));
+                                var unread = !(thread.Value.MessageFlags.HasFlag(GmailMessage.Flags.Seen));
                                 if (unread)
                                 {
                                     unreadCount++;
                                 }
-                                output.Add(new GmailMessage
+                                output.Add(new GmailThread
                                 {
                                     Subject = thread.Value.Subject,
                                     From =
-                                        (thread.Value.From.DisplayName.Length > 0
-                                            ? thread.Value.From.DisplayName
-                                            : thread.Value.From.Address.Split("@".ToCharArray())[0]) +
+                                        thread.Value.FromDisplayName +
                                         (threadCounts[thread.Key] > 1 ? " (" + threadCounts[thread.Key] + ")" : ""),
                                     ThreadIdHex = thread.Key.ToString("X").ToLower(),
                                     ThreadId = thread.Key,
@@ -110,7 +136,7 @@ namespace Damage.Controllers
                                     Unread = unread,
                                     Important =
                                         (thread.Value.Headers.ContainsKey("X-GM-LABELS") &&
-                                         thread.Value.Headers["X-GM-LABELS"].Value.Equals("\"\\\\Important\""))
+                                         thread.Value.Headers["X-GM-LABELS"].Equals("\"\\\\Important\""))
                                 });
                             }
                             successful = true;
@@ -273,21 +299,6 @@ namespace Damage.Controllers
         private string getPreview(string body)
         {
             return HttpUtility.HtmlEncode(body.Length > 80 ? body.Substring(0, 80) : body);
-        }
-
-        private class GmailMessage
-        {
-            // ReSharper disable UnusedAutoPropertyAccessor.Local
-            public string From { get; set; }
-            public string Preview { get; set; }
-            public string Subject { get; set; }
-            public string ThreadIdHex { get; set; }
-            public long ThreadId { get; set; }
-            public string ThreadMessageIds { get; set; }
-            public string Date { get; set; }
-            public bool Unread { get; set; }
-            public bool Important { get; set; }
-            // ReSharper restore UnusedAutoPropertyAccessor.Local
         }
     }
 }

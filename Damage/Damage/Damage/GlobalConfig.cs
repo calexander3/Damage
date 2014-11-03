@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Damage.Utilities;
 
 namespace Damage
 {
@@ -20,6 +21,8 @@ namespace Damage
         ///     The gadget types.
         /// </value>
         public static ConcurrentDictionary<string, Type> GadgetTypes { get; set; }
+
+        public static SimpleAES Encryptor { get; set; }
 
         public static log4net.ILog Log { get; set; }
     }
