@@ -38,7 +38,7 @@ namespace GoogleDrive
                     using (var recentFilesResponse = recentFilesRequest.GetResponse())
                     {
                         fileList = JsonConvert.DeserializeObject<FileList>(new System.IO.StreamReader(recentFilesResponse.GetResponseStream()).ReadToEnd());
-                        HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay, fileList, null, DateTime.Now.AddMinutes(5), System.Web.Caching.Cache.NoSlidingExpiration);
+                        HttpContext.Current.Cache.Insert(UserGadget.User.UserId + "_drvFiles_" + settings.FilesToDisplay, fileList, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0,0,5,0));
                     }
                 }
 

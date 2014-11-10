@@ -17,7 +17,7 @@ namespace Damage
                     "userinfo.email",
                     "https://mail.google.com/",
                     "calendar.readonly",
-                    "drive.metadata.readonly"
+                    "drive.readonly"
                 });
             var extraData = new Dictionary<string, object>();
             OAuthWebSecurity.RegisterClient(client, "Google", extraData);
