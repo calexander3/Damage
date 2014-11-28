@@ -38,8 +38,9 @@ namespace RSSReader
                     }
                     else
                     {
-                        var request = WebRequest.Create(settings.FeedURL);
+                        var request = (HttpWebRequest)WebRequest.Create(settings.FeedURL);
                         request.Timeout = 1500;
+                        request.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; WOW64; Trident/4.0; SLCC1; .NET CLR 2.0.50727)"; 
 
                         using (var response = request.GetResponse())
                         {
