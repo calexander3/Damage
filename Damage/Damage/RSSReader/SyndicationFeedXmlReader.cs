@@ -60,7 +60,7 @@ namespace RSSReader
                 {
                     return DateTime.Parse(dateVal).ToString(Dtfi.RFC1123Pattern);
                 }
-                catch (FormatException)
+                catch (Exception)
                 {
                     return DateTimeOffset.UtcNow.ToString(Dtfi.RFC1123Pattern);
                 }

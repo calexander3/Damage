@@ -8,16 +8,8 @@
         <meta name="googlebot" content="noimageindex">
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        <script type="text/javascript" src="~/Scripts/Search.js"></script>
         @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/jqueryui")
-        <script type="text/javascript" src="~/Scripts/Layout.js"></script>
-        @RenderSection("scripts", required: false)
-        @if (!Request.IsLocal)
-        {
-            <script type="text/javascript" src="~/Scripts/GoogleAnalytics.js"></script>
-        }
+        @RenderSection("styles", required: false)
     </head>
     <body>
         <input id="timeZoneOffset" type="hidden" />
@@ -60,6 +52,7 @@
                         <div class="subtitle">Dashboard Manager For Google</div>
                     </div>
                 </header>
+                @Scripts.Render("~/bundles/jquery")
                 <div id="body">
                     <section class="content-wrapper main-content clear-fix">
                         @RenderBody()
@@ -92,3 +85,11 @@
         </div>
     </body>
 </html>
+@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript" src="~/Scripts/Layout.js"></script>
+<script type="text/javascript" src="~/Scripts/Search.js"></script>
+@RenderSection("scripts", required: false)
+@if (!Request.IsLocal)
+{
+    <script type="text/javascript" src="~/Scripts/GoogleAnalytics.js"></script>
+}

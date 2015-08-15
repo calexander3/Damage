@@ -34,7 +34,7 @@ namespace StockTicker
             foreach (var result in results)
             {
                 var color = "red";
-                if (double.Parse(result.c) > 0)
+                if (double.Parse(result.c) >= 0)
                 {
                     color = "green";
                 }
